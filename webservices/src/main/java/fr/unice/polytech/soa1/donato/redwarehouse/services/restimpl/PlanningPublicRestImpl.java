@@ -1,14 +1,22 @@
 package fr.unice.polytech.soa1.donato.redwarehouse.services.restimpl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.ejb.EJB;
 import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import fr.unice.polytech.soa1.donato.redwarehouse.business.Command;
 import fr.unice.polytech.soa1.donato.redwarehouse.business.DataAccessObject;
 import fr.unice.polytech.soa1.donato.redwarehouse.business.Event;
 import fr.unice.polytech.soa1.donato.redwarehouse.business.Planning;
@@ -20,42 +28,63 @@ public class PlanningPublicRestImpl implements PlanningPublicRest{
 	@EJB private DataAccessObject dao;
 	@Context private UriInfo uri;
 	
+	/**
+	 * {
+	 * 	'typeEvent': ['delivery' | 'pickup'],
+	 * 	'dateEvent': 'ddMMyyyy',
+	 * 	'command': [{
+	 * 		'ref_product': '#ref',
+	 * 		'quantity': 15
+	 * 	}, {
+	 * 		'ref_product': '#ref',
+	 * 		'quantity': 15
+	 * 	}]
+	 * }
+	 */
 	@Override
-	public Response createPlanning(
-			@QueryParam("ref_product") String productRef,
-			@QueryParam("quantity") String strQuantity,
-			@QueryParam("type_event")  String typeEvent) {
+	public Response createPlanning(String planningConstruct) {
 		
-		if (productRef == null
-				|| productRef.length() <= 0) {
-			UnknownResource error = new UnknownResource("product ref", productRef);
-			return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
-		}
+		PlanningResponse response = new PlanningResponse();
 		
-		int quantity = 0;
-		try {
-			quantity = Integer.valueOf(strQuantity);
-		} catch (NumberFormatException e) {
-			
-		}
-		if (quantity <= 0) {
-			UnknownResource error = new UnknownResource("quantity of product ref is 0", productRef);
-			return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
-		}
-		
-		Product product = dao.findProducByRef(productRef);
-		if (product == null) {
-			UnknownResource error = new UnknownResource("product ref", productRef);
-			return Response.status(Response.Status.NOT_FOUND).entity(error).build();
-		}
-		
-		Event event = null;
-		for(Event tmp : Event.values()) {
-			if (tmp.name().equalsIgnoreCase(typeEvent)) {
-				event = tmp;
+		JSONObject json = new JSONObject(planningConstruct);
+
+        Planning planning = new Planning();
+        
+        String statusType = json.getString("typeEvent");
+        for (Event event : Event.values()) {
+			if (event.getName().toUpperCase().contains(statusType.toUpperCase())) {
+				planning.status = event;
 				break;
 			}
 		}
+        try {
+			planning.setDate(new SimpleDateFormat("ddMMyyyy").parse(json.getString("dateEvent")));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        List<Command> commands = new ArrayList<Command>();
+        planning.commands = commands;
+
+        JSONArray commandsJSON = json.getJSONArray("command");
+    	for (int idx=0; idx < commandsJSON.length(); idx++) {
+    		JSONObject commandJSON = commandsJSON.getJSONObject(idx);
+			String refProduct = commandJSON.getString("ref_product");
+			int quantity = commandJSON.getInt("quantity");
+
+			Product product = dao.findProducByRef(refProduct);
+			if (product == null) {
+				continue;
+			}
+			
+			Command command = new Command(product, quantity);
+			commands.add(command);
+    	}
+		
 		
 		String planningId = "";
 		
@@ -69,14 +98,36 @@ public class PlanningPublicRestImpl implements PlanningPublicRest{
 			}
 			planningExistant = dao.findPlanningById(planningId);
 		}
-		
-		
-		Planning planning = new Planning();
 		planning.id=planningId;//"9008727099"
-		planning.product = product;
-		planning.quantity = quantity;
-		planning.status = event;
 		
-		return Response.status(Response.Status.CREATED).build();
+		response.setPlanningId(planningId);
+		
+		return Response.status(Response.Status.CREATED).entity(response.toJSONString()).build();
+	}
+}
+
+class PlanningResponse {
+	
+	private String planningId;
+	private List<String> errorMessage = new ArrayList<String>();
+	public String getPlanningId() {
+		return planningId;
+	}
+	public void setPlanningId(String planningId) {
+		this.planningId = planningId;
+	}
+	public List<String> getErrorMessage() {
+		return errorMessage;
+	}
+	public void setErrorMessage(List<String> errorMessage) {
+		this.errorMessage = errorMessage;
+	}
+	public String toJSONString() {
+		JSONObject result = new JSONObject();
+		
+		result.put("planningID", this.planningId);
+		result.put("errors", this.errorMessage);
+		
+		return result.toString();
 	}
 }

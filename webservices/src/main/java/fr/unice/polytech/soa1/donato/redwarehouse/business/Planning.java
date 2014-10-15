@@ -1,9 +1,10 @@
 package fr.unice.polytech.soa1.donato.redwarehouse.business;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlType;
@@ -56,8 +57,7 @@ public class Planning
 	
 	private Set<Employee> employees = new HashSet<>();
 	
-	public Product product;
-	public int quantity;
+	public List<Command> commands = new ArrayList<>();
 	
 	/**
 	 * <!-- begin-user-doc -->

@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
@@ -14,6 +12,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import fr.unice.polytech.soa1.donato.redwarehouse.business.Command;
 import fr.unice.polytech.soa1.donato.redwarehouse.business.DataAccessObject;
 import fr.unice.polytech.soa1.donato.redwarehouse.business.Employee;
 import fr.unice.polytech.soa1.donato.redwarehouse.business.Planning;
@@ -135,10 +134,15 @@ public class EmployeePrivateRestImpl implements EmployeePrivateRest {
 			for (Planning planning : employee.plannings) {
 				PlanningsForEmployee planningList = new PlanningsForEmployee();
 				
-				if (planning.product != null) {
-					ProductForRestEmployee productResult = new ProductForRestEmployee();
-					productResult.setProduct(planning.product);
-					planningList.products.getProducts().add(productResult);
+				if (planning.commands != null) {
+				for (Command command : planning.commands) {
+					if (command.getProduct() != null) {
+							ProductForRestEmployee productResult = new ProductForRestEmployee();
+							productResult.setProduct(command.getProduct());
+							planningList.products.getProducts().add(
+									productResult);
+						}
+					}
 				}
 				
 				tmp.plannings.getPlannings().add(planningList);
@@ -175,11 +179,13 @@ public class EmployeePrivateRestImpl implements EmployeePrivateRest {
 		}
 		
 		
-		Product existingProductInWarehouse = dao.findProducByRef(planning.product.reference);		
-		if (existingProductInWarehouse == null) {
-			dao.getProducts().add(planning.product);
-		} else {
-			existingProductInWarehouse.quantity += planning.product.quantity;
+		for (Command command : planning.commands) {
+			Product existingProductInWarehouse = dao.findProducByRef(command.getProduct().reference);		
+			if (existingProductInWarehouse == null) {
+				dao.getProducts().add(command.getProduct());
+			} else {
+				existingProductInWarehouse.quantity += command.getQuantity();
+			}
 		}
 		
 		return Response.status(Response.Status.CREATED).build();
@@ -263,9 +269,17 @@ class PlanningsForEmployee {
 	void setPlanning(Planning planning) {
 		this.planning = planning;
 		
-		if (this.planning.product != null) {
+		Product productBusiness = null;
+		if (this.planning.commands != null) {
+			Command command = this.planning.commands.get(0);
+			if (command != null) {
+				productBusiness = command.getProduct();
+			}
+		}
+		
+		if (productBusiness != null) {
 			ProductForRestEmployee product = new ProductForRestEmployee();
-			product.setProduct(this.planning.product);
+			product.setProduct(productBusiness);
 			products.getProducts().add(product);
 		}
 	}

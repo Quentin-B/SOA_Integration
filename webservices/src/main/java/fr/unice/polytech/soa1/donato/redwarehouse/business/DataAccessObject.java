@@ -67,7 +67,12 @@ public class DataAccessObject {
 		return null;
 	}
 	
-	public DataAccessObject() { init(); }
+	public DataAccessObject() { init(); INSTANCE = this; }
+	
+	private static DataAccessObject INSTANCE = null;
+	public static DataAccessObject getInstance() {
+		return INSTANCE;
+	}
 
 
 	private void init() {
@@ -78,14 +83,14 @@ public class DataAccessObject {
 		Warehouse WH3 = new Warehouse("WH3", "8184 Erat Ave", "1624", "Sellano");
 		Warehouse WH4 = new Warehouse("WH4", "Ap #545-5349 Aliquet Road", "98758", "Sargodha");
 		Warehouse WH5 = new Warehouse("WH5", "352-4460 Nunc St.", "22714", "Valda");
-		Warehouse WH6 = new Warehouse("WH6", "356-3090 Sociis St.", "47617", "Feldkirchen in Kärnten");
+		Warehouse WH6 = new Warehouse("WH6", "356-3090 Sociis St.", "47617", "Feldkirchen in Kï¿½rnten");
 		Warehouse WH7 = new Warehouse("WH7", "Ap #569-158 Neque Rd.", "1089", "Henderson");
 		Warehouse WH8 = new Warehouse("WH8", "Ap #188-948 Donec St.", "7442", "Bosa");
 		Warehouse WH9 = new Warehouse("WH9", "719-9027 Dui Avenue", "843798", "Lossiemouth");
 		Warehouse WH10 = new Warehouse("WH10", "4613 Ligula Rd.", "141693", "Armstrong");
 		Warehouse WH11 = new Warehouse("WH11", "598-2533 Lorem Road", "652548", "Bayreuth");
 		Warehouse WH12 = new Warehouse("WH12", "6752 Interdum. Rd.", "A1V 5V4", "Zelem");
-		Warehouse WH13 = new Warehouse("WH13", "P.O. Box 606, 394 Sapien. St.", "48842", "Gambolò");
+		Warehouse WH13 = new Warehouse("WH13", "P.O. Box 606, 394 Sapien. St.", "48842", "Gambolï¿½");
 		Warehouse WH14 = new Warehouse("WH14", "P.O. Box 664, 8927 Ornare St.", "75336-112", "Courbevoie");
 		Warehouse WH15 = new Warehouse("WH15", "670-9456 Duis St.", "6687", "Bhiwandi");
 		Warehouse WH16 = new Warehouse("WH16", "735-158 Nec, Rd.", "5809", "Goes");
@@ -688,10 +693,20 @@ public class DataAccessObject {
 		EP24.plannings.add(this.plannings.get(6));
 		EP24.plannings.add(this.plannings.get(45));
 		
-		this.plannings.get(6).product = this.products.get(34);
-		this.plannings.get(34).product = this.products.get(67);
-		this.plannings.get(49).product = this.products.get(34);
-		this.plannings.get(67).product = this.products.get(67);
+		Command command = new Command();
+		command.setQuantity(30);
+		command.setProduct(this.products.get(34));
+		command.setPlanning(this.plannings.get(6));
+		this.plannings.get(6).commands.add(command);
+		command.setProduct(this.products.get(67));
+		command.setPlanning(this.plannings.get(34));
+		this.plannings.get(34).commands.add(command);
+		command.setProduct(this.products.get(34));
+		command.setPlanning(this.plannings.get(49));
+		this.plannings.get(49).commands.add(command);
+		command.setProduct(this.products.get(67));
+		command.setPlanning(this.plannings.get(67));
+		this.plannings.get(67).commands.add(command);
 	}
 	
 	private void createProduct(String pRef, String floorStr, String corridor, String rack, String quantityStr, String widthStr, String heightStr, String depthStr) {
@@ -747,7 +762,13 @@ public class DataAccessObject {
 		// create planning
 		Planning planning = new Planning();
 		planning.id = eventId;
-		planning.product = product;
+		
+		Command command = new Command();
+		command.setQuantity(30);
+		command.setProduct(product);
+		command.setPlanning(planning);
+		planning.commands.add(command);
+		
 		for (Event event : Event.values()) {
 			if (event.name.toUpperCase().contains(kind.toUpperCase())) {
 				planning.status = event;

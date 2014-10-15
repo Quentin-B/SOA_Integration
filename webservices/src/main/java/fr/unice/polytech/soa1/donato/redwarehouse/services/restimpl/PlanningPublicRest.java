@@ -6,14 +6,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-@Produces({"application/xml"})
+@Produces({"application/json"})
 public interface PlanningPublicRest {
 
 	@Path("/")
 	@POST
 	public Response createPlanning(
-			@QueryParam("ref_product") String productRef,
-			@QueryParam("quantity")    String quantity,
-			@QueryParam("type_event")  String typeEvent);
+			@QueryParam("planning") String planningConstruct);
 	
 }
