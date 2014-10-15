@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 import javax.ejb.Singleton;
 
@@ -786,5 +787,9 @@ public class DataAccessObject {
 		for(Warehouse warehouse : this.warehouses) {
 			warehouse.plannings.add(planning);
 		}
+		
+		Random rand = new Random();
+		int nombreAleatoire = rand.nextInt(100);
+		planning.warehouse = this.warehouses.get(nombreAleatoire);
 	}
 }
