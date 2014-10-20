@@ -16,11 +16,12 @@ public class Quote extends Command {
     public Quote() {
     }
 
-    public Quote(String id, String customerId, String receiver, Address from, Address to, Date pickUpDate, Box box) {
+    public Quote(String id, String customerId, String receiver, Address from, Address to, long pickUpDate, Box box) {
         super(id, customerId, receiver, from, to, pickUpDate, box);
     }
 
-    public Quote(String id, String customerId, String receiver, Address from, Address to, Date pickUpDate, float width, float height, float depth, float weight) {
+    public Quote(String id, String customerId, String receiver, Address from, Address to, long pickUpDate, float width,
+                 float height, float depth, float weight) {
         super(id, customerId, receiver, from, to, pickUpDate, width, height, depth, weight);
     }
 

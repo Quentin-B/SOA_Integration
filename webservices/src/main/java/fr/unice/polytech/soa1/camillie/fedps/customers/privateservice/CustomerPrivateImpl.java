@@ -44,6 +44,9 @@ public class CustomerPrivateImpl implements CustomerPrivateInterface {
                 case CREATE_QUOTE:
                     result = createQuote(query);
                     break;
+                case CREATE_ORDER:
+                    result = createOrder(query);
+                    break;
                 case CHANGE_QUOTE:
                     result = updateQuote(query);
                     break;
@@ -69,20 +72,30 @@ public class CustomerPrivateImpl implements CustomerPrivateInterface {
     }
 
     private Quote createQuote(CustomerQuery query) throws BadJobFault {
-        String id = "Q"+dao.createId();
-        Quote quote = new Quote(id,dao.getCustomers().get(0).getId(),query.getReceiver(),query.getFrom(),
-                query.getTo(),new Date(query.getPickupTimestamp()),query.getParcelWidth(),query.getParcelHeight(),
-                query.getParcelDepth(),query.getParcelWeight());
+        String id = "Q" + dao.createId();
+        Quote quote = new Quote(id, dao.getCustomers().get(0).getId(), query.getReceiver(), query.getFrom(),
+                query.getTo(), new Date(query.getPickupTimestamp()), query.getParcelWidth(), query.getParcelHeight(),
+                query.getParcelDepth(), query.getParcelWeight());
         dao.setPriceAndETA(quote);
         dao.registerQuote(quote);
         return quote;
+    }
+
+    private Order createOrder(CustomerQuery query) throws BadJobFault {
+        String id = dao.createId();
+        Order order = new Order("O" + id, dao.getCustomers().get(0).getId(), query.getReceiver(), query.getFrom(),
+                query.getTo(), query.getPickupTimestamp(), query.getParcelWidth(), query.getParcelHeight(),
+                query.getParcelDepth(), query.getParcelWeight(), "P" + id);
+        dao.setPriceAndETA(order);
+        dao.registerOrder(order);
+        return order;
     }
 
     private Quote updateQuote(CustomerQuery query) throws BadJobFault {
         Optional<Quote> quote = dao.findQuoteById(query.getQuoteId());
         if (!quote.isPresent())
             throw new UnknownObjectFault(query.getJob().name(), "quote", query.getQuoteId());
-        quote.get().setPickUpDate(new Date(query.getPickupTimestamp()));
+        quote.get().setPickUpDate(query.getPickupTimestamp());
         dao.setPriceAndETA(quote.get());
         return quote.get();
     }
@@ -91,10 +104,10 @@ public class CustomerPrivateImpl implements CustomerPrivateInterface {
         Optional<Quote> quote = dao.findQuoteById(query.getQuoteId());
         if (!quote.isPresent())
             throw new UnknownObjectFault(query.getJob().name(), "quote", query.getQuoteId());
-        if(quote.get().getValidityTime().getTime()<new Date().getTime())
-            throw new ExpiredQuoteException(query.getJob().name(),query.getQuoteId());
-        String tmpId = (query.getQuoteId().substring(1,query.getQuoteId().length()));
-        Order order = new Order("O"+tmpId,quote.get(),"P"+tmpId);
+        if (quote.get().getValidityTime().getTime() < new Date().getTime())
+            throw new ExpiredQuoteException(query.getJob().name(), query.getQuoteId());
+        String tmpId = (query.getQuoteId().substring(1, query.getQuoteId().length()));
+        Order order = new Order("O" + tmpId, quote.get(), "P" + tmpId);
         dao.setPriceAndETA(order);
         dao.registerOrder(order);
         dao.deleteQuote(quote.get());
@@ -116,6 +129,7 @@ public class CustomerPrivateImpl implements CustomerPrivateInterface {
             case VIEW_QUOTES:
                 error = false;
                 break;
+            case CREATE_ORDER:
             case CREATE_QUOTE:
                 error = (query.getFrom() == null || query.getTo() == null || query.getParcelDepth() <= 0
                         || query.getParcelHeight() <= 0 || query.getParcelWidth() <= 0

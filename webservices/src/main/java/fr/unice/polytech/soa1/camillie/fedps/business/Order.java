@@ -15,7 +15,7 @@ public class Order extends Command {
     public Order() {
     }
 
-    public Order(String id, String customerId, String receiver, Address from, Address to, Date pickUpDate,
+    public Order(String id, String customerId, String receiver, Address from, Address to, long pickUpDate,
                  float width, float height, float depth, float weight, String parcelId) {
         super(id, customerId, receiver, from, to, pickUpDate, width, height, depth, weight);
         this.parcelId = parcelId;
@@ -28,7 +28,7 @@ public class Order extends Command {
         this.status = ParcelStatus.WAIT_PICKUP;
     }
 
-    public Order(String id, Quote quote, Date newPickupDate, String parcelId) {
+    public Order(String id, Quote quote, long newPickupDate, String parcelId) {
         super(id, quote.getCustomerId(), quote.getReceiverName(), quote.getFrom(), quote.getTo(), newPickupDate, quote.getBox());
         this.parcelId = parcelId;
         this.status = ParcelStatus.WAIT_PICKUP;

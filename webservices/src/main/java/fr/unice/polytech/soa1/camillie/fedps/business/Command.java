@@ -13,15 +13,15 @@ public abstract class Command extends CustomerJobResult{
     protected String receiverName;
     protected Address from;
     protected Address to;
-    protected Date pickUpDate;
+    protected Long pickUpDate;
     protected Box box;
     protected Double price;
-    protected Date ETA;
+    protected Long ETA;
 
     public Command() {
     }
 
-    public Command(String id, String customerId, String receiverName, Address from, Address to, Date pickUpDate,
+    public Command(String id, String customerId, String receiverName, Address from, Address to, long pickUpDate,
                    float width, float height, float depth, float weight) {
         this.id = id;
         this.customerId = customerId;
@@ -32,7 +32,8 @@ public abstract class Command extends CustomerJobResult{
         this.box = new Box(width, height, depth, weight);
     }
 
-    public Command(String id, String customerId, String receiverName, Address from, Address to, Date pickUpDate, Box box) {
+    public Command(String id, String customerId, String receiverName, Address from, Address to, long pickUpDate,
+                   Box box) {
         this.id = id;
         this.customerId = customerId;
         this.receiverName = receiverName;
@@ -89,11 +90,11 @@ public abstract class Command extends CustomerJobResult{
     }
 
     @XmlElement(name = "pickupDate")
-    public Date getPickUpDate() {
+    public Long getPickUpDate() {
         return pickUpDate;
     }
 
-    public void setPickUpDate(Date pickUpDate) {
+    public void setPickUpDate(long pickUpDate) {
         this.pickUpDate = pickUpDate;
     }
 
@@ -107,11 +108,11 @@ public abstract class Command extends CustomerJobResult{
     }
 
     @XmlElement(name = "ETA")
-    public Date getETA() {
+    public long getETA() {
         return ETA;
     }
 
-    public void setETA(Date ETA) {
+    public void setETA(long ETA) {
         this.ETA = ETA;
     }
 

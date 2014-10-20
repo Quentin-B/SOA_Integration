@@ -11,15 +11,15 @@ public class ShortOrder {
 
     private String id;
     private String customerId;
-    private Date pickUpDate;
-    private Date ETA;
+    private long pickUpDate;
+    private long ETA;
     private String parcelId;
     private ParcelStatus status;
 
     public ShortOrder() {
     }
 
-    public ShortOrder(String id, String customerId, Date pickUpDate, Date ETA, String parcelId, ParcelStatus status) {
+    public ShortOrder(String id, String customerId, long pickUpDate, long ETA, String parcelId, ParcelStatus status) {
         this.id = id;
         this.customerId = customerId;
         this.pickUpDate = pickUpDate;
@@ -48,20 +48,20 @@ public class ShortOrder {
     }
 
     @XmlElement(name = "pickupDate")
-    public Date getPickUpDate() {
+    public long getPickUpDate() {
         return pickUpDate;
     }
 
-    public void setPickUpDate(Date pickUpDate) {
+    public void setPickUpDate(long pickUpDate) {
         this.pickUpDate = pickUpDate;
     }
 
     @XmlElement(name = "ETA")
-    public Date getETA() {
+    public long getETA() {
         return ETA;
     }
 
-    public void setETA(Date ETA) {
+    public void setETA(long ETA) {
         this.ETA = ETA;
     }
 

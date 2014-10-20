@@ -49,7 +49,7 @@ public class DataAccessObject {
             case LATE_ORDERS:
                 res = new OrdersList(MetricType.LATE_ORDERS);
                 for (Order o : orders) {
-                    if (!(o.getStatus() == ParcelStatus.DELIVERED) && o.getETA().getTime() < new Date().getTime()) {
+                    if (!(o.getStatus() == ParcelStatus.DELIVERED) && o.getETA() < new Date().getTime()) {
                         ((OrdersList) res).add(new ShortOrder(o.getId(), o.getCustomerId(),
                                 o.getPickUpDate(), o.getETA(), o.getParcelId(), o.getStatus()));
                     }
@@ -119,10 +119,11 @@ public class DataAccessObject {
 
         //Orders
         orders = new ArrayList<Order>(Arrays.asList(
-                new Order("O465477457", c3.getId(), c2.getName(), a2, a3, new Date(145423656), 18, 5, 12, 18.4f, "P3377A1Y934XJQ660270"),
-                new Order("O359036844", c1.getId(), c2.getName(), a3, a2, new Date(545423656), 9, 14, 11, 22.9f, "P3967469799395757932"),
-                new Order("O144021858", c3.getId(), c2.getName(), a3, a1, new Date(), 10, 10, 23, 12.3f, "P1259739579637939935"),
-                new Order("O158038503", c2.getId(), c2.getName(), a2, a3, new Date(), 8, 15, 12.4f, 18, "P3295796794364949354")));
+                new Order("O465477457", c3.getId(), c2.getName(), a2, a3, new Date(145423656).getTime(), 18, 5, 12, 18.4f,
+                        "P3377A1Y934XJQ660270"),
+                new Order("O359036844", c1.getId(), c2.getName(), a3, a2, new Date(545423656).getTime(), 9, 14, 11, 22.9f, "P3967469799395757932"),
+                new Order("O144021858", c3.getId(), c2.getName(), a3, a1, new Date().getTime(), 10, 10, 23, 12.3f, "P1259739579637939935"),
+                new Order("O158038503", c2.getId(), c2.getName(), a2, a3, new Date().getTime(), 8, 15, 12.4f, 18, "P3295796794364949354")));
 
         List<Command> commands = new ArrayList<>(quotes);
         commands.addAll(orders);
@@ -161,10 +162,10 @@ public class DataAccessObject {
         Calendar cal = Calendar.getInstance();
         Random r = new Random();
         //set prices and ETA
-        cal.setTime(c.getPickUpDate());
+        cal.setTime(new Date(c.getPickUpDate()));
         int add = r.nextInt(5) + 2;
         cal.add(Calendar.DAY_OF_WEEK, add);
-        c.setETA(cal.getTime());
+        c.setETA(cal.getTime().getTime());
         if (c instanceof Quote) {
             cal.add(Calendar.DAY_OF_WEEK, - 1);
             ((Quote) c).setValidityTime(cal.getTime());
