@@ -73,3 +73,10 @@ out/
 # local file
 org.smartcampus.simulation.smartcampus/simulationDataWriter-log.txt
 
+# --------------- #
+# Studio-specific #
+# --------------- #
+.studio/
+flows/
+target/
+**/*.mflow
