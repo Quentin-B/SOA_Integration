@@ -74,7 +74,7 @@ public class CustomerPrivateImpl implements CustomerPrivateInterface {
     private Quote createQuote(CustomerQuery query) throws BadJobFault {
         String id = "Q" + dao.createId();
         Quote quote = new Quote(id, dao.getCustomers().get(0).getId(), query.getReceiver(), query.getFrom(),
-                query.getTo(), new Date(query.getPickupTimestamp()), query.getParcelWidth(), query.getParcelHeight(),
+                query.getTo(), query.getPickupTimestamp(), query.getParcelWidth(), query.getParcelHeight(),
                 query.getParcelDepth(), query.getParcelWeight());
         dao.setPriceAndETA(quote);
         dao.registerQuote(quote);

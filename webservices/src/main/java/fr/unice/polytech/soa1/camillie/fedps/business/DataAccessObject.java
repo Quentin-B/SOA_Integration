@@ -111,11 +111,11 @@ public class DataAccessObject {
 
         //Quotes
         quotes = new ArrayList<Quote>(Arrays.asList(
-                new Quote("Q722466204", c1.getId(), c2.getName(), a1, a2, new Date(), 14, 14, 15, 22),
-                new Quote("Q432124532", c1.getId(), c2.getName(), a1, a3, new Date(145423656), 10, 5, 5, 12),
-                new Quote("Q759325745", c2.getId(), c3.getName(), a2, a3, new Date(), 8, 15, 12, 18.5f),
-                new Quote("Q995738204", c1.getId(), c2.getName(), a1, a2, new Date(), 4, 24, 15, 32),
-                new Quote("Q581453693", c3.getId(), c2.getName(), a1, a3, new Date(), 20, 21, 31, 22)));
+                new Quote("Q722466204", c1.getId(), c2.getName(), a1, a2, new Date().getTime(), 14, 14, 15, 22),
+                new Quote("Q432124532", c1.getId(), c2.getName(), a1, a3, new Date(145423656).getTime(), 10, 5, 5, 12),
+                new Quote("Q759325745", c2.getId(), c3.getName(), a2, a3, new Date().getTime(), 8, 15, 12, 18.5f),
+                new Quote("Q995738204", c1.getId(), c2.getName(), a1, a2, new Date().getTime(), 4, 24, 15, 32),
+                new Quote("Q581453693", c3.getId(), c2.getName(), a1, a3, new Date().getTime(), 20, 21, 31, 22)));
 
         //Orders
         orders = new ArrayList<Order>(Arrays.asList(
@@ -167,7 +167,7 @@ public class DataAccessObject {
         cal.add(Calendar.DAY_OF_WEEK, add);
         c.setETA(cal.getTime().getTime());
         if (c instanceof Quote) {
-            cal.add(Calendar.DAY_OF_WEEK, - 1);
+            cal.add(Calendar.DAY_OF_WEEK, -1);
             ((Quote) c).setValidityTime(cal.getTime());
         }
         c.setPrice(r.nextDouble() * 50);

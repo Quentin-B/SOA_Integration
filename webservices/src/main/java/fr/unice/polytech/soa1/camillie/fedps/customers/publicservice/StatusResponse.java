@@ -11,7 +11,7 @@ public class StatusResponse {
 
     private String parcelId;
     private ParcelStatus status;
-    private Date eta;
+    private long eta;
 
     public StatusResponse(){}
 
@@ -20,7 +20,7 @@ public class StatusResponse {
         this.status=status;
     }
 
-    public StatusResponse(String parcelId, ParcelStatus status, Date eta) {
+    public StatusResponse(String parcelId, ParcelStatus status, long eta) {
         this(parcelId,status);
         this.eta=eta;
     }
@@ -45,11 +45,11 @@ public class StatusResponse {
     }
 
     @XmlElement(name="eta")
-    public Date getEta() {
+    public long getEta() {
         return eta;
     }
 
-    public void setEta(Date eta) {
+    public void setEta(long eta) {
         this.eta = eta;
     }
 }
