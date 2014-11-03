@@ -1,43 +1,48 @@
 package fr.unice.polytech.groupe.integration.business;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class Receipt {
 
-	private List<Item> listItem;
-	private Date estimationDate;
-	private double endPrice;
-	private double livraisonPrice;
-	private String numSuiviColis;
-	public List<Item> getListItem() {
-		return listItem;
+	private List<Item> itemList;
+	private Date eta;
+	private double price;
+	private double deliveryPrice;
+	private String trackingNumber;
+	
+	public Receipt() {
+		itemList = new ArrayList<Item>();
 	}
-	public void setListItem(List<Item> listItem) {
-		this.listItem = listItem;
+	public List<Item> getItemList() {
+		return itemList;
+	}
+	public void setItemList(List<Item> items) {
+		this.itemList = items;
 	}
 	public Date getEstimationDate() {
-		return estimationDate;
+		return eta;
 	}
 	public void setEstimationDate(Date estimationDate) {
-		this.estimationDate = estimationDate;
+		this.eta = estimationDate;
 	}
-	public double getEndPrice() {
-		return endPrice;
+	public double getPrice() {
+		return price;
 	}
-	public void setEndPrice(double endPrice) {
-		this.endPrice = endPrice;
+	public void setPrice(double endPrice) {
+		this.price = endPrice;
 	}
-	public double getLivraisonPrice() {
-		return livraisonPrice;
+	public double getDeliveryPrice() {
+		return deliveryPrice;
 	}
-	public void setLivraisonPrice(double livraisonPrice) {
-		this.livraisonPrice = livraisonPrice;
+	public void setDeliveryPrice(double deliveryPrice) {
+		this.deliveryPrice = deliveryPrice;
 	}
-	public String getNumSuiviColis() {
-		return numSuiviColis;
+	public String getTrackingNumber() {
+		return trackingNumber;
 	}
-	public void setNumSuiviColis(String numSuiviColis) {
-		this.numSuiviColis = numSuiviColis;
+	public void setTrackingNumber(String trackingNumber) {
+		this.trackingNumber = trackingNumber;
 	}
 }

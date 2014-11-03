@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project activeEnvironment="Default" name="IntegrationTest" soapui-version="5.0.0" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="OrderServiceServiceSoapBinding" type="wsdl" bindingName="{http://services.integration.groupe.polytech.unice.fr/}OrderServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8081/MD/OrderService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8081/MD/OrderService?wsdl"><con:part><con:url>http://localhost:8081/MD/OrderService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="OrderServiceService" targetNamespace="http://services.integration.groupe.polytech.unice.fr/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://services.integration.groupe.polytech.unice.fr/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
+<con:soapui-project activeEnvironment="Default" name="IntegrationTest" soapui-version="5.0.0" abortOnError="false" runType="SEQUENTIAL" resourceRoot="" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="OrderServiceServiceSoapBinding" type="wsdl" bindingName="{http://services.integration.groupe.polytech.unice.fr/}OrderServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8081/MD/OrderService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8081/MD/OrderService?wsdl"><con:part><con:url>http://localhost:8081/MD/OrderService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="OrderServiceService" targetNamespace="http://services.integration.groupe.polytech.unice.fr/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://services.integration.groupe.polytech.unice.fr/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
   <wsdl:types>
     <xs:schema elementFormDefault="unqualified" targetNamespace="http://services.integration.groupe.polytech.unice.fr/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="createOrder" type="tns:createOrder"/>
@@ -11,7 +11,7 @@
       </xs:complexType>
       <xs:complexType name="order">
         <xs:sequence>
-          <xs:element minOccurs="0" name="address" type="xs:string"/>
+          <xs:element minOccurs="0" name="invoiceAddress" type="tns:address"/>
           <xs:element name="mapIdProductQuantity">
             <xs:complexType>
               <xs:sequence>
@@ -27,6 +27,16 @@
             </xs:complexType>
           </xs:element>
           <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="shippingAddress" type="tns:address"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="address">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="addressLine1" type="xs:string"/>
+          <xs:element minOccurs="0" name="addressLine2" type="xs:string"/>
+          <xs:element minOccurs="0" name="cityName" type="xs:string"/>
+          <xs:element minOccurs="0" name="countryCode" type="xs:string"/>
+          <xs:element minOccurs="0" name="zipCode" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="createOrderResponse">
@@ -36,18 +46,18 @@
       </xs:complexType>
       <xs:complexType name="receipt">
         <xs:sequence>
-          <xs:element name="endPrice" type="xs:double"/>
+          <xs:element name="deliveryPrice" type="xs:double"/>
           <xs:element minOccurs="0" name="estimationDate" type="xs:dateTime"/>
-          <xs:element maxOccurs="unbounded" minOccurs="0" name="listItem" nillable="true" type="tns:item"/>
-          <xs:element name="livraisonPrice" type="xs:double"/>
-          <xs:element minOccurs="0" name="numSuiviColis" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="itemList" nillable="true" type="tns:item"/>
+          <xs:element name="price" type="xs:double"/>
+          <xs:element minOccurs="0" name="trackingNumber" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="item">
         <xs:sequence>
           <xs:element minOccurs="0" name="name" type="xs:string"/>
-          <xs:element name="price" type="xs:double"/>
           <xs:element name="quantity" type="xs:int"/>
+          <xs:element name="unitaryPrice" type="xs:double"/>
         </xs:sequence>
       </xs:complexType>
     </xs:schema>
@@ -81,25 +91,37 @@
       <soap:address location="http://localhost:8081/MD/OrderService"/>
     </wsdl:port>
   </wsdl:service>
-</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8081/MD/OrderService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="createOrder" bindingOperationName="createOrder" type="Request-Response" outputName="createOrderResponse" inputName="createOrder" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8081/MD/OrderService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.integration.groupe.polytech.unice.fr/">
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8081/MD/OrderService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="createOrder" bindingOperationName="createOrder" type="Request-Response" outputName="createOrderResponse" inputName="createOrder" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 2"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8081/MD/OrderService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.integration.groupe.polytech.unice.fr/">
    <soapenv:Header/>
    <soapenv:Body>
       <ser:createOrder>
          <!--Optional:-->
          <order>
             <!--Optional:-->
-            <address>Address client</address>
+            <invoiceAddress>
+               <addressLine1>AZ</addressLine1>
+               <addressLine2>AVC</addressLine2>
+               <cityName>fZf</cityName>
+               <countryCode>US</countryCode>
+               <zipCode>12431</zipCode>
+            </invoiceAddress>
             <mapIdProductQuantity>
                <!--Zero or more repetitions:-->
                <entry>
-                  <!--Optional:-->
-                  <key>273974398743</key>
-                  <!--Optional:-->
+                  <key>4143R54325</key>
                   <value>12</value>
                </entry>
             </mapIdProductQuantity>
             <!--Optional:-->
-            <name>Client</name>
+            <name>Ad;zp</name>
+            <shippingAddress>
+               <addressLine1>AZ</addressLine1>
+               <addressLine2>AVC</addressLine2>
+               <cityName>fZf</cityName>
+               <countryCode>US</countryCode>
+               <zipCode>12431</zipCode>
+
+            </shippingAddress>
          </order>
       </ser:createOrder>
    </soapenv:Body>
