@@ -1,6 +1,7 @@
 package fr.unice.polytech.soa1.teamforce.rest;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -16,7 +17,7 @@ public interface UserRest {
     @Path("{idCustomer}/order")
     @POST
     public Response createOrder(@PathParam("idCustomer") String idCustomer,
-                                @QueryParam("addresses") JSONArray addresses);
+                                @FormParam("addresses") JSONObject addresses);
 
     @Path("{idCustomer}/order/{idOrder}")
     @PUT

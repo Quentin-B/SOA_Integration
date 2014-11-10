@@ -7,8 +7,8 @@ import javax.jws.WebService;
 import fr.unice.polytech.groupe.integration.business.OrderInput;
 import fr.unice.polytech.groupe.integration.business.Receipt;
 
-@WebService(name="OrderService")
-public interface OrderService {
+@WebService(name="MisterDiscountService")
+public interface MisterDiscountService {
 
 	@WebResult(name="receipt")
 	public Receipt createOrder(@WebParam(name="order") OrderInput order);

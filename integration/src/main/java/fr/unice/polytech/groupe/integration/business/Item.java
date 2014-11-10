@@ -2,6 +2,7 @@ package fr.unice.polytech.groupe.integration.business;
 
 public class Item {
 
+	private String key;
 	private String name;
 	private int quantity;
 	private double unitaryPrice;
@@ -22,5 +23,11 @@ public class Item {
 	}
 	public void setUnitaryPrice(double unitaryPrice) {
 		this.unitaryPrice = unitaryPrice;
+	}
+	public String getKey() {
+		return key;
+	}
+	public void setKey(String key) {
+		this.key = key;
 	}
 }

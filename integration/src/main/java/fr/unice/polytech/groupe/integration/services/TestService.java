@@ -4,13 +4,13 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import fr.unice.polytech.groupe.integration.business.OrderInput;
+import fr.unice.polytech.groupe.integration.business.Order;
 import fr.unice.polytech.groupe.integration.business.Receipt;
 
-@WebService(name="OrderService")
-public interface OrderService {
+@WebService(name="TestService")
+public interface TestService {
 
 	@WebResult(name="receipt")
-	public Receipt createOrder(@WebParam(name="order") OrderInput order);
+	public Receipt createOrder(@WebParam(name="order") Order order);
 	
 }

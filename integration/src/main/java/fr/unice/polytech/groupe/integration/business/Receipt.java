@@ -11,6 +11,7 @@ public class Receipt {
 	private double price;
 	private double deliveryPrice;
 	private String trackingNumber;
+	private Status status;
 	
 	public Receipt() {
 		itemList = new ArrayList<Item>();
@@ -44,5 +45,11 @@ public class Receipt {
 	}
 	public void setTrackingNumber(String trackingNumber) {
 		this.trackingNumber = trackingNumber;
+	}
+	public Status getStatus() {
+		return status;
+	}
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 }

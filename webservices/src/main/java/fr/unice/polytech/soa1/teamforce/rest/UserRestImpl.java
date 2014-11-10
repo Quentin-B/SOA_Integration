@@ -21,7 +21,7 @@ public class UserRestImpl implements UserRest{
     private DataAccessObject dao;  // Injection dependency to retrieve the database as a singleton
 
     @Override
-    public Response createOrder(String idCustomer, JSONArray addresses) {
+    public Response createOrder(String idCustomer, JSONObject addresses) {
 
         Optional<User> customer = dao.findUserById(idCustomer);
         if (!customer.isPresent())  {
@@ -29,8 +29,8 @@ public class UserRestImpl implements UserRest{
             return Response.status(Response.Status.NOT_FOUND).entity(error).build();
         }
 
-        JSONObject addressInvoiceJSON = addresses.getJSONObject(0);
-        JSONObject addressDeliveryJSON = addresses.getJSONObject(1);
+        JSONObject addressInvoiceJSON = addresses.getJSONObject("invoice");
+        JSONObject addressDeliveryJSON = addresses.getJSONObject("delivery");
 
         Address invoiceAddress = new Address(addressInvoiceJSON.getString("line1"), addressInvoiceJSON.getString("line2"),
                 addressInvoiceJSON.getString("zipCode"), addressInvoiceJSON.getString("city"), Kind.valueOf(addressInvoiceJSON.getString("kind")));

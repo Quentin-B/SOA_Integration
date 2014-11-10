@@ -125,4 +125,318 @@
          </order>
       </ser:createOrder>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://services.integration.groupe.polytech.unice.fr/OrderService/createOrder"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/></con:soapui-project>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://services.integration.groupe.polytech.unice.fr/OrderService/createOrder"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="TestServiceServiceSoapBinding" type="wsdl" bindingName="{http://services.integration.groupe.polytech.unice.fr/}TestServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8081/MD/TestService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8081/MD/TestService?wsdl"><con:part><con:url>http://localhost:8081/MD/TestService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="TestServiceService" targetNamespace="http://services.integration.groupe.polytech.unice.fr/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://services.integration.groupe.polytech.unice.fr/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://services.integration.groupe.polytech.unice.fr/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="createOrder" type="tns:createOrder"/>
+      <xs:element name="createOrderResponse" type="tns:createOrderResponse"/>
+      <xs:complexType name="createOrder">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="order" type="tns:order"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="order">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="deliveryInfo" type="tns:deliveryInfo"/>
+          <xs:element minOccurs="0" name="fedPsId" type="xs:string"/>
+          <xs:element minOccurs="0" name="invoiceAddress" type="tns:address"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="itemList" nillable="true" type="tns:item"/>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element name="price" type="xs:double"/>
+          <xs:element minOccurs="0" name="shippingAddress" type="tns:address"/>
+          <xs:element minOccurs="0" name="teamForceId" type="xs:string"/>
+          <xs:element minOccurs="0" name="wareHouseId" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="deliveryInfo">
+        <xs:sequence>
+          <xs:element name="deliveryPrice" type="xs:double"/>
+          <xs:element name="depth" type="xs:float"/>
+          <xs:element minOccurs="0" name="eta" type="xs:dateTime"/>
+          <xs:element name="height" type="xs:float"/>
+          <xs:element minOccurs="0" name="pickupDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="trackingNumber" type="xs:string"/>
+          <xs:element minOccurs="0" name="warehouseAddress" type="tns:address"/>
+          <xs:element name="weight" type="xs:float"/>
+          <xs:element name="width" type="xs:float"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="address">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="addressLine1" type="xs:string"/>
+          <xs:element minOccurs="0" name="addressLine2" type="xs:string"/>
+          <xs:element minOccurs="0" name="cityName" type="xs:string"/>
+          <xs:element minOccurs="0" name="countryCode" type="xs:string"/>
+          <xs:element minOccurs="0" name="kind" type="tns:kind"/>
+          <xs:element minOccurs="0" name="zipCode" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="item">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element name="quantity" type="xs:int"/>
+          <xs:element name="unitaryPrice" type="xs:double"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="createOrderResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="receipt" type="tns:receipt"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="receipt">
+        <xs:sequence>
+          <xs:element name="deliveryPrice" type="xs:double"/>
+          <xs:element minOccurs="0" name="estimationDate" type="xs:dateTime"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="itemList" nillable="true" type="tns:item"/>
+          <xs:element name="price" type="xs:double"/>
+          <xs:element minOccurs="0" name="trackingNumber" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="kind">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="PERSONAL"/>
+          <xs:enumeration value="PROFESSIONNAL"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="createOrder">
+    <wsdl:part element="tns:createOrder" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createOrderResponse">
+    <wsdl:part element="tns:createOrderResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="TestService">
+    <wsdl:operation name="createOrder">
+      <wsdl:input message="tns:createOrder" name="createOrder"></wsdl:input>
+      <wsdl:output message="tns:createOrderResponse" name="createOrderResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="TestServiceServiceSoapBinding" type="tns:TestService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="createOrder">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="createOrder">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createOrderResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TestServiceService">
+    <wsdl:port binding="tns:TestServiceServiceSoapBinding" name="TestServicePort">
+      <soap:address location="http://localhost:8081/MD/TestService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8081/MD/TestService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="createOrder" bindingOperationName="createOrder" type="Request-Response" outputName="createOrderResponse" inputName="createOrder" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8081/MD/TestService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.integration.groupe.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:createOrder>
+         <!--Optional:-->
+         <order>
+            <!--Optional:-->
+            <deliveryInfo>
+               <deliveryPrice>245</deliveryPrice>
+               <depth>254</depth>
+               <!--Optional:-->
+               <eta>2014-11-06T18:06:51.783+01:00</eta>
+               <height>36</height>
+               <!--Optional:-->
+               <pickupDate>2014-11-06T18:06:51.783+01:00</pickupDate>
+               <!--Optional:-->
+               <trackingNumber>htrr346</trackingNumber>
+               <!--Optional:-->
+               <warehouseAddress>
+                 	<addressLine1>AZ</addressLine1>
+               	<addressLine2>AVC</addressLine2>
+               	<cityName>fZf</cityName>
+               	<countryCode>US</countryCode>
+               	<zipCode>12431</zipCode>
+               </warehouseAddress>
+               <weight>13</weight>
+               <width>436</width>
+            </deliveryInfo>
+            <!--Optional:-->
+            <fedPsId>htrsht56</fedPsId>
+            <!--Optional:-->
+            <invoiceAddress>
+               <addressLine1>AZ</addressLine1>
+               <addressLine2>AVC</addressLine2>
+               <cityName>fZf</cityName>
+               <countryCode>US</countryCode>
+               <zipCode>12431</zipCode>
+            </invoiceAddress>
+            <!--Zero or more repetitions:-->
+            <itemList>
+               <!--Optional:-->
+               <name>frzf</name>
+               <quantity>12</quantity>
+               <unitaryPrice>133</unitaryPrice>
+            </itemList>
+<itemList>
+               <!--Optional:-->
+               <name>afrdzf</name>
+               <quantity>1</quantity>
+               <unitaryPrice>13</unitaryPrice>
+            </itemList>
+
+            <!--Optional:-->
+            <name>PAD DAE</name>
+            <price>1243</price>
+            <!--Optional:-->
+            <shippingAddress>
+               <addressLine1>AZ</addressLine1>
+               <addressLine2>AVC</addressLine2>
+               <cityName>fZf</cityName>
+               <countryCode>US</countryCode>
+               <zipCode>12431</zipCode>
+            </shippingAddress>
+            <!--Optional:-->
+            <teamForceId>FTRTR2432</teamForceId>
+            <!--Optional:-->
+            <wareHouseId>gegty643</wareHouseId>
+         </order>
+      </ser:createOrder>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://services.integration.groupe.polytech.unice.fr/TestService/createOrder"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="MisterDiscountServiceServiceSoapBinding" type="wsdl" bindingName="{http://services.integration.groupe.polytech.unice.fr/}MisterDiscountServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8081/MD/MisterDiscountService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8081/MD/MisterDiscountService?wsdl"><con:part><con:url>http://localhost:8081/MD/MisterDiscountService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="MisterDiscountServiceService" targetNamespace="http://services.integration.groupe.polytech.unice.fr/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://services.integration.groupe.polytech.unice.fr/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://services.integration.groupe.polytech.unice.fr/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="createOrder" type="tns:createOrder"/>
+      <xs:element name="createOrderResponse" type="tns:createOrderResponse"/>
+      <xs:complexType name="createOrder">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="order" type="tns:order"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="order">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="deliveryInfo" type="tns:deliveryInfo"/>
+          <xs:element minOccurs="0" name="fedPsId" type="xs:string"/>
+          <xs:element minOccurs="0" name="invoiceAddress" type="tns:address"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="itemList" nillable="true" type="tns:item"/>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element name="price" type="xs:double"/>
+          <xs:element minOccurs="0" name="shippingAddress" type="tns:address"/>
+          <xs:element minOccurs="0" name="teamForceId" type="xs:string"/>
+          <xs:element minOccurs="0" name="wareHouseId" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="deliveryInfo">
+        <xs:sequence>
+          <xs:element name="deliveryPrice" type="xs:double"/>
+          <xs:element name="depth" type="xs:float"/>
+          <xs:element minOccurs="0" name="eta" type="xs:dateTime"/>
+          <xs:element name="height" type="xs:float"/>
+          <xs:element minOccurs="0" name="pickupDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="trackingNumber" type="xs:string"/>
+          <xs:element minOccurs="0" name="warehouseAddress" type="tns:address"/>
+          <xs:element name="weight" type="xs:float"/>
+          <xs:element name="width" type="xs:float"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="address">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="addressLine1" type="xs:string"/>
+          <xs:element minOccurs="0" name="addressLine2" type="xs:string"/>
+          <xs:element minOccurs="0" name="cityName" type="xs:string"/>
+          <xs:element minOccurs="0" name="countryCode" type="xs:string"/>
+          <xs:element minOccurs="0" name="kind" type="tns:kind"/>
+          <xs:element minOccurs="0" name="zipCode" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="item">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element name="quantity" type="xs:int"/>
+          <xs:element name="unitaryPrice" type="xs:double"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="createOrderResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="receipt" type="tns:receipt"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="receipt">
+        <xs:sequence>
+          <xs:element name="deliveryPrice" type="xs:double"/>
+          <xs:element minOccurs="0" name="estimationDate" type="xs:dateTime"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="itemList" nillable="true" type="tns:item"/>
+          <xs:element name="price" type="xs:double"/>
+          <xs:element minOccurs="0" name="trackingNumber" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="kind">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="PERSONAL"/>
+          <xs:enumeration value="PROFESSIONNAL"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="createOrder">
+    <wsdl:part element="tns:createOrder" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createOrderResponse">
+    <wsdl:part element="tns:createOrderResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="MisterDiscountService">
+    <wsdl:operation name="createOrder">
+      <wsdl:input message="tns:createOrder" name="createOrder"></wsdl:input>
+      <wsdl:output message="tns:createOrderResponse" name="createOrderResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MisterDiscountServiceServiceSoapBinding" type="tns:MisterDiscountService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="createOrder">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="createOrder">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createOrderResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MisterDiscountServiceService">
+    <wsdl:port binding="tns:MisterDiscountServiceServiceSoapBinding" name="MisterDiscountServicePort">
+      <soap:address location="http://localhost:8081/MD/MisterDiscountService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8081/MD/MisterDiscountService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="createOrder" bindingOperationName="createOrder" type="Request-Response" outputName="createOrderResponse" inputName="createOrder" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8081/MD/MisterDiscountService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.integration.groupe.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:createOrder>
+         <!--Optional:-->
+         <order>
+            <!--Optional:-->
+            <cardNumber>123456890098765</cardNumber>
+            <invoiceAddress>
+               <addressLine1>AZ</addressLine1>
+               <addressLine2>AVC</addressLine2>
+               <cityName>fZf</cityName>
+               <countryCode>US</countryCode>
+               <zipCode>12431</zipCode>
+               <kind>PERSONAL</kind>
+            </invoiceAddress>
+            <mapIdProductQuantity>
+               <!--Zero or more repetitions:-->
+               <entry>
+                  <key>4143R54325</key>
+                  <value>12</value>
+               </entry>
+            </mapIdProductQuantity>
+            <!--Optional:-->
+            <name>Ad;zp</name>
+            <shippingAddress>
+               <addressLine1>AZ</addressLine1>
+               <addressLine2>AVC</addressLine2>
+               <cityName>fZf</cityName>
+               <countryCode>US</countryCode>
+               <zipCode>12431</zipCode>
+               <kind>PERSONAL</kind>
+            </shippingAddress>
+         </order>
+      </ser:createOrder>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://services.integration.groupe.polytech.unice.fr/MisterDiscountService/createOrder"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
