@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:cxf="http://www.mulesoft.org/schema/mule/cxf" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.5.1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/cxf http://www.mulesoft.org/schema/mule/cxf/current/mule-cxf.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
+    <flow name="MisterDiscount-catalogue_registry" doc:name="MisterDiscount-catalogue_registry">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" path="internal" doc:name="HTTP"/>
+        <cxf:jaxws-service serviceClass="fr.unice.polytech.groupe.integration.services.InternalService" doc:name="CXF"/>
+        <set-variable variableName="operation" value="#[flowVars.cxf_operation.localPart]" doc:name="operation"/>
+        <choice doc:name="Choice">
+            <when expression="#[operation == &quot;registerForCatalogue&quot;]">
+                <logger message="OP : REGISTER_FOR_CATALOGUE" level="INFO" doc:name="register"/>
+                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/admin/save/catalogue" doc:name="VM"/>
+            </when>
+            <when expression="#[operation == &quot;orderCatalogues&quot;]">
+                <logger message="OP : ORDER CATALOGUES" level="INFO" doc:name="order catalogues"/>
+                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/admin/order/catalogue" doc:name="nb catalogues to order"/>
+                <logger message="ORDER #[payload] catalogues from printer" level="INFO" doc:name="order catalogues printer"/>
+            </when>
+            <when expression="#[operation == &quot;sendCatalogues&quot;]">
+                <logger message="OP : SEND CATALOGUES" level="INFO" doc:name="send"/>
+                <set-variable variableName="productId" value="#[payload.productId]" doc:name="Variable"/>
+                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/admin/read/catalogue" doc:name="get users to send catalogue"/>
+                <flow-ref name="send_catalogues" doc:name="Flow Reference"/>
+            </when>
+            <otherwise>
+                <logger message="WRONG OPERATION : #[flowVars.operation]" level="INFO" doc:name="Logger"/>
+                <exception-type-filter expectedType="fr.unice.polytech.groupe.integration.exceptions.UnknownOperationException" doc:name="Exception"/>
+            </otherwise>
+        </choice>
+    </flow>
+    <sub-flow name="send_catalogues" doc:name="send_catalogues">
+        <logger message="SEND CATALOGUES" level="INFO" doc:name="Logger"/>
+        <collection-splitter doc:name="Collection Splitter"/>
+        <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/internal/send/catalogue" doc:name="VM"/>
+    </sub-flow>
+    <flow name="internalFlow1" doc:name="internalFlow1">
+        <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/internal/send/catalogue" doc:name="VM - send 1 catalogue"/>
+        <logger message="catalogueRegistry -&gt; Receipt" level="INFO" doc:name="Logger"/>
+    </flow>
+</mule>

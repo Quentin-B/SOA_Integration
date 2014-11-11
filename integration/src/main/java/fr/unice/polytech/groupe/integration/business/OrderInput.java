@@ -2,14 +2,18 @@ package fr.unice.polytech.groupe.integration.business;
 
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+
 public class OrderInput {
 
 	private String name;
 	private String cardNumber;
 	private Address invoiceAddress;
 	private Address shippingAddress;
-	private Map<String, Integer> mapIdProductQuantity;
+	private Map<String, Integer> products;
 	
+	@XmlElement(name="name", required=true)
 	public String getName() {
 		return name;
 	}
@@ -17,25 +21,31 @@ public class OrderInput {
 		this.name = name;
 	}
 	
-	public Map<String, Integer> getMapIdProductQuantity() {
-		return mapIdProductQuantity;
+	@XmlElementWrapper(name="products", required=true, nillable=false)
+	public Map<String, Integer> getProducts() {
+		return products;
 	}
-	public void setMapIdProductQuantity(Map<String, Integer> mapIdProductQuantity) {
-		this.mapIdProductQuantity = mapIdProductQuantity;
+	public void setProducts(Map<String, Integer> products) {
+		this.products = products;
 	}
 	
+	@XmlElement(name="invoiceAddress", required=true)
 	public Address getInvoiceAddress() {
 		return invoiceAddress;
 	}
 	public void setInvoiceAddress(Address invoiceAddress) {
 		this.invoiceAddress = invoiceAddress;
 	}
+	
+	@XmlElement(name="shippingAddress", required=true)
 	public Address getShippingAddress() {
 		return shippingAddress;
 	}
 	public void setShippingAddress(Address shippingAddress) {
 		this.shippingAddress = shippingAddress;
 	}
+	
+	@XmlElement(name="cardNumber", required=true)
 	public String getCardNumber() {
 		return cardNumber;
 	}

@@ -1,0 +1,10 @@
+----------------------------------------------------------------
+Tue Nov 11 19:44:35 CET 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-0149-a02b-f457-0000130b32f8 
+on database directory memory:C:\Users\Moka\git\SOA_Integration\integration\glue  with class loader sun.misc.Launcher$AppClassLoader@5c647e05 
+Loaded from file:/C:/Users/Moka/Desktop/AnypointStudio/plugins/org.mule.tooling.server.3.5.1.ee_4.1.0.201409041449/mule/lib/opt/derby-10.9.1.0.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_25-b18
+user.dir=C:\Users\Moka\git\SOA_Integration\integration
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

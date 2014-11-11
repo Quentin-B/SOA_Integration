@@ -21,8 +21,10 @@ http://www.mulesoft.org/schema/mule/jersey http://www.mulesoft.org/schema/mule/j
     <data-mapper:config name="Pojo_To_Xml_process_" transformationGraphPath="pojo_to_xml_process_.grf" doc:name="Pojo_To_Xml_process_"/>
     <data-mapper:config name="Xml_processResponse__To_Pojo" transformationGraphPath="xml_processresponse__to_pojo.grf" doc:name="Xml_processResponse__To_Pojo"/>
     <ws:consumer-config name="WS_payment" wsdlLocation="http://localhost:8080/webservices/Payment-Public-DOC?wsdl" service="PaymentDOCPublicService" port="PaymentDOCPublicPort" serviceAddress="http://localhost:8080/webservices/Payment-Public-DOC" doc:name="Web Service Consumer"/>
-    <data-mapper:config name="Pojo_To_Pojo" transformationGraphPath="pojo_to_pojo.grf" doc:name="Pojo_To_Pojo"/>
     <data-mapper:config name="Order_To_JSON" transformationGraphPath="order_to_json.grf" doc:name="Order_To_JSON"/>
+    <data-mapper:config name="CSV_To_Pojo" transformationGraphPath="csv_to_pojo.grf" doc:name="CSV_To_Pojo"/>
+    <data-mapper:config name="JSON_To_Pojo" transformationGraphPath="json_to_pojo.grf" doc:name="JSON_To_Pojo"/>
+    <data-mapper:config name="JSON_To_Pojo_1" transformationGraphPath="json_to_pojo_1.grf" doc:name="JSON_To_Pojo_1"/>
     <flow name="MisterDiscount" doc:name="MisterDiscount">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" doc:name="HTTP"/>
         <cxf:jaxws-service serviceClass="fr.unice.polytech.groupe.integration.services.MisterDiscountService" doc:name="CXF"/>
@@ -40,12 +42,22 @@ http://www.mulesoft.org/schema/mule/jersey http://www.mulesoft.org/schema/mule/j
     </flow>
     <flow name="create_order" doc:name="create_order">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrder" doc:name="VM create_order"/>
-        <data-mapper:transform config-ref="Pojo_To_Pojo" doc:name="Pojo To Pojo"/>
-        <set-variable variableName="order" value="#[message.payload]" doc:name="Variable"/>
         <logger message="ENTREE" level="INFO" doc:name="Logger"/>
+        <scripting:component doc:name="Groovy">
+            <scripting:script engine="Groovy"><![CDATA[def order = new fr.unice.polytech.groupe.integration.business.Order();
+
+order.setProducts(message.payload.products);
+order.setInvoiceAddress(message.payload.invoiceAddress);
+order.setShippingAddress(message.payload.shippingAddress);
+order.setCardNumber(message.payload.cardNumber);
+order.setName(message.payload.name);
+
+return order;]]></scripting:script>
+        </scripting:component>
+        <set-variable variableName="order" value="#[message.payload]" doc:name="Variable"/>
         <flow-ref name="sf_order_teamforce" doc:name="order_teamforce"/>
         <flow-ref name="sf_order_redwarehouse" doc:name="order_redwarehouse"/>
-        <flow-ref name="sf_order_redwarehouse" doc:name="order_fedps"/>
+        <flow-ref name="sf_order_fedps" doc:name="order_fedps"/>
         <scripting:component doc:name="createReceipt">
             <scripting:script engine="Groovy"><![CDATA[def receipt = new fr.unice.polytech.groupe.integration.business.Receipt();
 
@@ -53,6 +65,7 @@ http://www.mulesoft.org/schema/mule/jersey http://www.mulesoft.org/schema/mule/j
 
 return receipt;]]></scripting:script>
         </scripting:component>
+
     </flow>
     <sub-flow name="sf_order_teamforce" doc:name="sf_order_teamforce">
         <logger message="COMMANDE TF - DEBUT #[flowVars.order]" level="INFO" doc:name="Logger"/>
@@ -60,32 +73,82 @@ return receipt;]]></scripting:script>
         <set-payload value="addresses=#[payload]" doc:name="Set Payload"/>
         <message-properties-transformer mimeType="application/x-www-form-urlencoded" doc:name="Message Properties"/>
         <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrderTF" doc:name="/vm/MD/createOrderTF"/>
-        <logger message="COMMANDE TF - FIN" level="INFO" doc:name="Logger"/>
+        <logger message="COMMANDE TF - FIN #[payload]" level="INFO" doc:name="Logger"/>
     </sub-flow>
     <flow name="create_order_TF" doc:name="create_order_TF">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrderTF" doc:name="/vm/MD/createOrderTF"/>
         <http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="8080" path="rest/user/1/order" method="POST" contentType="application/x-www-form-urlencoded" doc:name="HTTP"/>
-        <logger message="ONYCROIT #[payload]" level="INFO" doc:name="Logger"/>
+        <object-to-string-transformer doc:name="Object to String"/>
+        <data-mapper:transform config-ref="JSON_To_Pojo" doc:name="JSON To Pojo"/>
+        <logger message="ONYCROIT #[payload.price]" level="INFO" doc:name="Logger"/>
     </flow>
     <sub-flow name="sf_order_redwarehouse" doc:name="sf_order_redwarehouse">
         <logger message="COMMANDE RWH - DEBUT" level="INFO" doc:name="Logger"/>
+        <scripting:component doc:name="TMP - MOCKUP">
+            <scripting:script engine="Groovy"><![CDATA[def json = "{";
+json = json + "'typeEvent':'pickup',"
+json = json + "'dateEvent':'24022014',"
+json = json + "'command':["
+
+def isFirst = true;
+def order = message.getInvocationProperty('order');
+order.getProducts().each { key, value -> 
+	if (!isFirst) {
+		json = json + ","
+	} else {
+		isFirst = false;
+	}
+	json = json + "{"
+	json = json + "'ref_product':'${key}',";
+	json = json + "'quantity':'${value}'"
+	json = json + "}"
+};
+
+json = json + "]}"
+return json;]]></scripting:script>
+        </scripting:component>
         <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrderRWH" doc:name="/vm/MD/createOrderRWH"/>
+        <scripting:component doc:name="Update Order">
+            <scripting:script engine="Groovy"><![CDATA[def order = message.getInvocationProperty('order');
+
+def result = payload;
+
+order.setWareHouseId(result.getPlanningID());
+
+def deliveryInfo = order.getDeliveryInfo();
+if (deliveryInfo == null) {
+	deliveryInfo = new fr.unice.polytech.groupe.integration.business.DeliveryInfo();
+	order.setDeliveryInfo(deliveryInfo);
+}
+deliveryInfo.setWidth(result.getWidth());
+deliveryInfo.setHeight(result.getHeight());
+deliveryInfo.setDepth(result.getDepth());
+deliveryInfo.setWeight(result.getWidth());
+
+deliveryInfo.setWarehouseAddress(result.getWarehouseAddress());
+
+deliveryInfo.setPickupDate(result.getPickupdate());
+
+return order;
+]]></scripting:script>
+        </scripting:component>
         <logger message="COMMANDE RWH - FIN" level="INFO" doc:name="Logger"/>
     </sub-flow>
     <flow name="create_order_RWH" doc:name="create_order_RWH">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrderRWH" doc:name="VM"/>
-        <logger level="INFO" doc:name="Logger"/>
+        <set-payload value="planning=#[payload]" doc:name="Set Payload"/>
+        <message-properties-transformer mimeType="application/x-www-form-urlencoded" doc:name="Message Properties"/>
+        <http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="8080" path="rest/redwarehouse/public/plannings" method="POST" contentType="application/x-www-form-urlencoded" doc:name="HTTP"/>
+        <object-to-string-transformer doc:name="Object to String"/>
+        <data-mapper:transform config-ref="JSON_To_Pojo_1" doc:name="JSON To Pojo"/>
+
     </flow>
     <sub-flow name="sf_order_fedps" doc:name="sf_order_fedps">
-        <logger message="COMMANDE FedPS - DEBUT" level="INFO" doc:name="Logger"/>
-        <set-payload value="#[flowVars.order]" doc:name="Set Payload"/>
+        <logger message="COMMANDE FedPS - DEBUT #[flowVars.order] #[payload]" level="INFO" doc:name="Logger"/>
         <data-mapper:transform config-ref="Pojo_To_Xml_process_" doc:name="Pojo To Xml&lt;process&gt;"/>
+
         <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrderFedPS" doc:name="/vm/MD/createOrderFedPS"/>
-        <data-mapper:transform config-ref="Xml_processResponse__To_Pojo" doc:name="Xml&lt;processResponse&gt; To Pojo">
-            <data-mapper:input-arguments>
-                <data-mapper:input-argument key="order">#[flowVars['order']]</data-mapper:input-argument>
-            </data-mapper:input-arguments>
-        </data-mapper:transform>
+
         <logger message="COMMANDE FedPS - FIN" level="INFO" doc:name="Logger"/>
     </sub-flow>
     <flow name="soa_integrationFlow1" doc:name="soa_integrationFlow1">
@@ -93,6 +156,11 @@ return receipt;]]></scripting:script>
         <cxf:jaxws-service serviceClass="fr.unice.polytech.groupe.integration.services.TestService" doc:name="CXF"/>
         <set-variable variableName="order" value="#[message.payload]" doc:name="Variable"/>
         <logger message="#[flowVars['order']]" level="INFO" doc:name="Logger"/>
+        <data-mapper:transform config-ref="Xml_processResponse__To_Pojo" doc:name="Xml&lt;processResponse&gt; To Pojo">
+            <data-mapper:input-arguments>
+                <data-mapper:input-argument key="order">#[flowVars['order']]</data-mapper:input-argument>
+            </data-mapper:input-arguments>
+        </data-mapper:transform>
         <flow-ref name="sf_order_fedps" doc:name="Flow Reference"/>
         <logger message="MDR #[flowVars['order']]" level="INFO" doc:name="Logger"/>
     </flow>

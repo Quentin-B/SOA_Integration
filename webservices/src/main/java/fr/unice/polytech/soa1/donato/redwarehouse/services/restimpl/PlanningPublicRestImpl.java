@@ -1,5 +1,6 @@
 package fr.unice.polytech.soa1.donato.redwarehouse.services.restimpl;
 
+import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -149,6 +150,7 @@ class PlanningResponse {
 
 		result.put("planningID", this.planning.getId());
 		result.put("planningUrl", this.urlPlanning);
+		result.put("pickupdate", new SimpleDateFormat("ddMMyyyy").format(new Date()));
 
 		JSONObject packageSize = new JSONObject();
 		int width = 0, height = 0, depth = 0;
@@ -161,13 +163,14 @@ class PlanningResponse {
 		packageSize.put("width", width);
 		packageSize.put("height", height);
 		packageSize.put("depth", depth);
-		result.put("package size", packageSize);
+		result.put("packagesize", packageSize);
 		
 		Warehouse warehouse = this.planning.warehouse;
 		if (warehouse != null) {
 			JSONObject warehouseJson = new JSONObject();
+			warehouseJson.put("warehouseID", warehouse.id);
 			warehouseJson.put("address", warehouse.address);
-			warehouseJson.put("zip code", warehouse.zip);
+			warehouseJson.put("zipcode", warehouse.zip);
 			warehouseJson.put("city", warehouse.city);
 			result.put("warehouse", warehouseJson);
 		}

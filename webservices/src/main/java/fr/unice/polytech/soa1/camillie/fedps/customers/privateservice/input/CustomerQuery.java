@@ -102,4 +102,19 @@ public class CustomerQuery {
         this.quoteId = quoteId;
     }
 
+    @Override
+    public String toString() {
+        return "CustomerQuery{" +
+                "job=" + job +
+                ", parcelWidth=" + parcelWidth +
+                ", parcelHeight=" + parcelHeight +
+                ", parcelDepth=" + parcelDepth +
+                ", parcelWeight=" + parcelWeight +
+                ", pickupTimestamp=" + pickupTimestamp +
+                ", from=" + from +
+                ", to=" + to +
+                ", receiver='" + receiver + '\'' +
+                ", quoteId='" + quoteId + '\'' +
+                '}';
+    }
 }

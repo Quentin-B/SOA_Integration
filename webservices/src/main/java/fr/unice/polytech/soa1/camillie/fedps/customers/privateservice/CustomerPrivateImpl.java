@@ -135,6 +135,7 @@ public class CustomerPrivateImpl implements CustomerPrivateInterface {
                         || query.getParcelHeight() <= 0 || query.getParcelWidth() <= 0
                         || query.getParcelWeight() <= 0 || query.getPickupTimestamp() <= 0
                         || query.getReceiver() == null || query.getReceiver().isEmpty());
+                System.out.println(query);
                 break;
             case CHANGE_QUOTE:
                 error = query.getQuoteId() == null || query.getQuoteId().isEmpty()
