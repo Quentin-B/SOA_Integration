@@ -31,6 +31,7 @@
 <Field __index="7" __sourcePath="{}/object/warehouse/address" containerType="SINGLE" label="address" name="address" type="string"/>
 <Field __index="8" __sourcePath="{}/object/warehouse/warehouseID" containerType="SINGLE" label="warehouseID" name="warehouseID" type="string"/>
 <Field __index="9" __sourcePath="{}/object/warehouse/city" containerType="SINGLE" label="city" name="city" type="string"/>
+<Field __sourcePath="{}/object/packagesize/weight" containerType="SINGLE" label="weight" name="weight" type="integer"/>
 </Record>
 </Metadata>
 <Dictionary>
@@ -99,7 +100,8 @@ output.width = input.width;
 output.height = input.height;
 output.zipCode = input.zipcode;
 output.cityName = input.city;
-output.addressLine1 = input.address;]]></attr>
+output.addressLine1 = input.address;
+output.weight = input.weight;]]></attr>
 </Node>
 <Node charset="UTF-8" enabled="enabled" fileURL="dict:inputPayload" guiName="JSON READER" guiX="20" guiY="20" id="JSON_READER0" type="JSON_READER">
 <attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -115,6 +117,7 @@ output.addressLine1 = input.address;]]></attr>
     <Mapping cloverField="address" trim="true" xpath="warehouse/address"/>
     <Mapping cloverField="warehouseID" trim="true" xpath="warehouse/warehouseID"/>
     <Mapping cloverField="city" trim="true" xpath="warehouse/city"/>
+    <Mapping cloverField="weight" trim="true" xpath="packagesize/weight"/>
   </Context>
 </Context>
 ]]></attr>
