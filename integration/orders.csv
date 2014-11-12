@@ -1,0 +1,56 @@
+<orders>
+	<order>
+            <cardNumber>123456890098765</cardNumber>
+            <invoiceAddress>
+               <line1>AA</line1>
+               <line2>BB</line2>
+               <city>FF</city>
+               <country>RT</country>
+               <kind>PROFESSIONAL</kind>
+               <zip>2235</zip>
+            </invoiceAddress>
+            <name>Ad;zp</name>
+            <products>
+               <!--Zero or more repetitions:-->
+               <entry>
+                  <key>M9H5AP9UB56GZ6U</key>
+                  <value>5</value>
+               </entry>
+            </products>
+            <shippingAddress>
+               <line1>AA</line1>
+               <line2>BB</line2>
+               <city>FF</city>
+               <country>RT</country>
+               <kind>PROFESSIONAL</kind>
+               <zip>2235</zip>
+            </shippingAddress>
+        </order>
+	<order>
+            <cardNumber>4567893286545</cardNumber>
+            <invoiceAddress>
+               <<line1>CC</line1>
+               <line2></line2>
+               <city>Faa</city>
+               <country>France</country>
+               <kind>PERSONAL</kind>
+               <zip>222 DR</zip>
+            </invoiceAddress>
+            <name>Ad;zp</name>
+            <products>
+               <!--Zero or more repetitions:-->
+               <entry>
+                  <key>M9H5AP9UB56GZ6U</key>
+                  <value>2</value>
+               </entry>
+            </products>
+            <shippingAddress>
+               <line1>CC</line1>
+               <line2></line2>
+               <city>Faa</city>
+               <country>France</country>
+               <kind>PERSONAL</kind>
+               <zip>222 DR</zip>
+            </shippingAddress>
+        </order>
+</orders>

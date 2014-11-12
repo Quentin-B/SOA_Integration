@@ -98,9 +98,9 @@ public class DataAccessObject {
 
     private void init() {
         //Addresses
-        Address a1 = new Address(32345, "Ap P179-6813 In St.", "Paris", "FR");
-        Address a2 = new Address(32345, "669-9468 Nibh. St.", "Leonding", "US");
-        Address a3 = new Address(32345, "P.O. Box 119, 9819 Nulla Avenue", "Galmaarden", "US");
+        Address a1 = new Address("32345", "Ap P179-6813 In St.", "Paris", "FR");
+        Address a2 = new Address("32345", "669-9468 Nibh. St.", "Leonding", "US");
+        Address a3 = new Address("32345", "P.O. Box 119, 9819 Nulla Avenue", "Galmaarden", "US");
 
         //Customers
         Customer c1 = new Customer("C2443514", "Jean Dupont", 0);

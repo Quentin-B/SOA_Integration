@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<orders>
+	<order>
+            <cardNumber>123456890098765</cardNumber>
+            <invoiceAddress>
+               <addressLine1>AA</addressLine1>
+               <addressLine2>BB</addressLine2>
+               <city>FF</city>
+               <country>RT</country>
+               <!--Optional:-->
+               <kind>PERSONAL</kind>
+               <zipCode>2235</zipCode>
+            </invoiceAddress>
+            <name>Ad;zp</name>
+            <products>
+               <!--Zero or more repetitions:-->
+               <entry>
+                  <key>M9H5AP9UB56GZ6U</key>
+                  <value>5</value>
+               </entry>
+			   <entry>
+                  <key>M9H5AP9UB56GZ6U</key>
+                  <value>1</value>
+               </entry>
+            </products>
+            <shippingAddress>
+               <addressLine1>AA</addressLine1>
+               <addressLine2>BB</addressLine2>
+               <city>FF</city>
+               <country>RT</country>
+               <!--Optional:-->
+               <kind>PERSONAL</kind>
+               <zipCode>2235</zipCode>
+            </shippingAddress>
+        </order>
+	<order>
+            <cardNumber>846370843465817</cardNumber>
+            <invoiceAddress>
+               <addressLine1>CC</addressLine1>
+               <addressLine2></addressLine2>
+               <city>Faaa</city>
+               <country>FR</country>
+               <kind>PROFESSIONNAL</kind>
+               <zipCode>22D 35</zipCode>
+            </invoiceAddress>
+            <name>Ad;zp</name>
+            <products>
+               <!--Zero or more repetitions:-->
+               <entry>
+                  <key>M9H5AP9UB56GZ6U</key>
+                  <value>2</value>
+               </entry>
+            </products>
+            <shippingAddress>
+               <addressLine1>CC</addressLine1>
+			   <addressLine2></addressLine2>
+               <city>Faaa</city>
+               <country>FR</country>
+               <kind>PROFESSIONNAL</kind>
+               <zipCode>22D 35</zipCode>
+            </shippingAddress>
+        </order>
+</orders>

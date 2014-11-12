@@ -6,10 +6,14 @@ import java.util.List;
 
 public class Receipt {
 
+	private String orderId;
+	private String name;
+	private Address shippingAddress;
 	private List<Item> itemList;
 	private Date eta;
 	private double price;
 	private double deliveryPrice;
+	private double totalPrice;
 	private String trackingNumber;
 	private Status status;
 	
@@ -51,5 +55,29 @@ public class Receipt {
 	}
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+	public String getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+	public Address getShippingAddress() {
+		return shippingAddress;
+	}
+	public void setShippingAddress(Address shippingAddress) {
+		this.shippingAddress = shippingAddress;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 }

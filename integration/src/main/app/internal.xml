@@ -20,13 +20,13 @@ http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/cu
             </when>
             <when expression="#[operation == &quot;orderCatalogues&quot;]">
                 <logger message="OP : ORDER CATALOGUES" level="INFO" doc:name="order catalogues"/>
-                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/admin/order/catalogue" doc:name="nb catalogues to order"/>
+                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/admin/order/catalogue" doc:name="read db"/>
                 <logger message="ORDER #[payload] catalogues from printer" level="INFO" doc:name="order catalogues printer"/>
             </when>
             <when expression="#[operation == &quot;sendCatalogues&quot;]">
                 <logger message="OP : SEND CATALOGUES" level="INFO" doc:name="send"/>
                 <set-variable variableName="productId" value="#[payload.productId]" doc:name="Variable"/>
-                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/admin/read/catalogue" doc:name="get users to send catalogue"/>
+                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/admin/read/catalogue" doc:name="read db"/>
                 <flow-ref name="send_catalogues" doc:name="Flow Reference"/>
             </when>
             <otherwise>

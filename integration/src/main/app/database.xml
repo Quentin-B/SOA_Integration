@@ -16,7 +16,8 @@ http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/cu
 import java.sql.*
 
 def sql = Sql.newInstance("jdbc:derby:memory:glue;create=true", new Properties());
-sql.execute("CREATE TABLE orders (tf_order_id varchar(50),rwh_order_id varchar(50),fedps_order_id varchar(50),fedps_follow_id varchar(50),status varchar(15)")
+sql.execute("CREATE TABLE orders (tf_order_id varchar(50),rwh_order_id varchar(50),fedps_order_id varchar(50),fedps_follow_id varchar(50),status varchar(15))")
+sql.execute("CREATE TABLE catalogueOrders (rwh_order_id varchar(50),fedps_order_id varchar(50),fedps_follow_id varchar(50),status varchar(15))")
 sql.execute("CREATE TABLE catalogue (name varchar(30), address varchar(30), city varchar(20), zip varchar(10), country varchar(20), toSend int)")
 
 return "Database initialized";]]></scripting:script>
@@ -26,15 +27,56 @@ return "Database initialized";]]></scripting:script>
         </catch-exception-strategy>
     </flow>
     <flow name="save_order" doc:name="save_order">
-        <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/admin/save/order" doc:name="VM"/>
+        <vm:inbound-endpoint exchange-pattern="one-way" path="/vm/admin/save/order" doc:name="VM"/>
         <scripting:component doc:name="Groovy">
             <scripting:script engine="Groovy"><![CDATA[import groovy.sql.*
 import java.sql.*
 
 def sql = Sql.newInstance("jdbc:derby:memory:glue", new Properties());
-sql.execute("insert into orders (tf_order_id, rwh_order_id, fedps_order_id, fedps_follow_id,status) values ("+ payload.teamForceId+", "+payload.wareHouseId+", "+payload.fedPsId+", "+payload.deliveryInfo.trackingNumber+", "+payload.status+")");
+sql.execute("insert into orders (tf_order_id, rwh_order_id, fedps_order_id, fedps_follow_id,status) values ('"+ payload.teamForceId+"', '"+payload.wareHouseId+"', '"+payload.fedPsId+"', '"+payload.deliveryInfo.trackingNumber+"', '"+payload.status+"')");
 
 System.out.println("Info stored for order " + payload.teamForceId);]]></scripting:script>
+        </scripting:component>
+    </flow>
+    <flow name="read_order" doc:name="read_order">
+        <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/admin/read/order" doc:name="VM"/>
+        <scripting:component doc:name="Groovy">
+            <scripting:script engine="Groovy"><![CDATA[import groovy.sql.*
+import java.sql.*
+
+def sql = Sql.newInstance("jdbc:derby:memory:glue", new Properties());
+def query = "select * from orders where tf_order_id = '"+ message.payload+"'";
+def data = sql.rows(query);
+
+def order = new fr.unice.polytech.groupe.integration.business.Order();
+order.setTeamForceId(data[0]['tf_order_id']);
+order.setWareHouseId(data[0]['rwh_order_id']);
+order.setFedPsId(data[0]['fedps_order_id']);
+def info = new fr.unice.polytech.groupe.integration.business.DeliveryInfo();
+info.setTrackingNumber(data[0]['fedps_follow_id']);
+order.setDeliveryInfo(info);
+String st = data[0]['status'];
+if(st=="PROCESSING")
+	order.setStatus(fr.unice.polytech.groupe.integration.business.Status.PROCESSING);
+else if(st==APPROVED)
+	order.setStatus(fr.unice.polytech.groupe.integration.business.Status.APPROVED);
+else
+	order.setStatus(fr.unice.polytech.groupe.integration.business.Status.DECLINED);
+
+
+return order;]]></scripting:script>
+        </scripting:component>
+    </flow>
+    <flow name="save_catalogue_order" doc:name="save_catalogue_order">
+        <vm:inbound-endpoint exchange-pattern="one-way" path="/vm/admin/save/catorder" doc:name="VM"/>
+        <scripting:component doc:name="Groovy">
+            <scripting:script engine="Groovy"><![CDATA[import groovy.sql.*
+import java.sql.*
+
+def sql = Sql.newInstance("jdbc:derby:memory:glue", new Properties());
+sql.execute("insert into catalogueOrders (rwh_order_id, fedps_order_id, fedps_follow_id,status) values ('"+payload.wareHouseId+"', '"+payload.fedPsId+"', '"+payload.deliveryInfo.trackingNumber+"', '"+payload.status+"')");
+
+System.out.println("Info stored for order " + payload.wareHouseId);]]></scripting:script>
         </scripting:component>
     </flow>
     <flow name="register_for_catalogue" doc:name="register_for_catalogue">

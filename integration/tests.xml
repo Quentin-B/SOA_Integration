@@ -4,6 +4,8 @@
     <xs:schema elementFormDefault="unqualified" targetNamespace="http://services.integration.groupe.polytech.unice.fr/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="createOrder" type="tns:createOrder"/>
       <xs:element name="createOrderResponse" type="tns:createOrderResponse"/>
+      <xs:element name="getOrderInfo" type="tns:getOrderInfo"/>
+      <xs:element name="getOrderInfoResponse" type="tns:getOrderInfoResponse"/>
       <xs:complexType name="createOrder">
         <xs:sequence>
           <xs:element minOccurs="0" name="order" type="tns:orderInput"/>
@@ -34,7 +36,7 @@
       <xs:complexType name="address">
         <xs:sequence>
           <xs:element name="line1" type="xs:string"/>
-          <xs:element name="line2" type="xs:string"/>
+          <xs:element minOccurs="0" name="line2" type="xs:string"/>
           <xs:element name="city" type="xs:string"/>
           <xs:element name="country" type="xs:string"/>
           <xs:element minOccurs="0" name="kind" type="tns:kind"/>
@@ -51,8 +53,12 @@
           <xs:element name="deliveryPrice" type="xs:double"/>
           <xs:element minOccurs="0" name="estimationDate" type="xs:dateTime"/>
           <xs:element maxOccurs="unbounded" minOccurs="0" name="itemList" nillable="true" type="tns:item"/>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="orderId" type="xs:string"/>
           <xs:element name="price" type="xs:double"/>
+          <xs:element minOccurs="0" name="shippingAddress" type="tns:address"/>
           <xs:element minOccurs="0" name="status" type="tns:status"/>
+          <xs:element name="totalPrice" type="xs:double"/>
           <xs:element minOccurs="0" name="trackingNumber" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
@@ -62,6 +68,16 @@
           <xs:element minOccurs="0" name="name" type="xs:string"/>
           <xs:element name="quantity" type="xs:int"/>
           <xs:element name="unitaryPrice" type="xs:double"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getOrderInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="orderId" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getOrderInfoResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="receipt" type="tns:receipt"/>
         </xs:sequence>
       </xs:complexType>
       <xs:simpleType name="kind">
@@ -79,16 +95,26 @@
       </xs:simpleType>
     </xs:schema>
   </wsdl:types>
+  <wsdl:message name="getOrderInfoResponse">
+    <wsdl:part element="tns:getOrderInfoResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
   <wsdl:message name="createOrder">
     <wsdl:part element="tns:createOrder" name="parameters"></wsdl:part>
   </wsdl:message>
   <wsdl:message name="createOrderResponse">
     <wsdl:part element="tns:createOrderResponse" name="parameters"></wsdl:part>
   </wsdl:message>
+  <wsdl:message name="getOrderInfo">
+    <wsdl:part element="tns:getOrderInfo" name="parameters"></wsdl:part>
+  </wsdl:message>
   <wsdl:portType name="MisterDiscountService">
     <wsdl:operation name="createOrder">
       <wsdl:input message="tns:createOrder" name="createOrder"></wsdl:input>
       <wsdl:output message="tns:createOrderResponse" name="createOrderResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getOrderInfo">
+      <wsdl:input message="tns:getOrderInfo" name="getOrderInfo"></wsdl:input>
+      <wsdl:output message="tns:getOrderInfoResponse" name="getOrderInfoResponse"></wsdl:output>
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="MisterDiscountServiceServiceSoapBinding" type="tns:MisterDiscountService">
@@ -99,6 +125,15 @@
         <soap:body use="literal"/>
       </wsdl:input>
       <wsdl:output name="createOrderResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getOrderInfo">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getOrderInfo">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getOrderInfoResponse">
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
@@ -144,7 +179,15 @@
          </order>
       </ser:createOrder>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://services.integration.groupe.polytech.unice.fr/MisterDiscountService/createOrder"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="Internal - Catalogues" type="wsdl" bindingName="{http://services.integration.groupe.polytech.unice.fr/}InternalServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8081/internal/MisterDiscountInternalService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8081/internal/MisterDiscountInternalService?wsdl"><con:part><con:url>http://localhost:8081/internal/MisterDiscountInternalService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="InternalServiceService" targetNamespace="http://services.integration.groupe.polytech.unice.fr/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://services.integration.groupe.polytech.unice.fr/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://services.integration.groupe.polytech.unice.fr/MisterDiscountService/createOrder"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="getOrderInfo" bindingOperationName="getOrderInfo" type="Request-Response" outputName="getOrderInfoResponse" inputName="getOrderInfo" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8081/MD/MisterDiscountService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.integration.groupe.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:getOrderInfo>
+         <!--Optional:-->
+         <orderId>null</orderId>
+      </ser:getOrderInfo>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://services.integration.groupe.polytech.unice.fr/MisterDiscountService/getOrderInfo"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="Internal - Catalogues" type="wsdl" bindingName="{http://services.integration.groupe.polytech.unice.fr/}InternalServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8081/internal/MisterDiscountInternalService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8081/internal/MisterDiscountInternalService?wsdl"><con:part><con:url>http://localhost:8081/internal/MisterDiscountInternalService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="InternalServiceService" targetNamespace="http://services.integration.groupe.polytech.unice.fr/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://services.integration.groupe.polytech.unice.fr/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
   <wsdl:types>
     <xs:schema elementFormDefault="unqualified" targetNamespace="http://services.integration.groupe.polytech.unice.fr/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="orderCatalogues" type="tns:orderCatalogues"/>

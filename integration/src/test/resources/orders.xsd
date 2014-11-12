@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="orders" type="ordersType"/>
+  <xs:complexType name="entryType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="key"/>
+      <xs:element name="value">
+        <xs:simpleType>
+          <xs:restriction base="xs:byte">
+            <xs:enumeration value="5"/>
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="orderType">
+    <xs:sequence>
+      <xs:element name="cardNumber">
+        <xs:simpleType>
+          <xs:restriction base="xs:long">
+            <xs:enumeration value="123456890098765"/>
+            <xs:enumeration value="846370843465817"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element type="invoiceAddressType" name="invoiceAddress"/>
+      <xs:element type="xs:string" name="name"/>
+      <xs:element type="productsType" name="products"/>
+      <xs:element type="shippingAddressType" name="shippingAddress"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="shippingAddressType">
+    <xs:sequence>
+      <xs:element name="addressLine1">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="AA"/>
+            <xs:enumeration value="CC"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="addressLine2">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="BB"/>
+            <xs:enumeration value=""/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="city">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="FF"/>
+            <xs:enumeration value="Faaa"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="country">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="RT"/>
+            <xs:enumeration value="FR"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="kind">
+        <xs:annotation>
+          <xs:documentation>Optional:</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="PERSONAL"/>
+            <xs:enumeration value="PROFESSIONAL"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="zipCode">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="2235"/>
+            <xs:enumeration value="22D 35"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="productsType">
+    <xs:sequence>
+      <xs:element type="entryType" name="entry" maxOccurs="unbounded" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Zero or more repetitions:Zero or more repetitions:</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ordersType">
+    <xs:sequence>
+      <xs:element type="orderType" name="order" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="invoiceAddressType">
+    <xs:sequence>
+      <xs:element name="addressLine1">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="AA"/>
+            <xs:enumeration value="CC"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="addressLine2">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="BB"/>
+            <xs:enumeration value=""/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="city">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="FF"/>
+            <xs:enumeration value="Faaa"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="country">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="RT"/>
+            <xs:enumeration value="FR"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="kind">
+        <xs:annotation>
+          <xs:documentation>Optional:</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="PERSONAL"/>
+            <xs:enumeration value="PROFESSIONAL"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="zipCode">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="2235"/>
+            <xs:enumeration value="22D 35"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

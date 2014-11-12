@@ -7,13 +7,13 @@ import javax.xml.bind.annotation.*;
 public class Address {
 
     private String street;
-    private int zipCode;
+    private String zipCode;
     private String cityName;
     private String countryId;
 
     public Address(){}
 
-    public Address(int zipCode, String street, String cityName, String countryId) {
+    public Address(String zipCode, String street, String cityName, String countryId) {
         this.zipCode = zipCode;
         this.street = street;
         this.cityName = cityName;
@@ -21,11 +21,11 @@ public class Address {
     }
 
     @XmlElement(name="zip")
-    public int getZipCode() {
+    public String getZipCode() {
         return zipCode;
     }
 
-    public void setZipCode(int zipCode) {
+    public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
 
