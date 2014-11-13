@@ -717,6 +717,9 @@ public class DataAccessObject {
 		int height = Integer.valueOf(heightStr);
 		int depth = Integer.valueOf(depthStr);
 		
+		Random rand = new Random();
+		int weight = rand.nextInt(100);
+		
 		// search box
 		Box box = null;
 		for (Box boxTmp : this.box) {
@@ -737,7 +740,7 @@ public class DataAccessObject {
 		}
 		
 		// create product
-		Product product = new Product(pRef, width, height, depth, quantity, box);
+		Product product = new Product(pRef, width, height, depth, weight, quantity, box);
 		products.add(product);
 		box.products.add(product);
 	}
@@ -756,7 +759,10 @@ public class DataAccessObject {
 			}
 		}
 		if (product == null) {
-			product = new Product(productId, width, height, depth, quantity);
+			Random rand = new Random();
+			int weight = rand.nextInt(100);
+			
+			product = new Product(productId, width, height, depth, weight, quantity);
 			//products.add(product);
 		}
 		

@@ -55,6 +55,8 @@ public class Product
 	 * @ordered
 	 */
 	
+	public int weight;
+	
 	public int quantity;
 	
 	/**
@@ -77,19 +79,20 @@ public class Product
 		super();
 	}
 	
-	public Product(String reference, int width, int height, int depth,
+	public Product(String reference, int width, int height, int depth, int weight,
 			int quantity) {
 		super();
 		this.reference = reference;
 		this.width = width;
 		this.height = height;
 		this.depth = depth;
+		this.weight = weight;
 		this.quantity = quantity;
 	}
 
-	public Product(String reference, int width, int height, int depth,
+	public Product(String reference, int width, int height, int depth, int weight,
 			int quantity, Box box) {
-		this(reference, width, height, depth, quantity);
+		this(reference, width, height, depth, weight, quantity);
 		this.box = box;
 	}
 

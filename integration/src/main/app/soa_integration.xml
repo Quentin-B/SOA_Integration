@@ -137,7 +137,7 @@ if (deliveryInfo == null) {
 deliveryInfo.setWidth(result.getWidth());
 deliveryInfo.setHeight(result.getHeight());
 deliveryInfo.setDepth(result.getDepth());
-deliveryInfo.setWeight(result.getWidth());
+deliveryInfo.setWeight(result.getWeight());
 
 deliveryInfo.setWarehouseAddress(result.getWarehouseAddress());
 

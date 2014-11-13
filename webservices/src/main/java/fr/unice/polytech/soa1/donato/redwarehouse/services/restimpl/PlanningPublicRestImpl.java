@@ -153,16 +153,18 @@ class PlanningResponse {
 		result.put("pickupdate", new SimpleDateFormat("ddMMyyyy").format(new Date()));
 
 		JSONObject packageSize = new JSONObject();
-		int width = 0, height = 0, depth = 0;
+		int width = 0, height = 0, depth = 0, weight = 0;
 		for (Command command : this.planning.commands) {
 			Product product = command.getProduct();
 			width += product.width;
 			height += product.height;
 			depth += product.depth;
+			weight += product.weight;
 		}
 		packageSize.put("width", width);
 		packageSize.put("height", height);
 		packageSize.put("depth", depth);
+		packageSize.put("weight", weight);
 		result.put("packagesize", packageSize);
 		
 		Warehouse warehouse = this.planning.warehouse;
