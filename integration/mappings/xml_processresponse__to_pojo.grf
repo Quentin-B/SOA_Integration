@@ -18,7 +18,7 @@
 <Record fieldDelimiter="," name="results" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
-<Field __cdata="false" __sourcePath="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer=ns0}/ns0:processResponse/result/results/item/text()" containerType="SINGLE" label="parcelId" name="item" type="string"/>
+<Field __cdata="false" __sourcePath="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer=ns0}/ns0:processResponse/result/results/item/parcelId" containerType="SINGLE" label="parcelId" name="parcelId" type="string"/>
 <Field __cdata="false" __sourcePath="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer=ns0}/ns0:processResponse/result/results/item/price" containerType="SINGLE" label="price" name="price" type="number"/>
 <Field __sourcePath="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer=ns0}/ns0:processResponse/result/results/item/box/depth" containerType="SINGLE" label="depth" name="depth" type="number"/>
 <Field __sourcePath="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer=ns0}/ns0:processResponse/result/results/item/box/height" containerType="SINGLE" label="height" name="height" type="number"/>
@@ -74,7 +74,7 @@
 //START -> DO NOT REMOVE
 output.__id = input.__id;
 //END -> DO NOT REMOVE
-output.trackingNumber = input.item;
+output.trackingNumber = input.parcelId;
 output.deliveryPrice = input.price;
 output.estimationDate = long2date(input.ETA);
 output.orderId = input.id;]]></attr>
@@ -82,7 +82,7 @@ output.orderId = input.id;]]></attr>
 <Node charset="UTF-8" enabled="enabled" fileURL="dict:inputPayload" guiName="XML READER" guiX="20" guiY="20" id="XML_READER0" type="XML_READER">
 <attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Context namespacePaths="ns0=&quot;http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer&quot;" outPort="0" sequenceField="__id" xpath="/ns0:processResponse/result/results">
-  <Mapping cloverField="item" trim="true" xpath="item/text()"/>
+  <Mapping cloverField="parcelId" trim="true" xpath="item/parcelId"/>
   <Mapping cloverField="price" trim="true" xpath="item/price"/>
   <Mapping cloverField="depth" trim="true" xpath="item/box/depth"/>
   <Mapping cloverField="height" trim="true" xpath="item/box/height"/>

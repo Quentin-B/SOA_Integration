@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:cxf="http://www.mulesoft.org/schema/mule/cxf" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+<mule xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:cxf="http://www.mulesoft.org/schema/mule/cxf" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.5.1"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
@@ -8,7 +8,10 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
 http://www.mulesoft.org/schema/mule/cxf http://www.mulesoft.org/schema/mule/cxf/current/mule-cxf.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
-http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd">
+    <data-mapper:config name="Pojo_To_Pojo" transformationGraphPath="pojo_to_pojo.grf" doc:name="Pojo_To_Pojo"/>
     <flow name="MisterDiscount-catalogue_registry" doc:name="MisterDiscount-catalogue_registry">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" path="internal" doc:name="HTTP"/>
         <cxf:jaxws-service serviceClass="fr.unice.polytech.groupe.integration.services.InternalService" doc:name="CXF"/>
@@ -20,14 +23,23 @@ http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/cu
             </when>
             <when expression="#[operation == &quot;orderCatalogues&quot;]">
                 <logger message="OP : ORDER CATALOGUES" level="INFO" doc:name="order catalogues"/>
+                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/getCatalogue" doc:name="request catalogue"/>
                 <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/admin/order/catalogue" doc:name="read db"/>
                 <logger message="ORDER #[payload] catalogues from printer" level="INFO" doc:name="order catalogues printer"/>
             </when>
             <when expression="#[operation == &quot;sendCatalogues&quot;]">
                 <logger message="OP : SEND CATALOGUES" level="INFO" doc:name="send"/>
-                <set-variable variableName="productId" value="#[payload.productId]" doc:name="Variable"/>
                 <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/admin/read/catalogue" doc:name="read db"/>
-                <flow-ref name="send_catalogues" doc:name="Flow Reference"/>
+                <choice doc:name="Choice">
+                    <when expression="#[payload.size()&gt;0]">
+                        <logger message="send #[payload.size()] catalogues" level="INFO" doc:name="Logger"/>
+                        <flow-ref name="send_catalogues" doc:name="Flow Reference"/>
+                    </when>
+                    <otherwise>
+                        <logger message="No catalogue to send" level="INFO" doc:name="Logger"/>
+                        <set-payload value="#[(int)0]" doc:name="Set Payload"/>
+                    </otherwise>
+                </choice>
             </when>
             <otherwise>
                 <logger message="WRONG OPERATION : #[flowVars.operation]" level="INFO" doc:name="Logger"/>
@@ -37,11 +49,50 @@ http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/cu
     </flow>
     <sub-flow name="send_catalogues" doc:name="send_catalogues">
         <logger message="SEND CATALOGUES" level="INFO" doc:name="Logger"/>
+        <set-variable variableName="cpt" value="0" doc:name="cpt"/>
         <collection-splitter doc:name="Collection Splitter"/>
         <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/internal/send/catalogue" doc:name="VM"/>
+        <set-variable variableName="cpt" value="#[(int)flowVars.cpt +1]" doc:name="cpt++"/>
+        <collection-aggregator failOnTimeout="true" doc:name="Collection Aggregator"/>
+        <logger message="#[flowVars.cpt] catalogues sent" level="INFO" doc:name="Logger"/>
+        <set-payload value="#[(int)flowVars.cpt]" doc:name="Set Payload"/>
     </sub-flow>
-    <flow name="internalFlow1" doc:name="internalFlow1">
+    <flow name="send_one_catalogue" doc:name="send_one_catalogue">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/internal/send/catalogue" doc:name="VM - send 1 catalogue"/>
-        <logger message="catalogueRegistry -&gt; Receipt" level="INFO" doc:name="Logger"/>
+        <data-mapper:transform config-ref="Pojo_To_Pojo" doc:name="Pojo To Pojo"/>
+        <scripting:component doc:name="set pickup date">
+            <scripting:script engine="Groovy"><![CDATA[import java.util.Date;
+
+def order = message.payload;
+def now = new Date();
+def then = new Date();
+then.setTime(now.getTime()+15*24*60*1000);
+
+def info = order.deliveryInfo;
+info.setPickupDate(then);
+order.setDeliveryInfo(info);
+
+return order;
+]]></scripting:script>
+        </scripting:component>
+        <set-variable variableName="order" value="#[payload]" doc:name="Variable"/>
+        <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrderFedPS" doc:name="call fedps"/>
+        <scripting:component doc:name="update order">
+            <scripting:script engine="Groovy"><![CDATA[def order = message.getInvocationProperty('order');
+
+def result = payload;
+
+order.setFedPsId(result.orderId);
+order.deliveryInfo.setTrackingNumber(result.trackingNumber);
+order.deliveryInfo.setEta(result.eta);
+order.deliveryInfo.setDeliveryPrice(result.deliveryPrice);
+order.setStatus(fr.unice.polytech.groupe.integration.business.Status.APPROVED);
+
+return order;
+]]></scripting:script>
+        </scripting:component>
+        <vm:outbound-endpoint exchange-pattern="one-way" path="/vm/admin/save/catorder" doc:name="save db"/>
+        <data-mapper:transform config-ref="create_receipt" doc:name="create receipt"/>
+        <logger message="Send mail w/ ETA and trackingNumber #[payload.trackingNumber], etc" level="INFO" doc:name="SEND MAIL"/>
     </flow>
 </mule>

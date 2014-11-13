@@ -15,6 +15,7 @@ public interface InternalService {
 	@WebResult(name="number")
 	public int orderCatalogues();
 	
-	public void sendCatalogues(@WebParam(name="productId") String productId);
+	@WebResult(name="number")
+	public int sendCatalogues();
 	
 }

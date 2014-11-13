@@ -9,7 +9,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd
 http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
 http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
-    <flow name="adminFlow1" doc:name="adminFlow1">
+    <flow name="init_database" doc:name="init_database">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" path="admin/init" doc:name="HTTP"/>
         <scripting:component doc:name="INIT DB">
             <scripting:script engine="Groovy"><![CDATA[import groovy.sql.*
@@ -17,7 +17,7 @@ import java.sql.*
 
 def sql = Sql.newInstance("jdbc:derby:memory:glue;create=true", new Properties());
 sql.execute("CREATE TABLE orders (tf_order_id varchar(50),rwh_order_id varchar(50),fedps_order_id varchar(50),fedps_follow_id varchar(50),status varchar(15))")
-sql.execute("CREATE TABLE catalogueOrders (rwh_order_id varchar(50),fedps_order_id varchar(50),fedps_follow_id varchar(50),status varchar(15))")
+sql.execute("CREATE TABLE catalogueOrders (fedps_order_id varchar(50),fedps_follow_id varchar(50),status varchar(15))")
 sql.execute("CREATE TABLE catalogue (name varchar(30), address varchar(30), city varchar(20), zip varchar(10), country varchar(20), toSend int)")
 
 return "Database initialized";]]></scripting:script>
@@ -74,9 +74,9 @@ return order;]]></scripting:script>
 import java.sql.*
 
 def sql = Sql.newInstance("jdbc:derby:memory:glue", new Properties());
-sql.execute("insert into catalogueOrders (rwh_order_id, fedps_order_id, fedps_follow_id,status) values ('"+payload.wareHouseId+"', '"+payload.fedPsId+"', '"+payload.deliveryInfo.trackingNumber+"', '"+payload.status+"')");
+sql.execute("insert into catalogueOrders (fedps_order_id, fedps_follow_id, status) values ('"+payload.fedPsId+"', '"+payload.deliveryInfo.trackingNumber+"', '"+payload.status+"')");
 
-System.out.println("Info stored for order " + payload.wareHouseId);]]></scripting:script>
+System.out.println("Info stored for catalogue order " + payload.fedPsId);]]></scripting:script>
         </scripting:component>
     </flow>
     <flow name="register_for_catalogue" doc:name="register_for_catalogue">

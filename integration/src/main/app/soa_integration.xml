@@ -57,7 +57,7 @@ http://www.mulesoft.org/schema/mule/jersey http://www.mulesoft.org/schema/mule/j
         <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrder" doc:name="VM"/>
         <set-variable variableName="cpt" value="#[(int)flowVars.cpt +1]" doc:name="cpt++"/>
         <collection-aggregator failOnTimeout="true" doc:name="Collection Aggregator"/>
-        <logger message="#[flowVars.cpt] orders processed #[message.payload]" level="INFO" doc:name="Logger"/>
+        <logger message="#[flowVars.cpt] orders processed" level="INFO" doc:name="Logger"/>
     </flow>
     <flow name="create_order" doc:name="create_order">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrder" doc:name="VM create_order"/>
@@ -198,6 +198,10 @@ return order;
         <logger message="SAVE ORDER DB" level="INFO" doc:name="SAVE ORDER DB"/>
         <vm:outbound-endpoint exchange-pattern="one-way" path="/vm/admin/save/order" doc:name="VM"/>
         <data-mapper:transform config-ref="create_receipt" doc:name="create receipt"/>
+    </flow>
+    <flow name="get_catalogue" doc:name="get_catalogue">
+        <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/getCatalogue" doc:name="VM"/>
+        <logger message="GET CATALOGUE FROM TEAMFORCE" level="INFO" doc:name="GET CATALOGUE FROM TEAMFORCE"/>
     </flow>
     <flow name="get_order_info" doc:name="get_order_info">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/getOrderInfo" doc:name="VM"/>
