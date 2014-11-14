@@ -203,7 +203,9 @@ return order;
     </flow>
     <flow name="get_catalogue" doc:name="get_catalogue">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/getCatalogue" doc:name="VM"/>
-        <logger message="GET CATALOGUE FROM TEAMFORCE" level="INFO" doc:name="GET CATALOGUE FROM TEAMFORCE"/>
+        <logger message="GET CATALOGUE FROM TEAMFORCE : #[payload]" level="INFO" doc:name="GET CATALOGUE FROM TEAMFORCE"/>
+        <set-payload value="1" doc:name="Set Payload"/>
+        <http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="8080" path="rest/manager/catalogue/#[payload]" method="GET" doc:name="HTTP"/>
     </flow>
     <flow name="get_order_info" doc:name="get_order_info">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/getOrderInfo" doc:name="VM"/>
