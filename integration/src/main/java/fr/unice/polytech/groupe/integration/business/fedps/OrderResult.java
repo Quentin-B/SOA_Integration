@@ -2,12 +2,15 @@ package fr.unice.polytech.groupe.integration.business.fedps;
 
 import java.util.Date;
 
+import fr.unice.polytech.groupe.integration.business.ParcelStatus;
+
 public class OrderResult {
 	
 	private String orderId;
 	private Date eta;
 	private double deliveryPrice;
 	private String trackingNumber;
+	private ParcelStatus status;
 	
 	public Date getEstimationDate() {
 		return eta;
@@ -32,6 +35,12 @@ public class OrderResult {
 	}
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
+	}
+	public ParcelStatus getStatus() {
+		return status;
+	}
+	public void setStatus(ParcelStatus status) {
+		this.status = status;
 	}
 
 }

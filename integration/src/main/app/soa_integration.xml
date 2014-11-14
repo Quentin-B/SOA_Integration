@@ -27,6 +27,8 @@ http://www.mulesoft.org/schema/mule/jersey http://www.mulesoft.org/schema/mule/j
     <data-mapper:config name="JSON_To_Pojo_1" transformationGraphPath="json_to_pojo_1.grf" doc:name="JSON_To_Pojo_1"/>
     <data-mapper:config name="create_receipt" transformationGraphPath="order_to_receipt.grf" doc:name="create_receipt"/>
     <data-mapper:config name="XML_To_Pojo_1" transformationGraphPath="xml_to_pojo_1.grf" doc:name="XML_To_Pojo_1"/>
+    <data-mapper:config name="Pojo_To_Xml_process__1" transformationGraphPath="pojo_to_xml_process__1.grf" doc:name="Pojo_To_Xml_process__1"/>
+    <data-mapper:config name="Xml_processResponse__To_Pojo_1" transformationGraphPath="xml_processresponse__to_pojo_1.grf" doc:name="Xml_processResponse__To_Pojo_1"/>
     <flow name="MisterDiscount" doc:name="MisterDiscount">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" doc:name="HTTP"/>
         <cxf:jaxws-service serviceClass="fr.unice.polytech.groupe.integration.services.MisterDiscountService" doc:name="CXF"/>
@@ -170,7 +172,7 @@ order.setFedPsId(result.orderId);
 order.deliveryInfo.setTrackingNumber(result.trackingNumber);
 order.deliveryInfo.setEta(result.eta);
 order.deliveryInfo.setDeliveryPrice(result.deliveryPrice);
-order.setStatus(fr.unice.polytech.groupe.integration.business.Status.PROCESSING);
+order.setParcelStatus(result.status);
 
 return order;
 ]]></scripting:script>
@@ -209,8 +211,25 @@ return order;
         <logger message="#[payload]" level="INFO" doc:name="APPEL DB POUR RECUP IDs"/>
         <logger level="INFO" doc:name="APPEL TEAMFORCE POUR INFOS COMMANDE"/>
         <logger level="INFO" doc:name="APPEL REDWAREHOUSE POUR INFOS COMMANDE"/>
-        <logger level="INFO" doc:name="APPEL FEDPS POUR INFOS COMMANDE"/>
-        <logger message="TRANSFO ORDER -&gt; RECEIPT" level="INFO" doc:name="TRANSFO ORDER -&gt; RECEIPT"/>
+        <data-mapper:transform config-ref="Pojo_To_Xml_process__1" doc:name="Pojo To Xml&lt;process&gt;"/>
+        <ws:consumer config-ref="Web_Service_Consumer" operation="process" doc:name="Web Service Consumer"/>
+        <data-mapper:transform config-ref="Xml_processResponse__To_Pojo_1" doc:name="Xml&lt;processResponse&gt; To Pojo"/>
+        <scripting:component doc:name="update order">
+            <scripting:script engine="Groovy"><![CDATA[def order = message.getInvocationProperty('order');
+
+def result = payload;
+
+order.setFedPsId(result.orderId);
+order.deliveryInfo.setTrackingNumber(result.trackingNumber);
+order.deliveryInfo.setEta(result.eta);
+order.deliveryInfo.setDeliveryPrice(result.deliveryPrice);
+order.setParcelStatus(result.status);
+
+return order;
+]]></scripting:script>
+        </scripting:component>
+        <data-mapper:transform config-ref="create_receipt" doc:name="create receipt"/>
+
         <catch-exception-strategy doc:name="Catch Exception Strategy">
             <scripting:component doc:name="Groovy">
                 <scripting:script engine="Groovy"><![CDATA[throw new fr.unice.polytech.groupe.integration.exceptions.UnknownOrderException();]]></scripting:script>

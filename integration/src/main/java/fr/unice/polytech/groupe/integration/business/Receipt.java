@@ -15,7 +15,8 @@ public class Receipt {
 	private double deliveryPrice;
 	private double totalPrice;
 	private String trackingNumber;
-	private Status status;
+	private ParcelStatus parcelStatus;
+	private PaymentStatus paymentStatus;
 	
 	public Receipt() {
 		itemList = new ArrayList<Item>();
@@ -50,11 +51,11 @@ public class Receipt {
 	public void setTrackingNumber(String trackingNumber) {
 		this.trackingNumber = trackingNumber;
 	}
-	public Status getStatus() {
-		return status;
+	public PaymentStatus getPaymentStatus() {
+		return paymentStatus;
 	}
-	public void setStatus(Status status) {
-		this.status = status;
+	public void setPaymentStatus(PaymentStatus status) {
+		this.paymentStatus = status;
 	}
 	public String getOrderId() {
 		return orderId;
@@ -79,5 +80,11 @@ public class Receipt {
 	}
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
+	}
+	public ParcelStatus getParcelStatus() {
+		return parcelStatus;
+	}
+	public void setParcelStatus(ParcelStatus parcelStatus) {
+		this.parcelStatus = parcelStatus;
 	}
 }

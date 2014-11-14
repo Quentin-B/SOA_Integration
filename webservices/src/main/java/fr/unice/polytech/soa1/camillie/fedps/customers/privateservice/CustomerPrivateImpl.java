@@ -59,6 +59,9 @@ public class CustomerPrivateImpl implements CustomerPrivateInterface {
                 case VIEW_QUOTES:
                     result = getQuotes(query);
                     break;
+                case VIEW_ORDER:
+                    result = viewOrder(query);
+                    break;
             }
             results.add(result);
         }
@@ -91,22 +94,29 @@ public class CustomerPrivateImpl implements CustomerPrivateInterface {
         return order;
     }
 
+    private Order viewOrder(CustomerQuery query) throws BadJobFault {
+        Optional<Order> order = dao.findOrderById(query.getId());
+        if(order.isPresent())
+            return order.get();
+        throw new UnknownObjectFault(query.getJob().name(),"order",query.getId());
+    }
+
     private Quote updateQuote(CustomerQuery query) throws BadJobFault {
-        Optional<Quote> quote = dao.findQuoteById(query.getQuoteId());
+        Optional<Quote> quote = dao.findQuoteById(query.getId());
         if (!quote.isPresent())
-            throw new UnknownObjectFault(query.getJob().name(), "quote", query.getQuoteId());
+            throw new UnknownObjectFault(query.getJob().name(), "quote", query.getId());
         quote.get().setPickUpDate(query.getPickupTimestamp());
         dao.setPriceAndETA(quote.get());
         return quote.get();
     }
 
     private Order orderQuote(CustomerQuery query) throws BadJobFault {
-        Optional<Quote> quote = dao.findQuoteById(query.getQuoteId());
+        Optional<Quote> quote = dao.findQuoteById(query.getId());
         if (!quote.isPresent())
-            throw new UnknownObjectFault(query.getJob().name(), "quote", query.getQuoteId());
+            throw new UnknownObjectFault(query.getJob().name(), "quote", query.getId());
         if (quote.get().getValidityTime().getTime() < new Date().getTime())
-            throw new ExpiredQuoteException(query.getJob().name(), query.getQuoteId());
-        String tmpId = (query.getQuoteId().substring(1, query.getQuoteId().length()));
+            throw new ExpiredQuoteException(query.getJob().name(), query.getId());
+        String tmpId = (query.getId().substring(1, query.getId().length()));
         Order order = new Order("O" + tmpId, quote.get(), "P" + tmpId);
         dao.setPriceAndETA(order);
         dao.registerOrder(order);
@@ -115,9 +125,9 @@ public class CustomerPrivateImpl implements CustomerPrivateInterface {
     }
 
     private Validation deleteQuote(CustomerQuery query) throws BadJobFault {
-        Optional<Quote> quote = dao.findQuoteById(query.getQuoteId());
+        Optional<Quote> quote = dao.findQuoteById(query.getId());
         if (!quote.isPresent())
-            throw new UnknownObjectFault(query.getJob().name(), "quote", query.getQuoteId());
+            throw new UnknownObjectFault(query.getJob().name(), "quote", query.getId());
         return new Validation(CustomerJobKind.DELETE_QUOTE, dao.deleteQuote(quote.get()));
     }
 
@@ -137,14 +147,13 @@ public class CustomerPrivateImpl implements CustomerPrivateInterface {
                         || query.getReceiver() == null || query.getReceiver().isEmpty());
                 break;
             case CHANGE_QUOTE:
-                error = query.getQuoteId() == null || query.getQuoteId().isEmpty()
+                error = query.getId() == null || query.getId().isEmpty()
                         || query.getPickupTimestamp() <= 0;
                 break;
+            case VIEW_ORDER:
             case ORDER_QUOTE:
-                error = query.getQuoteId() == null || query.getQuoteId().isEmpty();
-                break;
             case DELETE_QUOTE:
-                error = query.getQuoteId() == null || query.getQuoteId().isEmpty();
+                error = query.getId() == null || query.getId().isEmpty();
                 break;
             default:
                 error = true;

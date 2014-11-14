@@ -1,5 +1,5 @@
 package fr.unice.polytech.groupe.integration.business;
 
-public enum Status {
+public enum PaymentStatus {
   PROCESSING, APPROVED, DECLINED;
 }

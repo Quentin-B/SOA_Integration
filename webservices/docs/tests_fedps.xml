@@ -266,7 +266,7 @@
           <xs:element name="parcelWeight" type="xs:float"/>
           <xs:element name="parcelWidth" type="xs:float"/>
           <xs:element name="pickupTimestamp" type="xs:long"/>
-          <xs:element minOccurs="0" name="quoteId" type="xs:string"/>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
           <xs:element minOccurs="0" name="receiverName" type="xs:string"/>
           <xs:element minOccurs="0" name="toAddress" type="tns:address"/>
         </xs:sequence>
@@ -471,7 +471,7 @@
                   <parcelWidth>?</parcelWidth>
                   <pickupTimestamp>?</pickupTimestamp>
                   <!--Optional:-->
-                  <quoteId>?</quoteId>
+                  <id>?</id>
                   <!--Optional:-->
                   <receiverName>?</receiverName>
                   <!--Optional:-->
@@ -591,7 +591,7 @@ return after > before;</script></con:config></con:testStep><con:testStep type="r
          <jobs>
             <jobs>
                <job kind="ORDER_QUOTE">
-                  <quoteId>Q722466204</quoteId>
+                  <id>Q722466204</id>
                </job>
             </jobs>
          </jobs>
@@ -618,7 +618,7 @@ return before == after;</script></con:config></con:testStep><con:properties><con
          <jobs>
             <jobs>
                <job kind="ORDER_QUOTE">
-                  <quoteId>Q432124532</quoteId>
+                  <id>Q432124532</id>
                </job>
             </jobs>
          </jobs>
@@ -632,7 +632,7 @@ return before == after;</script></con:config></con:testStep><con:properties><con
             <jobs>
                <job kind="CHANGE_QUOTE">
                   <pickupTimestamp>1412885433245</pickupTimestamp>
-                  <quoteId>Q432124532</quoteId>
+                  <id>Q432124532</id>
                </job>
             </jobs>
          </jobs>
@@ -645,7 +645,7 @@ return before == after;</script></con:config></con:testStep><con:properties><con
          <jobs>
             <jobs>
                <job kind="ORDER_QUOTE">
-                  <quoteId>Q432124532</quoteId>
+                  <id>Q432124532</id>
                </job>
             </jobs>
          </jobs>
@@ -670,7 +670,7 @@ return before == after;</script></con:config></con:testStep><con:properties><con
          <jobs>
             <jobs>
                <job kind="DELETE_QUOTE">
-                  <quoteId>Q995738204</quoteId>
+                  <id>Q995738204</id>
                </job>
             </jobs>
          </jobs>
@@ -697,7 +697,7 @@ return before > after;</script></con:config></con:testStep><con:properties><con:
          <jobs>
             <jobs>
                <job kind="DELETE_QUOTE">
-                  <quoteId>GRFGTEFDG</quoteId>
+                  <id>GRFGTEFDG</id>
                </job>
             </jobs>
          </jobs>

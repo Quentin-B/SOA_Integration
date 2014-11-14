@@ -19,7 +19,8 @@ public class Order {
 	private double price;
 	private DeliveryInfo deliveryInfo;
 	private Map<String, Integer> products;
-	private Status status;
+	private PaymentStatus paymentStatus;
+	private ParcelStatus parcelStatus;
 
 	public Order() {
 		products = new HashMap<String, Integer>();
@@ -114,11 +115,19 @@ public class Order {
 		this.products = products;
 	}
 
-	public Status getStatus() {
-		return status;
+	public PaymentStatus getPaymentStatus() {
+		return paymentStatus;
 	}
 
-	public void setStatus(Status status) {
-		this.status = status;
+	public void setPaymentStatus(PaymentStatus status) {
+		this.paymentStatus = status;
+	}
+
+	public ParcelStatus getParcelStatus() {
+		return parcelStatus;
+	}
+
+	public void setParcelStatus(ParcelStatus parcelStatus) {
+		this.parcelStatus = parcelStatus;
 	}
 }

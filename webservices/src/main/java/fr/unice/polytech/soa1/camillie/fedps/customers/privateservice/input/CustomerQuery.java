@@ -24,7 +24,7 @@ public class CustomerQuery {
     private String receiver;
 
     // Confirm order
-    private String quoteId;
+    private String id;
 
     @XmlAttribute(name = "kind", required = true)
     public CustomerJobKind getJob() { return job; }
@@ -94,12 +94,12 @@ public class CustomerQuery {
         this.receiver = receiver;
     }
 
-    @XmlElement(name="quoteId")
-    public String getQuoteId() {
-        return quoteId;
+    @XmlElement(name="id")
+    public String getId() {
+        return id;
     }
-    public void setQuoteId(String quoteId) {
-        this.quoteId = quoteId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
@@ -114,7 +114,7 @@ public class CustomerQuery {
                 ", from=" + from +
                 ", to=" + to +
                 ", receiver='" + receiver + '\'' +
-                ", quoteId='" + quoteId + '\'' +
+                ", id='" + id + '\'' +
                 '}';
     }
 }

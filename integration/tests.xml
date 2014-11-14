@@ -195,7 +195,7 @@
    <soapenv:Body>
       <ser:getOrderInfo>
          <!--Optional:-->
-         <orderId>null</orderId>
+         <orderId></orderId>
       </ser:getOrderInfo>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://services.integration.groupe.polytech.unice.fr/MisterDiscountService/getOrderInfo"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="InternalServiceServiceSoapBinding" type="wsdl" bindingName="{http://services.integration.groupe.polytech.unice.fr/}InternalServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8081/internal/MisterDiscountInternalService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8081/internal/MisterDiscountInternalService?wsdl"><con:part><con:url>http://localhost:8081/internal/MisterDiscountInternalService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="InternalServiceService" targetNamespace="http://services.integration.groupe.polytech.unice.fr/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://services.integration.groupe.polytech.unice.fr/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">

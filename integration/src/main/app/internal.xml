@@ -48,7 +48,6 @@ http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mul
         </choice>
     </flow>
     <sub-flow name="send_catalogues" doc:name="send_catalogues">
-        <logger message="SEND CATALOGUES" level="INFO" doc:name="Logger"/>
         <set-variable variableName="cpt" value="0" doc:name="cpt"/>
         <collection-splitter doc:name="Collection Splitter"/>
         <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/internal/send/catalogue" doc:name="VM"/>
