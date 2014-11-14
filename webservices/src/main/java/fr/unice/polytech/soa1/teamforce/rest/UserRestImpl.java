@@ -32,10 +32,22 @@ public class UserRestImpl implements UserRest{
         JSONObject addressInvoiceJSON = addresses.getJSONObject("invoice");
         JSONObject addressDeliveryJSON = addresses.getJSONObject("delivery");
 
-        Address invoiceAddress = new Address(addressInvoiceJSON.getString("line1"), addressInvoiceJSON.getString("line2"),
+        String line2Invoice="";
+        if (addressInvoiceJSON.has("line2") && !addressInvoiceJSON.isNull("line2")) {
+            // Do something with object.
+            line2Invoice = addressInvoiceJSON.getString("line2");
+        }
+
+        Address invoiceAddress = new Address(addressInvoiceJSON.getString("line1"), line2Invoice,
                 addressInvoiceJSON.getString("zipCode"), addressInvoiceJSON.getString("city"), Kind.valueOf(addressInvoiceJSON.getString("kind")));
 
-        Address deliveryAddress = new Address(addressDeliveryJSON.getString("line1"), addressDeliveryJSON.getString("line2"),
+        String line2Delivery="";
+        if (addressDeliveryJSON.has("line2") && !addressDeliveryJSON.isNull("line2")) {
+            // Do something with object.
+            line2Delivery = addressDeliveryJSON.getString("line2");
+        }
+
+        Address deliveryAddress = new Address(addressDeliveryJSON.getString("line1"), line2Delivery,
                 addressDeliveryJSON.getString("zipCode"), addressDeliveryJSON.getString("city"), Kind.valueOf(addressDeliveryJSON.getString("kind")));
 
         
