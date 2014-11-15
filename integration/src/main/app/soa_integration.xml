@@ -29,6 +29,7 @@ http://www.mulesoft.org/schema/mule/jersey http://www.mulesoft.org/schema/mule/j
     <data-mapper:config name="XML_To_Pojo_1" transformationGraphPath="xml_to_pojo_1.grf" doc:name="XML_To_Pojo_1"/>
     <data-mapper:config name="Pojo_To_Xml_process__1" transformationGraphPath="pojo_to_xml_process__1.grf" doc:name="Pojo_To_Xml_process__1"/>
     <data-mapper:config name="Xml_processResponse__To_Pojo_1" transformationGraphPath="xml_processresponse__to_pojo_1.grf" doc:name="Xml_processResponse__To_Pojo_1"/>
+    <data-mapper:config name="JSON_To_Pojo_1JSON_To_Pojo_2" transformationGraphPath="json_to_pojo_2.grf" doc:name="JSON_To_Pojo_1JSON_To_Pojo_2"/>
     <flow name="MisterDiscount" doc:name="MisterDiscount">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" doc:name="HTTP"/>
         <cxf:jaxws-service serviceClass="fr.unice.polytech.groupe.integration.services.MisterDiscountService" doc:name="CXF"/>
@@ -203,9 +204,12 @@ return order;
     </flow>
     <flow name="get_catalogue" doc:name="get_catalogue">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/getCatalogue" doc:name="VM"/>
-        <logger message="GET CATALOGUE FROM TEAMFORCE : #[payload]" level="INFO" doc:name="GET CATALOGUE FROM TEAMFORCE"/>
+        <logger message="GET CATALOGUE FROM TEAMFORCE :  #[payload]" level="INFO" doc:name="GET CATALOGUE FROM TEAMFORCE"/>
         <set-payload value="1" doc:name="Set Payload"/>
         <http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="8080" path="rest/manager/catalogue/#[payload]" method="GET" doc:name="HTTP"/>
+        <object-to-string-transformer doc:name="Object to String"/>
+        <data-mapper:transform config-ref="JSON_To_Pojo_1JSON_To_Pojo_2" doc:name="JSON To Pojo"/>
+
     </flow>
     <flow name="get_order_info" doc:name="get_order_info">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/getOrderInfo" doc:name="VM"/>
