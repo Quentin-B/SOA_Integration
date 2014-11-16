@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" xmlns:ws="http://www.mulesoft.org/schema/mule/ws" xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.5.1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd
+http://www.mulesoft.org/schema/mule/ws http://www.mulesoft.org/schema/mule/ws/current/mule-ws.xsd
+http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
+http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/current/mule-xml.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+    <ws:consumer-config name="Web_Service_Consumer_Process_Payment" wsdlLocation="http://localhost:8080//webservices/Payment-Public-RPC?wsdl" service="PaymentRPCPublicService" port="PaymentRPCPublicPort" serviceAddress="http://localhost:8080//webservices/Payment-Public-RPC" doc:name="Web Service Consumer"/>
+    <data-mapper:config name="Pojo_To_Xml_process_payment_" transformationGraphPath="pojo_to_xml_process_payment_.grf" doc:name="Pojo_To_Xml_process_payment_"/>
+    <flow name="paymentFlow1" doc:name="paymentFlow1">
+        <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/process_payment_mock" doc:name="VM - Payment Process - MOCK"/>
+        <scripting:component doc:name="Groovy">
+            <scripting:script engine="Groovy"><![CDATA[input = new fr.unice.polytech.groupe.integration.business.payment.PaymentInput();
+input.setName("John Doe");
+input.setCardNumber("625487628925695243");
+input.setAmount(560);
+return input;]]></scripting:script>
+        </scripting:component>
+        <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/process_payment_rest" doc:name="VM - Payment Process"/>
+    </flow>
+    <flow name="processPaymentFlow" doc:name="processPaymentFlow">
+        <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/process_payment" doc:name="VM - Payment Process"/>
+        <logger message="Process Payment #[message.payload]" level="INFO" doc:name="Logger"/>
+        <data-mapper:transform config-ref="Pojo_To_Xml_process_payment_" doc:name="Pojo To Xml&lt;process_payment&gt;">
+            <data-mapper:input-arguments>
+                <data-mapper:input-argument key="idMisterDicount">s-004</data-mapper:input-argument>
+            </data-mapper:input-arguments>
+        </data-mapper:transform>
+        <ws:consumer config-ref="Web_Service_Consumer_Process_Payment" operation="process_payment" doc:name="Web Service Consumer - Process Payment"/>
+        <logger message="Return Payment - #[message.payload]" level="INFO" doc:name="Logger"/>
+        <object-to-string-transformer doc:name="Copy_of_Object to String"/>
+        <scripting:component doc:name="Copy_of_Convert Request return to PaymentStatus">
+            <scripting:script engine="Groovy"><![CDATA[import fr.unice.polytech.groupe.integration.business.PaymentStatus;
+
+def st = message.payload;
+
+if(st=="PROCESSING")
+ return PaymentStatus.PROCESSING;
+else if(st=="APPROVED")
+ return PaymentStatus.APPROVED;
+else
+ return PaymentStatus.DECLINED;]]></scripting:script>
+        </scripting:component>
+        <logger level="INFO" doc:name="Logger"/>
+    </flow>
+    <flow name="payment_process_rest" doc:name="payment_process_rest">
+        <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/process_payment_rest" doc:name="VM - Process Payment"/>
+        <logger message="Begin - Process Payment #[message.payload]" level="INFO" doc:name="Process Payment - Begin"/>
+        <scripting:component doc:name="Convert PaymentInput to rest params">
+            <scripting:script engine="Groovy"><![CDATA[def input = message.payload;
+return "card=" + input.getCardNumber() + "&name=" + input.getName() + "&amount=" + input.getAmount();]]></scripting:script>
+        </scripting:component>
+        <http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="8080" path="rest/payment/public/s-004/process?#[payload]" method="POST" doc:name="Process Payment - REST"/>
+        <object-to-string-transformer doc:name="Object to String"/>
+        <logger message="Return payment - #[payload]" level="INFO" doc:name="Process Payment - End request"/>
+        <scripting:component doc:name="Convert Request return to PaymentStatus">
+            <scripting:script engine="Groovy"><![CDATA[import fr.unice.polytech.groupe.integration.business.PaymentStatus;
+
+def st = message.payload;
+
+if(st=="PROCESSING")
+ return PaymentStatus.PROCESSING;
+else if(st=="APPROVED")
+ return PaymentStatus.APPROVED;
+else
+ return PaymentStatus.DECLINED;]]></scripting:script>
+        </scripting:component>
+    </flow>
+</mule>

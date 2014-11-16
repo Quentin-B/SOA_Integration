@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="Nicolas" created="Sat Nov 15 21:35:35 CET 2014" description="Pojo To Xml&lt;process_payment&gt;" guiVersion="3.4.4.P" id="1416087266319" licenseCode="Unlicensed" licenseType="Unknown" modified="Sat Nov 15 21:35:35 CET 2014" modifiedBy="Nicolas" name="Pojo_To_Xml_process_payment_" revision="1.0" showComponentDetails="false">
+<Global>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/object" _dataStructure="OBJECT" _id="__id" _type="Input" id="ec57107c-987e-407c-8ecb-d8cd78612b96">
+<Record fieldDelimiter="," name="PaymentInput" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="0" __sourcePath="{}/object/amount" containerType="SINGLE" label="amount" name="amount" type="number"/>
+<Field __index="1" __sourcePath="{}/object/cardNumber" containerType="SINGLE" label="cardNumber" name="cardNumber" type="string"/>
+<Field __index="2" __sourcePath="{}/object/name" containerType="SINGLE" label="name" name="name" type="string"/>
+</Record>
+</Metadata>
+<Metadata __filteredMetadata="false" __index="0" __referenceCounter="1" __schemaType="{http://informatique.polytech.unice.fr/soa1/payment/rpc/public}process_payment" __sourcePath="{http://informatique.polytech.unice.fr/soa1/payment/rpc/public=ns0}/ns0:process_payment" _dataStructure="OBJECT" _id="__id" _type="Output" id="0db5ab92-3180-45b8-86b2-ea4f00cffd63">
+<Record fieldDelimiter="," name="process_payment" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="0" __schemaType="{http://informatique.polytech.unice.fr/soa1/payment/rpc/public}process_payment" __sourcePath="{http://informatique.polytech.unice.fr/soa1/payment/rpc/public=ns0}/ns0:process_payment/id" containerType="SINGLE" label="id" name="id" type="string"/>
+<Field __index="1" __schemaType="{http://informatique.polytech.unice.fr/soa1/payment/rpc/public}process_payment" __sourcePath="{http://informatique.polytech.unice.fr/soa1/payment/rpc/public=ns0}/ns0:process_payment/card" containerType="SINGLE" label="card" name="card" type="string"/>
+<Field __index="2" __schemaType="{http://informatique.polytech.unice.fr/soa1/payment/rpc/public}process_payment" __sourcePath="{http://informatique.polytech.unice.fr/soa1/payment/rpc/public=ns0}/ns0:process_payment/customer" containerType="SINGLE" label="customer" name="customer" type="string"/>
+<Field __index="3" __schemaType="{http://informatique.polytech.unice.fr/soa1/payment/rpc/public}process_payment" __sourcePath="{http://informatique.polytech.unice.fr/soa1/payment/rpc/public=ns0}/ns0:process_payment/amount" containerType="SINGLE" label="amount" name="amount" type="number"/>
+</Record>
+</Metadata>
+<Dictionary>
+<Entry id="DictionaryEntry0" input="true" name="inputPayload" output="false" type="object"/>
+<Entry id="DictionaryEntry1" input="false" name="outputPayload" output="true" type="object"/>
+<Entry dictval.__javaType="java.lang.String" id="DictionaryEntry2" input="true" name="idMisterDicount" output="false" type="string"/>
+</Dictionary>
+</Global>
+<Phase number="0">
+<Node enabled="enabled" fileURL="dict:inputPayload" guiName="Pojo READER" guiX="20" guiY="20" id="BEAN_READER0" type="BEAN_READER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Context outPort="0" sequenceField="__id" xpath=".">
+  <Mapping cloverField="amount" trim="true" xpath="amount"/>
+  <Mapping cloverField="cardNumber" trim="true" xpath="cardNumber"/>
+  <Mapping cloverField="name" trim="true" xpath="name"/>
+</Context>
+]]></attr>
+<attr name="_data_format"><![CDATA[JAVA]]></attr>
+<attr name="schema"><![CDATA[<?xml version="1.0" encoding="UTF-8"?><schema-object>
+  <typed-object-ref type-ref="fr.unice.polytech.groupe.integration.business.payment.PaymentInput"/>
+  <typed-object type="double"/>
+  <typed-object type="java.lang.String"/>
+  <typed-object type="fr.unice.polytech.groupe.integration.business.payment.PaymentInput">
+    <typed-object-ref name="amount" type-ref="double"/>
+    <typed-object-ref name="cardNumber" type-ref="java.lang.String"/>
+    <typed-object-ref name="name" type-ref="java.lang.String"/>
+  </typed-object>
+</schema-object>
+]]></attr>
+</Node>
+<Node cacheInMemory="true" charset="UTF-8" enabled="enabled" fileURL="dict:outputPayload" guiName="XML WRITER" guiX="900" guiY="20" id="EXT_XML_WRITER0" type="EXT_XML_WRITER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<clover:element clover:name="ns0:process_payment" xmlns:clover="http://www.cloveretl.com/ns/xmlmapping" xmlns:ns0="http://informatique.polytech.unice.fr/soa1/payment/rpc/public" clover:inPort="0">
+  <id>$0.id</id>
+  <card>$0.card</card>
+  <customer>$0.customer</customer>
+  <amount>$0.amount</amount>
+</clover:element>]]></attr>
+<attr name="_data_format"><![CDATA[XML]]></attr>
+<attr name="__metadata"><![CDATA[true]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'object' -&gt; 'ns0:process_payment'" guiX="460" guiY="20" id="FOREACH_OBJECT_NS0_PROCESS_PAYMENT" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+//END -> DO NOT REMOVE
+output.amount = input.amount;
+output.customer = input.name;
+output.card = input.cardNumber;
+output.id = inputArguments.idMisterDicount;]]></attr>
+</Node>
+<Edge debugMode="true" fromNode="BEAN_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="ec57107c-987e-407c-8ecb-d8cd78612b96" outPort="Port 0 (out)" toNode="FOREACH_OBJECT_NS0_PROCESS_PAYMENT:0"/>
+<Edge debugMode="true" fromNode="FOREACH_OBJECT_NS0_PROCESS_PAYMENT:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="0db5ab92-3180-45b8-86b2-ea4f00cffd63" outPort="Port 0 (out)" toNode="EXT_XML_WRITER0:0"/>
+</Phase>
+</Graph>
