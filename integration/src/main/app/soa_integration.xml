@@ -29,6 +29,7 @@ http://www.mulesoft.org/schema/mule/jersey http://www.mulesoft.org/schema/mule/j
     <data-mapper:config name="XML_To_Pojo_1" transformationGraphPath="xml_to_pojo_1.grf" doc:name="XML_To_Pojo_1"/>
     <data-mapper:config name="Pojo_To_Xml_process__1" transformationGraphPath="pojo_to_xml_process__1.grf" doc:name="Pojo_To_Xml_process__1"/>
     <data-mapper:config name="Xml_processResponse__To_Pojo_1" transformationGraphPath="xml_processresponse__to_pojo_1.grf" doc:name="Xml_processResponse__To_Pojo_1"/>
+
     <flow name="MisterDiscount" doc:name="MisterDiscount">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" doc:name="HTTP"/>
         <cxf:jaxws-service serviceClass="fr.unice.polytech.groupe.integration.services.MisterDiscountService" doc:name="CXF"/>
@@ -36,27 +37,30 @@ http://www.mulesoft.org/schema/mule/jersey http://www.mulesoft.org/schema/mule/j
         <choice doc:name="Choice">
             <when expression="#[operation == &quot;createOrder&quot;]">
                 <logger message="CREATE_ORDER" level="INFO" doc:name="create_order"/>
-                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrder" doc:name="VM"/>
+                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrder" doc:name="create_order"/>
             </when>
             <when expression="#[operation == &quot;getOrderInfo&quot;]">
-                <logger level="INFO" doc:name="get order info"/>
-                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/getOrderInfo" doc:name="VM"/>
+                <logger level="INFO" doc:name="get order info" message="GET ORDER #[payload]"/>
+                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/getOrderInfo" doc:name="get_order_info"/>
             </when>
             <otherwise>
                 <logger message="WRONG OPERATION : #[flowVars.operation]" level="INFO" doc:name="Logger"/>
-                <exception-type-filter expectedType="fr.unice.polytech.groupe.integration.exceptions.UnknownOperationException" doc:name="Exception"/>
+
             </otherwise>
         </choice>
+        <catch-exception-strategy doc:name="Catch Exception Strategy">
+            <logger message="BEUBEUH #[message.exception]" level="INFO" doc:name="Logger"/>
+        </catch-exception-strategy>
     </flow>
     <flow name="create_orders_from_file" doc:name="create_orders_from_file">
         <file:inbound-endpoint path="./_inputs" moveToDirectory="./_data" responseTimeout="10000" doc:name="inputs/*.xml">
             <file:filename-regex-filter pattern=".*\.xml$" caseSensitive="true"/>
         </file:inbound-endpoint>
-        <data-mapper:transform config-ref="XML_To_Pojo_1" doc:name="XML To Pojo"/>
+        <data-mapper:transform config-ref="XML_To_Pojo_1" doc:name="XML To OrderInput"/>
         <logger message="PROCESSING ORDERS + #[payload]" level="INFO" doc:name="Logger"/>
         <set-variable variableName="cpt" value="0" doc:name="cpt"/>
         <collection-splitter doc:name="Collection Splitter"/>
-        <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrder" doc:name="VM"/>
+        <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrder" doc:name="create_order"/>
         <set-variable variableName="cpt" value="#[(int)flowVars.cpt +1]" doc:name="cpt++"/>
         <collection-aggregator failOnTimeout="true" doc:name="Collection Aggregator"/>
         <logger message="#[flowVars.cpt] orders processed" level="INFO" doc:name="Logger"/>
@@ -80,7 +84,9 @@ return order;]]></scripting:script>
         <flow-ref name="sf_order_teamforce" doc:name="order_teamforce"/>
         <flow-ref name="sf_order_redwarehouse" doc:name="order_redwarehouse"/>
         <flow-ref name="sf_order_fedps" doc:name="order_fedps"/>
-        <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/postProcessing" doc:name="VM"/>
+
+        <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/postProcessing" doc:name="post"/>
+
 
     </flow>
     <sub-flow name="sf_order_teamforce" doc:name="sf_order_teamforce">
@@ -161,12 +167,20 @@ return order;
     </flow>
     <sub-flow name="sf_order_fedps" doc:name="sf_order_fedps">
         <logger message="COMMANDE FedPS - DEBUT #[flowVars.order] #[payload]" level="INFO" doc:name="Logger"/>
+        <scripting:component doc:name="put order in list">
+            <scripting:script engine="Groovy"><![CDATA[def order = message.payload;
+
+def list = new java.util.ArrayList<fr.unice.polytech.groupe.integration.business.Order>();
+list.add(order);
+
+return list;]]></scripting:script>
+        </scripting:component>
 
         <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrderFedPS" doc:name="/vm/MD/createOrderFedPS"/>
         <scripting:component doc:name="update order">
             <scripting:script engine="Groovy"><![CDATA[def order = message.getInvocationProperty('order');
 
-def result = payload;
+def result = payload.get(0);
 
 order.setFedPsId(result.orderId);
 order.deliveryInfo.setTrackingNumber(result.trackingNumber);
@@ -198,7 +212,7 @@ return order;
         <logger level="INFO" doc:name="send mail w/ payment info"/>
         <logger level="INFO" doc:name="send mail w/ tracking number"/>
         <logger message="SAVE ORDER DB" level="INFO" doc:name="SAVE ORDER DB"/>
-        <vm:outbound-endpoint exchange-pattern="one-way" path="/vm/admin/save/order" doc:name="VM"/>
+        <vm:outbound-endpoint exchange-pattern="one-way" path="/vm/admin/save/order" doc:name="save_db"/>
         <data-mapper:transform config-ref="create_receipt" doc:name="create receipt"/>
     </flow>
     <flow name="get_catalogue" doc:name="get_catalogue">
@@ -207,10 +221,22 @@ return order;
     </flow>
     <flow name="get_order_info" doc:name="get_order_info">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/getOrderInfo" doc:name="VM"/>
+        <set-variable variableName="orderId" value="#[payload]" doc:name="save id"/>
         <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/admin/read/order" doc:name="VM"/>
-        <logger message="#[payload]" level="INFO" doc:name="APPEL DB POUR RECUP IDs"/>
-        <logger level="INFO" doc:name="APPEL TEAMFORCE POUR INFOS COMMANDE"/>
-        <logger level="INFO" doc:name="APPEL REDWAREHOUSE POUR INFOS COMMANDE"/>
+        <choice doc:name="Check if order exists">
+            <when expression="#[payload is NullPayload]">
+                <scripting:component doc:name="throw exception">
+                    <scripting:script engine="Groovy"><![CDATA[throw new fr.unice.polytech.groupe.integration.exceptions.UnknownOrderException(message.getInvocationProperty('orderId'));
+]]></scripting:script>
+                </scripting:component>
+            </when>
+            <otherwise>
+                <logger message="GOT ORDER #[payload] FROM DB" level="INFO" doc:name="continue"/>
+            </otherwise>
+        </choice>
+        <logger message="APPEL TEAMFORCE POUR INFOS COMMANDE" level="INFO" doc:name="APPEL TEAMFORCE POUR INFOS COMMANDE"/>
+        <logger message="APPEL REDWAREHOUSE POUR INFOS COMMANDE" level="INFO" doc:name="APPEL REDWAREHOUSE POUR INFOS COMMANDE"/>
+
         <data-mapper:transform config-ref="Pojo_To_Xml_process__1" doc:name="Pojo To Xml&lt;process&gt;"/>
         <ws:consumer config-ref="Web_Service_Consumer" operation="process" doc:name="Web Service Consumer"/>
         <data-mapper:transform config-ref="Xml_processResponse__To_Pojo_1" doc:name="Xml&lt;processResponse&gt; To Pojo"/>
@@ -230,10 +256,5 @@ return order;
         </scripting:component>
         <data-mapper:transform config-ref="create_receipt" doc:name="create receipt"/>
 
-        <catch-exception-strategy doc:name="Catch Exception Strategy">
-            <scripting:component doc:name="Groovy">
-                <scripting:script engine="Groovy"><![CDATA[throw new fr.unice.polytech.groupe.integration.exceptions.UnknownOrderException();]]></scripting:script>
-            </scripting:component>
-        </catch-exception-strategy>
     </flow>
 </mule>

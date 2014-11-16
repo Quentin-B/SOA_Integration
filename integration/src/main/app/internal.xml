@@ -11,7 +11,7 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
 http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
 http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
 http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd">
-    <data-mapper:config name="Pojo_To_Pojo" transformationGraphPath="pojo_to_pojo.grf" doc:name="Pojo_To_Pojo"/>
+    <data-mapper:config name="CatalogueRegs_To_Orders" transformationGraphPath="catalogueregs_to_orders.grf" doc:name="CatalogueRegs_To_Orders"/>
     <flow name="MisterDiscount-catalogue_registry" doc:name="MisterDiscount-catalogue_registry">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" path="internal" doc:name="HTTP"/>
         <cxf:jaxws-service serviceClass="fr.unice.polytech.groupe.integration.services.InternalService" doc:name="CXF"/>
@@ -19,11 +19,12 @@ http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mul
         <choice doc:name="Choice">
             <when expression="#[operation == &quot;registerForCatalogue&quot;]">
                 <logger message="OP : REGISTER_FOR_CATALOGUE" level="INFO" doc:name="register"/>
-                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/admin/save/catalogue" doc:name="VM"/>
+                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/admin/save/catalogue" doc:name="register for catalogue"/>
             </when>
             <when expression="#[operation == &quot;orderCatalogues&quot;]">
                 <logger message="OP : ORDER CATALOGUES" level="INFO" doc:name="order catalogues"/>
                 <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/getCatalogue" doc:name="request catalogue"/>
+                <logger message="ASK PDF CREATION" level="INFO" doc:name="ask PDF creation"/>
                 <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/admin/order/catalogue" doc:name="read db"/>
                 <logger message="ORDER #[payload] catalogues from printer" level="INFO" doc:name="order catalogues printer"/>
             </when>
@@ -32,11 +33,11 @@ http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mul
                 <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/admin/read/catalogue" doc:name="read db"/>
                 <choice doc:name="Choice">
                     <when expression="#[payload.size()&gt;0]">
-                        <logger message="send #[payload.size()] catalogues" level="INFO" doc:name="Logger"/>
-                        <flow-ref name="send_catalogues" doc:name="Flow Reference"/>
+                        <logger message="send #[payload.size()] catalogues" level="INFO" doc:name="send"/>
+                        <flow-ref name="send_catalogues" doc:name="send catalogues"/>
                     </when>
                     <otherwise>
-                        <logger message="No catalogue to send" level="INFO" doc:name="Logger"/>
+                        <logger message="No catalogue to send" level="INFO" doc:name="nothing to send"/>
                         <set-payload value="#[(int)0]" doc:name="Set Payload"/>
                     </otherwise>
                 </choice>
@@ -48,50 +49,48 @@ http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mul
         </choice>
     </flow>
     <sub-flow name="send_catalogues" doc:name="send_catalogues">
-        <set-variable variableName="cpt" value="0" doc:name="cpt"/>
-        <collection-splitter doc:name="Collection Splitter"/>
-        <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/internal/send/catalogue" doc:name="VM"/>
-        <set-variable variableName="cpt" value="#[(int)flowVars.cpt +1]" doc:name="cpt++"/>
-        <collection-aggregator failOnTimeout="true" doc:name="Collection Aggregator"/>
-        <logger message="#[flowVars.cpt] catalogues sent" level="INFO" doc:name="Logger"/>
-        <set-payload value="#[(int)flowVars.cpt]" doc:name="Set Payload"/>
-    </sub-flow>
-    <flow name="send_one_catalogue" doc:name="send_one_catalogue">
-        <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/internal/send/catalogue" doc:name="VM - send 1 catalogue"/>
-        <data-mapper:transform config-ref="Pojo_To_Pojo" doc:name="Pojo To Pojo"/>
+        <data-mapper:transform config-ref="CatalogueRegs_To_Orders" doc:name="CatalogueRegs To Orders"/>
         <scripting:component doc:name="set pickup date">
             <scripting:script engine="Groovy"><![CDATA[import java.util.Date;
 
-def order = message.payload;
-def now = new Date();
-def then = new Date();
-then.setTime(now.getTime()+15*24*60*1000);
+def orders = message.payload;
 
-def info = order.deliveryInfo;
-info.setPickupDate(then);
-order.setDeliveryInfo(info);
+for(order in orders){
+	def now = new Date();
+	def then = new Date();
+	then.setTime(now.getTime()+15*24*60*1000);
 
-return order;
+	def info = order.deliveryInfo;
+	info.setPickupDate(then);
+	order.setDeliveryInfo(info);
+}
+return orders;
 ]]></scripting:script>
         </scripting:component>
-        <set-variable variableName="order" value="#[payload]" doc:name="Variable"/>
+        <set-variable variableName="orders" value="#[payload]" doc:name="set orders"/>
         <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrderFedPS" doc:name="call fedps"/>
-        <scripting:component doc:name="update order">
-            <scripting:script engine="Groovy"><![CDATA[def order = message.getInvocationProperty('order');
+        <scripting:component doc:name="update orders">
+            <scripting:script engine="Groovy"><![CDATA[def orders = message.getInvocationProperty('orders');
+def results = payload;
 
-def result = payload;
+for(int i=0;i<orders.size();i++){
+	def order = orders.get(i);
+	def result = results.get(i);
+	order.setFedPsId(result.orderId);
+	order.deliveryInfo.setTrackingNumber(result.trackingNumber);
+	order.deliveryInfo.setEta(result.eta);
+	order.deliveryInfo.setDeliveryPrice(result.deliveryPrice);
+}
 
-order.setFedPsId(result.orderId);
-order.deliveryInfo.setTrackingNumber(result.trackingNumber);
-order.deliveryInfo.setEta(result.eta);
-order.deliveryInfo.setDeliveryPrice(result.deliveryPrice);
-order.setStatus(fr.unice.polytech.groupe.integration.business.Status.APPROVED);
-
-return order;
+return orders;
 ]]></scripting:script>
         </scripting:component>
+        <collection-splitter doc:name="Collection Splitter"/>
         <vm:outbound-endpoint exchange-pattern="one-way" path="/vm/admin/save/catorder" doc:name="save db"/>
-        <data-mapper:transform config-ref="create_receipt" doc:name="create receipt"/>
         <logger message="Send mail w/ ETA and trackingNumber #[payload.trackingNumber], etc" level="INFO" doc:name="SEND MAIL"/>
-    </flow>
+        <data-mapper:transform config-ref="create_receipt" doc:name="order to receipt"/>
+        <collection-aggregator failOnTimeout="true" doc:name="Collection Aggregator"/>
+        <logger message="#[payload.size()] catalogues sent" level="INFO" doc:name="Logger"/>
+        <set-payload value="#[payload.size()]" doc:name="Set Payload"/>
+    </sub-flow>
 </mule>

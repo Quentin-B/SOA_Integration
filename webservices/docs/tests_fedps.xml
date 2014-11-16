@@ -566,6 +566,26 @@
                      <zip>51425</zip>
                   </toAddress>
                </job>
+               <job kind="CREATE_QUOTE">
+                  <fromAddress>
+                     <city>Castel Guelfo di Bologna</city>
+                     <country>US</country>
+                     <street>P.O. Box 113, 5312 Amet St.</street>
+                     <zip>64187</zip>
+                  </fromAddress>
+                  <parcelDepth>12</parcelDepth>
+                  <parcelHeight>3.4</parcelHeight>
+                  <parcelWeight>14</parcelWeight>
+                  <parcelWidth>11</parcelWidth>
+                  <pickupTimestamp>1419739577393</pickupTimestamp>
+                  <receiverName>Raya Bray</receiverName>
+                  <toAddress>
+                     <city>Soye</city>
+                     <country>US</country>
+                     <street>892-4690 Ullamcorper, St.</street>
+                     <zip>51425</zip>
+                  </toAddress>
+               </job>
             </jobs>
          </jobs>
       </cus:process>

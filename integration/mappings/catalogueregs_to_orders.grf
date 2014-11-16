@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="Moka" created="Sat Nov 15 14:59:35 CET 2014" description="CatalogueRegs To Orders" guiVersion="3.4.4.P" id="1416064984680" licenseCode="Unlicensed" licenseType="Unknown" modified="Sat Nov 15 14:59:35 CET 2014" modifiedBy="Moka" name="CatalogueRegs_To_Orders" revision="1.0" showComponentDetails="false">
+<Global>
+<Metadata __index="22" __referenceCounter="0" __sourcePath="{}/list/itemList" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="92e80ed8-d4cb-4e85-96a6-8b1b3b487d81" _parent_id="__parent_id" _type="Output" id="9ebe2b96-95e2-4c5f-8c55-9f35a86795d6">
+<Record fieldDelimiter="," name="itemList" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="22" __sourcePath="{}/list/itemList/key" containerType="SINGLE" label="key" name="key" type="string"/>
+<Field __index="23" __sourcePath="{}/list/itemList/name" containerType="SINGLE" label="name" name="name" type="string"/>
+<Field __index="24" __sourcePath="{}/list/itemList/quantity" containerType="SINGLE" label="quantity" name="quantity" type="integer"/>
+<Field __index="25" __sourcePath="{}/list/itemList/unitaryPrice" containerType="SINGLE" label="unitaryPrice" name="unitaryPrice" type="number"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/list" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _type="Input" id="b12b18bf-d0f4-44a3-8caf-39a8cef95b4a">
+<Record fieldDelimiter="," name="list" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="0" __sourcePath="{}/list/deliveryAddress/addressLine1" containerType="SINGLE" label="addressLine1" name="addressLine1" type="string"/>
+<Field __index="1" __sourcePath="{}/list/deliveryAddress/addressLine2" containerType="SINGLE" label="addressLine2" name="addressLine2" type="string"/>
+<Field __index="2" __sourcePath="{}/list/deliveryAddress/cityName" containerType="SINGLE" label="cityName" name="cityName" type="string"/>
+<Field __index="3" __sourcePath="{}/list/deliveryAddress/country" containerType="SINGLE" label="country" name="country" type="string"/>
+<Field __index="4" __sourcePath="{}/list/deliveryAddress/kind" containerType="SINGLE" label="kind" name="kind" type="string"/>
+<Field __index="5" __sourcePath="{}/list/deliveryAddress/zipCode" containerType="SINGLE" label="zipCode" name="zipCode" type="string"/>
+<Field __index="6" __sourcePath="{}/list/name" containerType="SINGLE" label="name" name="name" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/list" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _type="Output" id="92e80ed8-d4cb-4e85-96a6-8b1b3b487d81">
+<Record fieldDelimiter="," name="list" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="0" __sourcePath="{}/list/cardNumber" containerType="SINGLE" label="cardNumber" name="cardNumber" type="string"/>
+<Field __index="1" __sourcePath="{}/list/deliveryInfo/deliveryPrice" containerType="SINGLE" label="deliveryPrice" name="deliveryPrice" type="number"/>
+<Field __index="2" __sourcePath="{}/list/deliveryInfo/depth" containerType="SINGLE" label="depth" name="depth" type="number"/>
+<Field __index="3" __sourcePath="{}/list/deliveryInfo/eta" containerType="SINGLE" label="eta" name="eta" type="date"/>
+<Field __index="4" __sourcePath="{}/list/deliveryInfo/height" containerType="SINGLE" label="height" name="height" type="number"/>
+<Field __index="5" __sourcePath="{}/list/deliveryInfo/pickupDate" containerType="SINGLE" label="pickupDate" name="pickupDate" type="date"/>
+<Field __index="6" __sourcePath="{}/list/deliveryInfo/trackingNumber" containerType="SINGLE" label="trackingNumber" name="trackingNumber" type="string"/>
+<Field __index="7" __sourcePath="{}/list/deliveryInfo/warehouseAddress/addressLine1" containerType="SINGLE" label="addressLine1" name="addressLine1" type="string"/>
+<Field __index="8" __sourcePath="{}/list/deliveryInfo/warehouseAddress/addressLine2" containerType="SINGLE" label="addressLine2" name="addressLine2" type="string"/>
+<Field __index="9" __sourcePath="{}/list/deliveryInfo/warehouseAddress/cityName" containerType="SINGLE" label="cityName" name="cityName" type="string"/>
+<Field __index="10" __sourcePath="{}/list/deliveryInfo/warehouseAddress/country" containerType="SINGLE" label="country" name="country" type="string"/>
+<Field __index="11" __sourcePath="{}/list/deliveryInfo/warehouseAddress/kind" containerType="SINGLE" label="kind" name="kind" type="string"/>
+<Field __index="12" __sourcePath="{}/list/deliveryInfo/warehouseAddress/zipCode" containerType="SINGLE" label="zipCode" name="zipCode" type="string"/>
+<Field __index="13" __sourcePath="{}/list/deliveryInfo/weight" containerType="SINGLE" label="weight" name="weight" type="number"/>
+<Field __index="14" __sourcePath="{}/list/deliveryInfo/width" containerType="SINGLE" label="width" name="width" type="number"/>
+<Field __index="15" __sourcePath="{}/list/fedPsId" containerType="SINGLE" label="fedPsId" name="fedPsId" type="string"/>
+<Field __index="16" __sourcePath="{}/list/invoiceAddress/addressLine1" containerType="SINGLE" label="addressLine1" name="addressLine1_1" type="string"/>
+<Field __index="17" __sourcePath="{}/list/invoiceAddress/addressLine2" containerType="SINGLE" label="addressLine2" name="addressLine2_1" type="string"/>
+<Field __index="18" __sourcePath="{}/list/invoiceAddress/cityName" containerType="SINGLE" label="cityName" name="cityName_1" type="string"/>
+<Field __index="19" __sourcePath="{}/list/invoiceAddress/country" containerType="SINGLE" label="country" name="country_1" type="string"/>
+<Field __index="20" __sourcePath="{}/list/invoiceAddress/kind" containerType="SINGLE" label="kind" name="kind_1" type="string"/>
+<Field __index="21" __sourcePath="{}/list/invoiceAddress/zipCode" containerType="SINGLE" label="zipCode" name="zipCode_1" type="string"/>
+<Field __index="26" __sourcePath="{}/list/name" containerType="SINGLE" label="name" name="name" type="string"/>
+<Field __index="27" __sourcePath="{}/list/parcelStatus" containerType="SINGLE" label="parcelStatus" name="parcelStatus" type="string"/>
+<Field __index="28" __sourcePath="{}/list/paymentStatus" containerType="SINGLE" label="paymentStatus" name="paymentStatus" type="string"/>
+<Field __index="29" __sourcePath="{}/list/price" containerType="SINGLE" label="price" name="price" type="number"/>
+<Field __index="32" __sourcePath="{}/list/shippingAddress/addressLine1" containerType="SINGLE" label="addressLine1" name="addressLine1_2" type="string"/>
+<Field __index="33" __sourcePath="{}/list/shippingAddress/addressLine2" containerType="SINGLE" label="addressLine2" name="addressLine2_2" type="string"/>
+<Field __index="34" __sourcePath="{}/list/shippingAddress/cityName" containerType="SINGLE" label="cityName" name="cityName_2" type="string"/>
+<Field __index="35" __sourcePath="{}/list/shippingAddress/country" containerType="SINGLE" label="country" name="country_2" type="string"/>
+<Field __index="36" __sourcePath="{}/list/shippingAddress/kind" containerType="SINGLE" label="kind" name="kind_2" type="string"/>
+<Field __index="37" __sourcePath="{}/list/shippingAddress/zipCode" containerType="SINGLE" label="zipCode" name="zipCode_2" type="string"/>
+<Field __index="38" __sourcePath="{}/list/teamForceId" containerType="SINGLE" label="teamForceId" name="teamForceId" type="string"/>
+<Field __index="39" __sourcePath="{}/list/wareHouseId" containerType="SINGLE" label="wareHouseId" name="wareHouseId" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="30" __referenceCounter="0" __sourcePath="{}/list/products" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="92e80ed8-d4cb-4e85-96a6-8b1b3b487d81" _parent_id="__parent_id" _type="Output" id="056c010c-1763-40f6-9d74-be3ac854cfb3">
+<Record fieldDelimiter="," name="products" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="30" __sourcePath="{}/list/products/key" containerType="SINGLE" label="key" name="key" type="string"/>
+<Field __index="31" __sourcePath="{}/list/products/value" containerType="SINGLE" label="value" name="value" type="integer"/>
+</Record>
+</Metadata>
+<Dictionary>
+<Entry id="DictionaryEntry0" input="true" name="inputPayload" output="false" type="object"/>
+<Entry id="DictionaryEntry1" input="false" name="outputPayload" output="true" type="object"/>
+</Dictionary>
+</Global>
+<Phase number="0">
+<Node enabled="enabled" fileURL="dict:inputPayload" guiName="Pojo READER" guiX="20" guiY="20" id="BEAN_READER0" type="BEAN_READER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Context outPort="0" sequenceField="__id" xpath=".">
+  <Mapping cloverField="addressLine1" trim="true" xpath="deliveryAddress/addressLine1"/>
+  <Mapping cloverField="addressLine2" trim="true" xpath="deliveryAddress/addressLine2"/>
+  <Mapping cloverField="cityName" trim="true" xpath="deliveryAddress/cityName"/>
+  <Mapping cloverField="country" trim="true" xpath="deliveryAddress/country"/>
+  <Mapping cloverField="kind" trim="true" xpath="deliveryAddress/kind"/>
+  <Mapping cloverField="zipCode" trim="true" xpath="deliveryAddress/zipCode"/>
+  <Mapping cloverField="name" trim="true" xpath="name"/>
+</Context>
+]]></attr>
+<attr name="_data_format"><![CDATA[JAVA]]></attr>
+<attr name="schema"><![CDATA[<?xml version="1.0" encoding="UTF-8"?><schema-object>
+  <schema-collection>
+    <typed-object-ref type-ref="fr.unice.polytech.groupe.integration.business.catalogue.CatalogueRegistry"/>
+  </schema-collection>
+  <typed-object type="fr.unice.polytech.groupe.integration.business.catalogue.CatalogueRegistry">
+    <typed-object-ref name="deliveryAddress" type-ref="fr.unice.polytech.groupe.integration.business.Address"/>
+    <typed-object-ref name="name" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="fr.unice.polytech.groupe.integration.business.Address">
+    <typed-object-ref name="addressLine1" type-ref="java.lang.String"/>
+    <typed-object-ref name="addressLine2" type-ref="java.lang.String"/>
+    <typed-object-ref name="cityName" type-ref="java.lang.String"/>
+    <typed-object-ref name="country" type-ref="java.lang.String"/>
+    <typed-object-ref name="kind" type-ref="fr.unice.polytech.groupe.integration.business.Kind"/>
+    <typed-object-ref name="zipCode" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="fr.unice.polytech.groupe.integration.business.Kind"/>
+  <typed-object type="java.lang.String"/>
+</schema-object>
+]]></attr>
+</Node>
+<Node cacheInMemory="true" enabled="enabled" fileURL="dict:outputPayload" guiName="Pojo WRITER" guiX="900" guiY="20" id="BEAN_WRITER0" type="BEAN_WRITER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<clover:collection clover:name="list" xmlns:clover="http://www.cloveretl.com/ns/xmlmapping">
+  <item clover:inPort="0">
+    <cardNumber>$0.cardNumber</cardNumber>
+    <deliveryInfo>
+      <deliveryPrice>$0.deliveryPrice</deliveryPrice>
+      <depth>$0.depth</depth>
+      <eta>$0.eta</eta>
+      <height>$0.height</height>
+      <pickupDate>$0.pickupDate</pickupDate>
+      <trackingNumber>$0.trackingNumber</trackingNumber>
+      <warehouseAddress>
+        <addressLine1>$0.addressLine1</addressLine1>
+        <addressLine2>$0.addressLine2</addressLine2>
+        <cityName>$0.cityName</cityName>
+        <country>$0.country</country>
+        <kind>$0.kind</kind>
+        <zipCode>$0.zipCode</zipCode>
+      </warehouseAddress>
+      <weight>$0.weight</weight>
+      <width>$0.width</width>
+    </deliveryInfo>
+    <fedPsId>$0.fedPsId</fedPsId>
+    <invoiceAddress>
+      <addressLine1>$0.addressLine1_1</addressLine1>
+      <addressLine2>$0.addressLine2_1</addressLine2>
+      <cityName>$0.cityName_1</cityName>
+      <country>$0.country_1</country>
+      <kind>$0.kind_1</kind>
+      <zipCode>$0.zipCode_1</zipCode>
+    </invoiceAddress>
+    <name>$0.name</name>
+    <parcelStatus>$0.parcelStatus</parcelStatus>
+    <paymentStatus>$0.paymentStatus</paymentStatus>
+    <price>$0.price</price>
+    <shippingAddress>
+      <addressLine1>$0.addressLine1_2</addressLine1>
+      <addressLine2>$0.addressLine2_2</addressLine2>
+      <cityName>$0.cityName_2</cityName>
+      <country>$0.country_2</country>
+      <kind>$0.kind_2</kind>
+      <zipCode>$0.zipCode_2</zipCode>
+    </shippingAddress>
+    <teamForceId>$0.teamForceId</teamForceId>
+    <wareHouseId>$0.wareHouseId</wareHouseId>
+  </item>
+</clover:collection>]]></attr>
+<attr name="_data_format"><![CDATA[JAVA]]></attr>
+<attr name="schema"><![CDATA[<?xml version="1.0" encoding="UTF-8"?><schema-object>
+  <schema-collection>
+    <typed-object-ref type-ref="fr.unice.polytech.groupe.integration.business.Order"/>
+  </schema-collection>
+  <typed-object type="fr.unice.polytech.groupe.integration.business.Address">
+    <typed-object-ref name="addressLine1" type-ref="java.lang.String"/>
+    <typed-object-ref name="addressLine2" type-ref="java.lang.String"/>
+    <typed-object-ref name="cityName" type-ref="java.lang.String"/>
+    <typed-object-ref name="country" type-ref="java.lang.String"/>
+    <typed-object-ref name="kind" type-ref="fr.unice.polytech.groupe.integration.business.Kind"/>
+    <typed-object-ref name="zipCode" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="double"/>
+  <typed-object type="java.util.Date"/>
+  <typed-object type="float"/>
+  <typed-object type="fr.unice.polytech.groupe.integration.business.PaymentStatus"/>
+  <typed-object type="fr.unice.polytech.groupe.integration.business.Order">
+    <typed-object-ref name="cardNumber" type-ref="java.lang.String"/>
+    <typed-object-ref name="deliveryInfo" type-ref="fr.unice.polytech.groupe.integration.business.DeliveryInfo"/>
+    <typed-object-ref name="fedPsId" type-ref="java.lang.String"/>
+    <typed-object-ref name="invoiceAddress" type-ref="fr.unice.polytech.groupe.integration.business.Address"/>
+    <schema-collection name="itemList" type="java.util.List">
+      <typed-object-ref type-ref="fr.unice.polytech.groupe.integration.business.Item"/>
+    </schema-collection>
+    <typed-object-ref name="name" type-ref="java.lang.String"/>
+    <typed-object-ref name="parcelStatus" type-ref="fr.unice.polytech.groupe.integration.business.ParcelStatus"/>
+    <typed-object-ref name="paymentStatus" type-ref="fr.unice.polytech.groupe.integration.business.PaymentStatus"/>
+    <typed-object-ref name="price" type-ref="double"/>
+    <schema-map name="products" type="java.util.Map">
+      <typed-object-ref type-ref="java.lang.String"/>
+      <typed-object-ref type-ref="java.lang.Integer"/>
+    </schema-map>
+    <typed-object-ref name="shippingAddress" type-ref="fr.unice.polytech.groupe.integration.business.Address"/>
+    <typed-object-ref name="teamForceId" type-ref="java.lang.String"/>
+    <typed-object-ref name="wareHouseId" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="java.lang.Integer"/>
+  <typed-object type="int"/>
+  <typed-object type="fr.unice.polytech.groupe.integration.business.ParcelStatus"/>
+  <typed-object type="fr.unice.polytech.groupe.integration.business.DeliveryInfo">
+    <typed-object-ref name="deliveryPrice" type-ref="double"/>
+    <typed-object-ref name="depth" type-ref="float"/>
+    <typed-object-ref name="eta" type-ref="java.util.Date"/>
+    <typed-object-ref name="height" type-ref="float"/>
+    <typed-object-ref name="pickupDate" type-ref="java.util.Date"/>
+    <typed-object-ref name="trackingNumber" type-ref="java.lang.String"/>
+    <typed-object-ref name="warehouseAddress" type-ref="fr.unice.polytech.groupe.integration.business.Address"/>
+    <typed-object-ref name="weight" type-ref="float"/>
+    <typed-object-ref name="width" type-ref="float"/>
+  </typed-object>
+  <typed-object type="fr.unice.polytech.groupe.integration.business.Kind"/>
+  <typed-object type="java.lang.String"/>
+  <typed-object type="fr.unice.polytech.groupe.integration.business.Item">
+    <typed-object-ref name="key" type-ref="java.lang.String"/>
+    <typed-object-ref name="name" type-ref="java.lang.String"/>
+    <typed-object-ref name="quantity" type-ref="int"/>
+    <typed-object-ref name="unitaryPrice" type-ref="double"/>
+  </typed-object>
+</schema-object>
+]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'list' -&gt; 'list'" guiX="460" guiY="20" id="FOREACH_LIST_LIST" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+//END -> DO NOT REMOVE
+output.addressLine1_2 = input.addressLine1;
+output.addressLine2_2 = input.addressLine2;
+output.cityName_2 = input.cityName;
+output.country_2 = input.country;
+output.zipCode_2 = input.zipCode;
+output.name = input.name;
+output.height=10;
+output.weight=11;
+output.width=2;
+output.depth=10.5;
+output.addressLine1="4 rue des Trois Epis";
+output.zipCode="68200";
+output.cityName="Mulhouse";
+output.country="France";]]></attr>
+</Node>
+<Edge debugMode="true" fromNode="BEAN_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="b12b18bf-d0f4-44a3-8caf-39a8cef95b4a" outPort="Port 0 (out)" toNode="FOREACH_LIST_LIST:0"/>
+<Edge debugMode="true" fromNode="FOREACH_LIST_LIST:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="92e80ed8-d4cb-4e85-96a6-8b1b3b487d81" outPort="Port 0 (out)" toNode="BEAN_WRITER0:0"/>
+</Phase>
+</Graph>

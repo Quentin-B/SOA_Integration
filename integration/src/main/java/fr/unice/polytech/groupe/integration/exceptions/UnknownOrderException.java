@@ -11,4 +11,8 @@ public class UnknownOrderException extends Exception {
 		super("Wrong order id");
 	}
 
+	public UnknownOrderException(String id) {
+		super("Wrong order id : " + id);
+	}
+
 }

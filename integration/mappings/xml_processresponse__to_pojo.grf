@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="Moka" created="Mon Nov 03 14:39:32 CET 2014" description="Xml&lt;processResponse&gt; To Pojo" guiVersion="3.4.4.P" id="1415031671185" licenseCode="Unlicensed" licenseType="Unknown" modified="Mon Nov 03 14:39:32 CET 2014" modifiedBy="Moka" name="Xml_processResponse__To_Pojo" preview-arguments="order:null" revision="1.0" showComponentDetails="false">
 <Global>
-<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/object" _dataStructure="OBJECT" _id="__id" _type="Output" id="7d8fe1bb-53f4-4c98-a541-9b61e1b3684a">
-<Record fieldDelimiter="," name="OrderResult" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
-<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
-<Field __index="0" __sourcePath="{}/object/deliveryPrice" containerType="SINGLE" label="deliveryPrice" name="deliveryPrice" type="number"/>
-<Field __index="1" __sourcePath="{}/object/estimationDate" containerType="SINGLE" label="estimationDate" name="estimationDate" type="date"/>
-<Field __index="2" __sourcePath="{}/object/orderId" containerType="SINGLE" label="orderId" name="orderId" type="string"/>
-<Field __index="3" __sourcePath="{}/object/status" containerType="SINGLE" label="status" name="status" type="string"/>
-<Field __index="4" __sourcePath="{}/object/trackingNumber" containerType="SINGLE" label="trackingNumber" name="trackingNumber" type="string"/>
-</Record>
-</Metadata>
-<Metadata __filteredMetadata="false" __index="0" __referenceCounter="0" __schemaType="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer}processResponse" __sourcePath="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer=ns0}/ns0:processResponse" _dataStructure="OBJECT" _id="__id" _type="Input" id="8660ca3a-5dc4-4dd1-aa32-06c04df340d8">
-<Record fieldDelimiter="," name="processResponse" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
-<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
-</Record>
-</Metadata>
-<Metadata __index="0" __referenceCounter="1" __sourcePath="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer=ns0}/ns0:processResponse/result/results" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="8660ca3a-5dc4-4dd1-aa32-06c04df340d8" _parent_id="__parent_id" _type="Input" id="f6e4878b-f54c-47ae-9441-4c66e170172a">
-<Record fieldDelimiter="," name="results" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer=ns0}/ns0:processResponse/result/results/item" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="8660ca3a-5dc4-4dd1-aa32-06c04df340d8" _parent_id="__parent_id" _type="Input" id="f6e4878b-f54c-47ae-9441-4c66e170172a">
+<Record fieldDelimiter="," name="item" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
 <Field __cdata="false" __sourcePath="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer=ns0}/ns0:processResponse/result/results/item/parcelId" containerType="SINGLE" label="parcelId" name="parcelId" type="string"/>
@@ -41,6 +26,21 @@
 <Field __sourcePath="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer=ns0}/ns0:processResponse/result/results/item/@id" containerType="SINGLE" label="id" name="id" type="string"/>
 </Record>
 </Metadata>
+<Metadata __index="0" __referenceCounter="2" __sourcePath="{}/list" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _type="Output" id="80c1a409-22f9-4033-ac5f-c19aabaffec5">
+<Record fieldDelimiter="," name="list" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="0" __sourcePath="{}/list/deliveryPrice" containerType="SINGLE" label="deliveryPrice" name="deliveryPrice" type="number"/>
+<Field __index="1" __sourcePath="{}/list/estimationDate" containerType="SINGLE" label="estimationDate" name="estimationDate" type="date"/>
+<Field __index="2" __sourcePath="{}/list/orderId" containerType="SINGLE" label="orderId" name="orderId" type="string"/>
+<Field __index="3" __sourcePath="{}/list/status" containerType="SINGLE" label="status" name="status" type="string"/>
+<Field __index="4" __sourcePath="{}/list/trackingNumber" containerType="SINGLE" label="trackingNumber" name="trackingNumber" type="string"/>
+</Record>
+</Metadata>
+<Metadata __filteredMetadata="false" __index="0" __referenceCounter="1" __schemaType="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer}processResponse" __sourcePath="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer=ns0}/ns0:processResponse" _dataStructure="OBJECT" _id="__id" _type="Input" id="8660ca3a-5dc4-4dd1-aa32-06c04df340d8">
+<Record fieldDelimiter="," name="processResponse" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+</Record>
+</Metadata>
 <Dictionary>
 <Entry id="DictionaryEntry0" input="true" name="inputPayload" output="false" type="object"/>
 <Entry id="DictionaryEntry1" input="false" name="outputPayload" output="true" type="object"/>
@@ -49,16 +49,27 @@
 <Phase number="0">
 <Node cacheInMemory="true" enabled="enabled" fileURL="dict:outputPayload" guiName="Pojo WRITER" guiX="900" guiY="20" id="BEAN_WRITER0" type="BEAN_WRITER">
 <attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<object xmlns:clover="http://www.cloveretl.com/ns/xmlmapping" clover:inPort="0">
-  <deliveryPrice>$0.deliveryPrice</deliveryPrice>
-  <estimationDate>$0.estimationDate</estimationDate>
-  <orderId>$0.orderId</orderId>
-  <status>$0.status</status>
-  <trackingNumber>$0.trackingNumber</trackingNumber>
-</object>]]></attr>
+<clover:collection clover:name="list" xmlns:clover="http://www.cloveretl.com/ns/xmlmapping">
+  <item clover:inPort="0">
+    <deliveryPrice>$0.deliveryPrice</deliveryPrice>
+    <estimationDate>$0.estimationDate</estimationDate>
+    <orderId>$0.orderId</orderId>
+    <status>$0.status</status>
+    <trackingNumber>$0.trackingNumber</trackingNumber>
+  </item>
+  <item clover:inPort="1">
+    <deliveryPrice>$1.deliveryPrice</deliveryPrice>
+    <estimationDate>$1.estimationDate</estimationDate>
+    <orderId>$1.orderId</orderId>
+    <status>$1.status</status>
+    <trackingNumber>$1.trackingNumber</trackingNumber>
+  </item>
+</clover:collection>]]></attr>
 <attr name="_data_format"><![CDATA[JAVA]]></attr>
 <attr name="schema"><![CDATA[<?xml version="1.0" encoding="UTF-8"?><schema-object>
-  <typed-object-ref type-ref="fr.unice.polytech.groupe.integration.business.fedps.OrderResult"/>
+  <schema-collection>
+    <typed-object-ref type-ref="fr.unice.polytech.groupe.integration.business.fedps.OrderResult"/>
+  </schema-collection>
   <typed-object type="fr.unice.polytech.groupe.integration.business.ParcelStatus"/>
   <typed-object type="double"/>
   <typed-object type="java.util.Date"/>
@@ -73,7 +84,7 @@
 </schema-object>
 ]]></attr>
 </Node>
-<Node enabled="enabled" guiName="Foreach 'results' -&gt; 'object'" guiX="460" guiY="20" id="FOREACH_RESULTS_OBJECT" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<Node enabled="enabled" guiName="Foreach 'item' -&gt; 'list'" guiX="460" guiY="220" id="FOREACH_ITEM_LIST" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
 <attr name="melScript"><![CDATA[//MEL
 //START -> DO NOT REMOVE
 output.__id = input.__id;
@@ -84,35 +95,48 @@ output.estimationDate = long2date(input.ETA);
 output.orderId = input.id;
 output.status = input.customerId;]]></attr>
 </Node>
+<Node enabled="enabled" guiName="Foreach 'ns0:processResponse' -&gt; 'list'" guiX="460" guiY="20" id="FOREACH_NS0_PROCESS_RESPONSE_LIST" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+//END -> DO NOT REMOVE
+]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Duplicate item" guiX="240" guiY="20" id="SIMPLE_COPY0" type="SIMPLE_COPY"/>
 <Node charset="UTF-8" enabled="enabled" fileURL="dict:inputPayload" guiName="XML READER" guiX="20" guiY="20" id="XML_READER0" type="XML_READER">
 <attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Context namespacePaths="ns0=&quot;http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer&quot;" outPort="0" sequenceField="__id" xpath="/ns0:processResponse/result/results">
-  <Mapping cloverField="parcelId" trim="true" xpath="item/parcelId"/>
-  <Mapping cloverField="price" trim="true" xpath="item/price"/>
-  <Mapping cloverField="depth" trim="true" xpath="item/box/depth"/>
-  <Mapping cloverField="height" trim="true" xpath="item/box/height"/>
-  <Mapping cloverField="width" trim="true" xpath="item/box/width"/>
-  <Mapping cloverField="weight" trim="true" xpath="item/box/weight"/>
-  <Mapping cloverField="customerId" trim="true" xpath="item/parcelStatus"/>
-  <Mapping cloverField="ETA" trim="true" xpath="item/ETA"/>
-  <Mapping cloverField="city1" trim="true" xpath="item/toAddress/city"/>
-  <Mapping cloverField="country1" trim="true" xpath="item/toAddress/country"/>
-  <Mapping cloverField="street1" trim="true" xpath="item/toAddress/street"/>
-  <Mapping cloverField="zip1" trim="true" xpath="item/toAddress/zip"/>
-  <Mapping cloverField="city2" trim="true" xpath="item/fromAddress/city"/>
-  <Mapping cloverField="country2" trim="true" xpath="item/fromAddress/country"/>
-  <Mapping cloverField="street2" trim="true" xpath="item/fromAddress/street"/>
-  <Mapping cloverField="zip2" trim="true" xpath="item/fromAddress/zip"/>
-  <Mapping cloverField="pickupDate" trim="true" xpath="item/pickupDate"/>
-  <Mapping cloverField="receiverName" trim="true" xpath="item/receiverName"/>
-  <Mapping cloverField="maxValidity" trim="true" xpath="item/maxValidity"/>
-  <Mapping cloverField="id" trim="true" xpath="item/@id"/>
+<Context namespacePaths="ns0=&quot;http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer&quot;" outPort="0" sequenceField="__id" xpath="/ns0:processResponse">
+  <Context generatedKey="__parent_id" outPort="1" parentKey="__id" sequenceField="__id" xpath="result/results/item">
+    <Mapping cloverField="parcelId" trim="true" xpath="parcelId"/>
+    <Mapping cloverField="price" trim="true" xpath="price"/>
+    <Mapping cloverField="depth" trim="true" xpath="box/depth"/>
+    <Mapping cloverField="height" trim="true" xpath="box/height"/>
+    <Mapping cloverField="width" trim="true" xpath="box/width"/>
+    <Mapping cloverField="weight" trim="true" xpath="box/weight"/>
+    <Mapping cloverField="customerId" trim="true" xpath="parcelStatus"/>
+    <Mapping cloverField="ETA" trim="true" xpath="ETA"/>
+    <Mapping cloverField="city1" trim="true" xpath="toAddress/city"/>
+    <Mapping cloverField="country1" trim="true" xpath="toAddress/country"/>
+    <Mapping cloverField="street1" trim="true" xpath="toAddress/street"/>
+    <Mapping cloverField="zip1" trim="true" xpath="toAddress/zip"/>
+    <Mapping cloverField="city2" trim="true" xpath="fromAddress/city"/>
+    <Mapping cloverField="country2" trim="true" xpath="fromAddress/country"/>
+    <Mapping cloverField="street2" trim="true" xpath="fromAddress/street"/>
+    <Mapping cloverField="zip2" trim="true" xpath="fromAddress/zip"/>
+    <Mapping cloverField="pickupDate" trim="true" xpath="pickupDate"/>
+    <Mapping cloverField="receiverName" trim="true" xpath="receiverName"/>
+    <Mapping cloverField="maxValidity" trim="true" xpath="maxValidity"/>
+    <Mapping cloverField="id" trim="true" xpath="@id"/>
+  </Context>
 </Context>
 ]]></attr>
 <attr name="_data_format"><![CDATA[XML]]></attr>
 <attr name="__metadata"><![CDATA[true]]></attr>
 </Node>
-<Edge debugMode="true" fromNode="FOREACH_RESULTS_OBJECT:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="7d8fe1bb-53f4-4c98-a541-9b61e1b3684a" outPort="Port 0 (out)" toNode="BEAN_WRITER0:0"/>
-<Edge debugMode="true" fromNode="XML_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="f6e4878b-f54c-47ae-9441-4c66e170172a" outPort="Port 0 (out)" toNode="FOREACH_RESULTS_OBJECT:0"/>
+<Edge debugMode="true" fromNode="FOREACH_ITEM_LIST:0" guiBendpoints="" id="Edge6" inPort="Port 1 (in)" metadata="80c1a409-22f9-4033-ac5f-c19aabaffec5" outPort="Port 0 (out)" toNode="BEAN_WRITER0:1"/>
+<Edge debugMode="true" fromNode="FOREACH_NS0_PROCESS_RESPONSE_LIST:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="80c1a409-22f9-4033-ac5f-c19aabaffec5" outPort="Port 0 (out)" toNode="BEAN_WRITER0:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:0" guiBendpoints="" id="Edge5" inPort="Port 0 (in)" metadata="f6e4878b-f54c-47ae-9441-4c66e170172a" outPort="Port 0 (out)" toNode="FOREACH_ITEM_LIST:0"/>
+<Edge debugMode="true" fromNode="XML_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="8660ca3a-5dc4-4dd1-aa32-06c04df340d8" outPort="Port 0 (out)" toNode="FOREACH_NS0_PROCESS_RESPONSE_LIST:0"/>
+<Edge debugMode="true" fromNode="XML_READER0:1" guiBendpoints="" id="Edge4" inPort="Port 0 (in)" metadata="f6e4878b-f54c-47ae-9441-4c66e170172a" outPort="Port 1 (out)" toNode="SIMPLE_COPY0:0"/>
 </Phase>
 </Graph>
