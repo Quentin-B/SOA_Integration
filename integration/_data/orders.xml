@@ -15,11 +15,11 @@
             <products>
                <!--Zero or more repetitions:-->
                <entry>
-                  <key>M9H5AP9UB56GZ6U</key>
+                  <key>J7W5PI2IQ29CQ6K</key>
                   <value>5</value>
                </entry>
 			   <entry>
-                  <key>M9H5AP9UB56GZ6U</key>
+                  <key>C7Y8AL6EM58VR9N</key>
                   <value>1</value>
                </entry>
             </products>
@@ -40,14 +40,14 @@
                <addressLine2></addressLine2>
                <city>Faaa</city>
                <country>FR</country>
-               <kind>PROFESSIONNAL</kind>
+               <kind>PROFESSIONAL</kind>
                <zipCode>22D 35</zipCode>
             </invoiceAddress>
             <name>Ad;zp</name>
             <products>
                <!--Zero or more repetitions:-->
                <entry>
-                  <key>M9H5AP9UB56GZ6U</key>
+                  <key>C7Y8AL6EM58VR9N</key>
                   <value>2</value>
                </entry>
             </products>
@@ -56,7 +56,7 @@
 			   <addressLine2></addressLine2>
                <city>Faaa</city>
                <country>FR</country>
-               <kind>PROFESSIONNAL</kind>
+               <kind>PROFESSIONAL</kind>
                <zipCode>22D 35</zipCode>
             </shippingAddress>
         </order>

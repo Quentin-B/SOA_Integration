@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 
 public class OrderInput {
 
-	private long customerId;
+	private String customerId;
 	private String name;
 	private String cardNumber;
 	private Address invoiceAddress;
@@ -55,10 +55,10 @@ public class OrderInput {
 	}
 	
 	@XmlElement(name="id", required=true)
-	public long getCustomerId() {
+	public String getCustomerId() {
 		return customerId;
 	}
-	public void setCustomerId(long userId) {
+	public void setCustomerId(String userId) {
 		this.customerId = userId;
 	}
 }

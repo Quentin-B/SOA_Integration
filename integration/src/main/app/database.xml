@@ -16,7 +16,7 @@ http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/cu
 import java.sql.*
 
 def sql = Sql.newInstance("jdbc:derby:memory:glue;create=true", new Properties());
-sql.execute("CREATE TABLE orders (tf_order_id varchar(50),rwh_order_id varchar(50),fedps_order_id varchar(50),fedps_follow_id varchar(50),status varchar(15))")
+sql.execute("CREATE TABLE orders (customerId varchar(50), tf_order_id varchar(50),rwh_order_id varchar(50),fedps_order_id varchar(50),fedps_follow_id varchar(50),status varchar(15))")
 sql.execute("CREATE TABLE catalogueOrders (fedps_order_id varchar(50),fedps_follow_id varchar(50))")
 sql.execute("CREATE TABLE catalogue (name varchar(30), address varchar(30), city varchar(20), zip varchar(10), country varchar(20), toSend int)")
 
@@ -33,9 +33,9 @@ return "Database initialized";]]></scripting:script>
 import java.sql.*
 
 def sql = Sql.newInstance("jdbc:derby:memory:glue", new Properties());
-sql.execute("insert into orders (tf_order_id, rwh_order_id, fedps_order_id, fedps_follow_id,status) values ('"+ payload.teamForceId+"', '"+payload.wareHouseId+"', '"+payload.fedPsId+"', '"+payload.deliveryInfo.trackingNumber+"', '"+payload.paymentStatus+"')");
+sql.execute("insert into orders (customerId,tf_order_id, rwh_order_id, fedps_order_id, fedps_follow_id,status) values ('"+ payload.customerId+"','"+ payload.teamForceId+"', '"+payload.wareHouseId+"', '"+payload.fedPsId+"', '"+payload.deliveryInfo.trackingNumber+"', '"+payload.paymentStatus+"')");
 
-System.out.println("Info stored for order " + payload.teamForceId);]]></scripting:script>
+System.out.println("Info stored : order '" + payload.teamForceId + "' customer : '" + payload.customerId +"'");]]></scripting:script>
         </scripting:component>
     </flow>
     <flow name="read_order" doc:name="read_order">
@@ -43,29 +43,33 @@ System.out.println("Info stored for order " + payload.teamForceId);]]></scriptin
         <scripting:component doc:name="Groovy">
             <scripting:script engine="Groovy"><![CDATA[import groovy.sql.*
 import java.sql.*
+import fr.unice.polytech.groupe.integration.business.Order
+import fr.unice.polytech.groupe.integration.business.DeliveryInfo
 
 def sql = Sql.newInstance("jdbc:derby:memory:glue", new Properties());
-def query = "select * from orders where tf_order_id = '"+ message.payload+"'";
+def query = "SELECT * FROM orders WHERE tf_order_id = '"+ message.payload.orderId+"' AND customerId = '"+ message.payload.customerId+"'";
 def data = sql.rows(query);
 if(data[0]==null){
 	return null;
 }
-def order = new fr.unice.polytech.groupe.integration.business.Order();
+def order = new Order();
 order.setTeamForceId(data[0]['tf_order_id']);
 order.setWareHouseId(data[0]['rwh_order_id']);
 order.setFedPsId(data[0]['fedps_order_id']);
-def info = new fr.unice.polytech.groupe.integration.business.DeliveryInfo();
+order.setCustomerId(data[0]['customerId']);
+def info = new DeliveryInfo();
 info.setTrackingNumber(data[0]['fedps_follow_id']);
 order.setDeliveryInfo(info);
 String st = data[0]['status'];
 if(st=="PROCESSING")
-	order.setStatus(fr.unice.polytech.groupe.integration.business.Status.PROCESSING);
+	order.setPaymentStatus(fr.unice.polytech.groupe.integration.business.PaymentStatus.PROCESSING);
 else if(st==APPROVED)
-	order.setStatus(fr.unice.polytech.groupe.integration.business.Status.APPROVED);
+	order.setPaymentStatus(fr.unice.polytech.groupe.integration.business.PaymentStatus.APPROVED);
 else
-	order.setStatus(fr.unice.polytech.groupe.integration.business.Status.DECLINED);
+	order.setPaymentStatus(fr.unice.polytech.groupe.integration.business.PaymentStatus.DECLINED);
 
-return order;]]></scripting:script>
+return order;
+]]></scripting:script>
         </scripting:component>
     </flow>
     <flow name="save_catalogue_order" doc:name="save_catalogue_order">

@@ -33,6 +33,7 @@ http://www.mulesoft.org/schema/mule/jersey http://www.mulesoft.org/schema/mule/j
     <data-mapper:config name="JSON_To_Pojo_1JSON_To_Pojo_2" transformationGraphPath="json_to_pojo_2.grf" doc:name="JSON_To_Pojo_1JSON_To_Pojo_2"/>
     <data-mapper:config name="DataMapper" transformationGraphPath="json_to_pojo.grf" doc:name="DataMapper"/>
 
+
     <flow name="MisterDiscount" doc:name="MisterDiscount">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" doc:name="HTTP"/>
         <cxf:jaxws-service serviceClass="fr.unice.polytech.groupe.integration.services.MisterDiscountService" doc:name="CXF"/>
@@ -60,7 +61,7 @@ http://www.mulesoft.org/schema/mule/jersey http://www.mulesoft.org/schema/mule/j
             <file:filename-regex-filter pattern=".*\.xml$" caseSensitive="true"/>
         </file:inbound-endpoint>
         <data-mapper:transform config-ref="XML_To_Pojo_1" doc:name="XML To OrderInput"/>
-        <logger message="PROCESSING ORDERS + #[payload]" level="INFO" doc:name="Logger"/>
+        <logger message="PROCESSING ORDERS FROM FILE" level="INFO" doc:name="Logger"/>
         <set-variable variableName="cpt" value="0" doc:name="cpt"/>
         <collection-splitter doc:name="Collection Splitter"/>
         <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrder" doc:name="create_order"/>
@@ -71,7 +72,8 @@ http://www.mulesoft.org/schema/mule/jersey http://www.mulesoft.org/schema/mule/j
     <flow name="create_order" doc:name="create_order">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrder" doc:name="VM create_order"/>
         <logger message="ENTREE" level="INFO" doc:name="Logger"/>
-        <scripting:component doc:name="Groovy">
+
+        <scripting:component doc:name="OrderInput to Order">
             <scripting:script engine="Groovy"><![CDATA[def order = new fr.unice.polytech.groupe.integration.business.Order();
 
 order.setProducts(message.payload.products);
@@ -79,11 +81,12 @@ order.setInvoiceAddress(message.payload.invoiceAddress);
 order.setShippingAddress(message.payload.shippingAddress);
 order.setCardNumber(message.payload.cardNumber);
 order.setName(message.payload.name);
+order.setCustomerId(message.payload.customerId);
 
 return order;]]></scripting:script>
         </scripting:component>
 
-        <set-variable variableName="order" value="#[message.payload]" doc:name="Variable"/>
+        <set-variable variableName="order" value="#[message.payload]" doc:name="set order"/>
         <flow-ref name="sf_order_teamforce" doc:name="order_teamforce"/>
         <flow-ref name="sf_order_redwarehouse" doc:name="order_redwarehouse"/>
         <flow-ref name="sf_order_fedps" doc:name="order_fedps"/>
@@ -94,13 +97,22 @@ return order;]]></scripting:script>
     </flow>
     <sub-flow name="sf_order_teamforce" doc:name="sf_order_teamforce">
         <logger message="COMMANDE TF - DEBUT #[flowVars.order]" level="INFO" doc:name="COMMANDE TF - DEBUT"/>
-        <set-variable variableName="order" value="#[message.payload]" doc:name="Save init Order"/>
-        <data-mapper:transform config-ref="Order_To_JSON" returnClass="java.lang.String" doc:name="Order To JSON"/>
-        <set-payload value="addresses=#[payload]" doc:name="Set Payload"/>
-        <message-properties-transformer mimeType="application/x-www-form-urlencoded" doc:name="Message Properties"/>
+        <set-variable variableName="customerId" value="#[payload.customerId]" doc:name="customerId"/>
+
         <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrderTF" doc:name="/vm/MD/createOrderTF"/>
+        <choice doc:name="if unknown customer">
+            <when expression="#[payload is NullPayload]">
+                <scripting:component doc:name="throw exception">
+                    <scripting:script engine="Groovy"><![CDATA[throw new fr.unice.polytech.groupe.integration.exceptions.UnknownResourceException("CUSTOMER",message.getInvocationProperty('customerId'));
+]]></scripting:script>
+                </scripting:component>
+            </when>
+            <otherwise>
+                <logger message="CREATION OK" level="INFO" doc:name="continue"/>
+            </otherwise>
+        </choice>
         <scripting:component doc:name="update order">
-            <scripting:script engine="Groovy"><![CDATA[def order = flowVars['order'];
+            <scripting:script engine="Groovy"><![CDATA[def order = message.getInvocationProperty('order');
 order.setTeamForceId(message.payload.teamForceId);
 return order]]></scripting:script>
         </scripting:component>
@@ -109,9 +121,21 @@ return order]]></scripting:script>
         <logger message="COMMANDE TF - FIN #[payload]" level="INFO" doc:name="COMMANDE TF - FIN"/>
 
     </sub-flow>
+    <flow name="create_order_TF" doc:name="create_order_TF">
+        <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrderTF" doc:name="/vm/MD/createOrderTF"/>
+        <set-variable variableName="customerId" value="#[payload.customerId]" doc:name="customerId"/>
+        <data-mapper:transform config-ref="Order_To_JSON" returnClass="java.lang.String" doc:name="Order To JSON"/>
+        <set-payload value="addresses=#[payload]" doc:name="Set Payload"/>
+        <message-properties-transformer mimeType="application/x-www-form-urlencoded" doc:name="Message Properties"/>
+        <http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="8080" path="rest/user/#[flowVars.customerId]/order" method="POST" contentType="application/x-www-form-urlencoded" doc:name="HTTP"/>
+        <object-to-string-transformer doc:name="Object to String"/>
+        <data-mapper:transform config-ref="DataMapper" doc:name="JSON To Pojo"/>
+        <logger message="COMMANDE CREE #[payload.teamForceId]" level="INFO" doc:name="Logger"/>
+    </flow>
     <flow name="add_item_order_TF" doc:name="add_item_order_TF">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/addItemOrderTF" doc:name="/vm/MD/addItemOrderTF"/>
         <logger message="DEBUT add item" level="INFO" doc:name="Logger"/>
+        <set-variable variableName="customerId" value="#[payload.customerId]" doc:name="customerId"/>
         <set-variable variableName="orderId" value="#[message.payload.teamForceId]" doc:name="orderId"/>
         <scripting:component doc:name="Get JSON product">
             <scripting:script engine="Groovy"><![CDATA[def json = "[";
@@ -133,17 +157,11 @@ return json;]]></scripting:script>
         </scripting:component>
         <set-payload value="items=#[payload]" doc:name="set Payload"/>
         <message-properties-transformer mimeType="application/x-www-form-urlencoded" doc:name="Message Properties"/>
-        <http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="8080" path="rest/user/1/order/#[flowVars.orderId]" method="PUT" doc:name="HTTP"/>
+        <http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="8080" path="rest/user/#[flowVars.customerId]/order/#[flowVars.orderId]" method="PUT" doc:name="HTTP"/>
         <object-to-string-transformer returnClass="java.lang.String" doc:name="Object to String"/>
         <logger level="INFO" doc:name="Logger" message="FIN add ITEM"/>
     </flow>
-    <flow name="create_order_TF" doc:name="create_order_TF">
-        <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrderTF" doc:name="/vm/MD/createOrderTF"/>
-        <http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="8080" path="rest/user/1/order" method="POST" contentType="application/x-www-form-urlencoded" doc:name="HTTP"/>
-        <object-to-string-transformer doc:name="Object to String"/>
-        <data-mapper:transform config-ref="DataMapper" doc:name="JSON To Pojo"/>
-        <logger message="COMMANDE CREE #[payload.teamForceId]" level="INFO" doc:name="Logger"/>
-    </flow>
+
 
     <sub-flow name="sf_order_redwarehouse" doc:name="sf_order_redwarehouse">
         <logger message="COMMANDE RWH - DEBUT" level="INFO" doc:name="Logger"/>
@@ -291,12 +309,13 @@ else
 
     <flow name="get_order_info" doc:name="get_order_info">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/getOrderInfo" doc:name="VM"/>
-        <set-variable variableName="orderId" value="#[payload]" doc:name="save id"/>
+        <set-variable variableName="orderId" value="#[payload.orderId]" doc:name="orderId"/>
+        <set-variable variableName="customerId" value="#[payload.customerId]" doc:name="customerId"/>
         <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/admin/read/order" doc:name="read db"/>
         <choice doc:name="Check if order exists">
             <when expression="#[payload is NullPayload]">
                 <scripting:component doc:name="throw exception">
-                    <scripting:script engine="Groovy"><![CDATA[throw new fr.unice.polytech.groupe.integration.exceptions.UnknownOrderException(message.getInvocationProperty('orderId'));
+                    <scripting:script engine="Groovy"><![CDATA[throw new fr.unice.polytech.groupe.integration.exceptions.UnknownResourceException("ORDER",message.getInvocationProperty('orderId')+" for CUSTOMER "+message.getInvocationProperty('customerId'));
 ]]></scripting:script>
                 </scripting:component>
             </when>
@@ -306,7 +325,7 @@ else
         </choice>
 
         <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/getOrderTeamForce" doc:name="get order TF"/>
-        <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/getOrderFedPS" doc:name="VM"/>
+        <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/getOrderFedPS" doc:name="get order FedPS"/>
 
         <scripting:component doc:name="update order">
             <scripting:script engine="Groovy"><![CDATA[def order = message.getInvocationProperty('order');
@@ -325,7 +344,7 @@ return order;
         <data-mapper:transform config-ref="create_receipt" doc:name="create receipt"/>
 
     </flow>
-    <flow name="soa_integrationFlow1" doc:name="soa_integrationFlow1">
+    <flow name="getOrderFedPS" doc:name="getOrderFedPS">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/getOrderFedPS" doc:name="VM"/>
         <data-mapper:transform config-ref="Pojo_To_Xml_process__1" doc:name="Pojo To Xml&lt;process&gt;"/>
         <ws:consumer config-ref="Web_Service_Consumer" operation="process" doc:name="Web Service Consumer"/>

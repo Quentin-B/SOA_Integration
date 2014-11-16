@@ -44,7 +44,6 @@ http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mul
             </when>
             <otherwise>
                 <logger message="WRONG OPERATION : #[flowVars.operation]" level="INFO" doc:name="Logger"/>
-                <exception-type-filter expectedType="fr.unice.polytech.groupe.integration.exceptions.UnknownOperationException" doc:name="Exception"/>
             </otherwise>
         </choice>
     </flow>
