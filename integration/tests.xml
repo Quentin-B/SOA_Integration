@@ -195,7 +195,7 @@
    <soapenv:Body>
       <ser:getOrderInfo>
          <!--Optional:-->
-         <orderId>MOUIT</orderId>
+         <orderId>1</orderId>
       </ser:getOrderInfo>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://services.integration.groupe.polytech.unice.fr/MisterDiscountService/getOrderInfo"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="InternalServiceServiceSoapBinding" type="wsdl" bindingName="{http://services.integration.groupe.polytech.unice.fr/}InternalServiceServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8081/internal/MisterDiscountInternalService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8081/internal/MisterDiscountInternalService?wsdl"><con:part><con:url>http://localhost:8081/internal/MisterDiscountInternalService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="InternalServiceService" targetNamespace="http://services.integration.groupe.polytech.unice.fr/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://services.integration.groupe.polytech.unice.fr/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
@@ -421,4 +421,41 @@
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response"/><con:assertion type="SOAP Fault Assertion"/><con:assertion type="Schema Compliance" name="Schema Compliance"><con:configuration><definition/></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="transfer" name="get nb envois"><con:settings/><con:config xsi:type="con:PropertyTransfersStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" useXQuery="false" entitize="false" transferChildNodes="false"><con:name>nbEnvois</con:name><con:sourceType>Response</con:sourceType><con:sourceStep>envoi aux inscrits</con:sourceStep><con:sourcePath>//number</con:sourcePath><con:targetType>nbEnvois</con:targetType><con:targetStep>#TestCase#</con:targetStep></con:transfers></con:config></con:testStep><con:testStep type="groovy" name="check inscrits = envoi"><con:settings/><con:config><script>def cmd = testRunner.testCase.getPropertyValue("nbCommandes");
 def envois  = testRunner.testCase.getPropertyValue("nbEnvois");  
-return cmd == envois;</script></con:config></con:testStep><con:properties><con:property><con:name>nbCommandes</con:name><con:value>2</con:value></con:property><con:property><con:name>nbEnvois</con:name><con:value>2</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
+return cmd == envois;</script></con:config></con:testStep><con:properties><con:property><con:name>nbCommandes</con:name><con:value>2</con:value></con:property><con:property><con:name>nbEnvois</con:name><con:value>2</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite>
+<con:testSuite name="Taking order TestSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="scenario 1" searchProperties="true" id="5ad60d01-bca4-4915-8d0d-ccaa83406cd6"><con:settings/><con:testStep type="httprequest" name="create db"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" name="create db" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:8081/admin/init</con:endpoint><con:request/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:config></con:testStep><con:testStep type="request" name="create Order"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>MisterDiscountServiceServiceSoapBinding</con:interface><con:operation>createOrder</con:operation><con:request name="create Order"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8081/MD/MisterDiscountService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.integration.groupe.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:createOrder>
+         <!--Optional:-->
+         <order>
+            <cardNumber>123456890098765</cardNumber>
+            <invoiceAddress>
+               <line1>AA</line1>
+               <line2>BB</line2>
+               <city>FF</city>
+               <country>RT</country>
+               <!--Optional:-->
+               <kind>PERSONAL</kind>
+               <zip>2235</zip>
+            </invoiceAddress>
+            <name>Ad;zp</name>
+            <products>
+               <!--Zero or more repetitions:-->
+               <entry>
+                  <key>M9H5AP9UB56GZ6U</key>
+                  <value>5</value>
+               </entry>
+            </products>
+            <shippingAddress>
+               <line1>AA</line1>
+               <line2>BB</line2>
+               <city>FF</city>
+               <country>RT</country>
+               <!--Optional:-->
+               <kind>PERSONAL</kind>
+               <zip>2235</zip>
+            </shippingAddress>
+         </order>
+      </ser:createOrder>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:sensitiveInformation/></con:soapui-project>

@@ -23,7 +23,7 @@ public interface UserRest {
     @PUT
     public Response addItems(@PathParam("idCustomer") String idCustomer,
             @PathParam("idOrder") String idOrder,
-            @QueryParam("items") JSONArray items);
+            @FormParam("items") JSONArray items);
 
     @Path("/{idCustomer}/orders")
     @GET

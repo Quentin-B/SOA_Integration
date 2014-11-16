@@ -34,7 +34,6 @@ public class UserRestImpl implements UserRest{
 
         String line2Invoice="";
         if (addressInvoiceJSON.has("line2") && !addressInvoiceJSON.isNull("line2")) {
-            // Do something with object.
             line2Invoice = addressInvoiceJSON.getString("line2");
         }
 
@@ -43,7 +42,6 @@ public class UserRestImpl implements UserRest{
 
         String line2Delivery="";
         if (addressDeliveryJSON.has("line2") && !addressDeliveryJSON.isNull("line2")) {
-            // Do something with object.
             line2Delivery = addressDeliveryJSON.getString("line2");
         }
 
