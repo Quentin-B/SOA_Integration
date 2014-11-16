@@ -93,4 +93,11 @@ return orders;
         <logger message="#[payload.size()] catalogues sent" level="INFO" doc:name="Logger"/>
         <set-payload value="#[payload.size()]" doc:name="Set Payload"/>
     </sub-flow>
+    <flow name="get_catalogue" doc:name="get_catalogue">
+        <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/getCatalogue" doc:name="VM"/>
+        <logger message="GET CATALOGUE FROM TEAMFORCE :  #[payload]" level="INFO" doc:name="GET CATALOGUE"/>
+        <set-payload value="1" doc:name="Set Payload"/>
+        <http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="8080" path="rest/manager/catalogue/#[payload]" method="GET" doc:name="HTTP"/>
+        <object-to-string-transformer doc:name="Object to String"/>
+    </flow>
 </mule>

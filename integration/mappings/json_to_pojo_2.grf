@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="suparjam" created="Fri Nov 14 20:06:35 CET 2014" description="JSON To Pojo" guiVersion="3.4.4.P" id="1415995200601" licenseCode="Unlicensed" licenseType="Unknown" modified="Fri Nov 14 20:06:35 CET 2014" modifiedBy="suparjam" name="JSON_To_Pojo_1JSON_To_Pojo_2" revision="1.0" showComponentDetails="false">
+<Global>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/object" _dataStructure="OBJECT" _id="__id" _type="Output" id="d6b047fd-3353-4cf6-aeb4-1d28b7634994">
+<Record fieldDelimiter="," name="Catalogue" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="0" __sourcePath="{}/object/endDate" containerType="SINGLE" label="endDate" name="endDate" type="string"/>
+<Field __index="1" __sourcePath="{}/object/id" containerType="SINGLE" label="id" name="id" type="string"/>
+<Field __index="2" __sourcePath="{}/object/name" containerType="SINGLE" label="name" name="name" type="string"/>
+<Field __index="6" __sourcePath="{}/object/startDate" containerType="SINGLE" label="startDate" name="startDate" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/object" _dataStructure="OBJECT" _id="__id" _type="Input" id="c2b8efca-ebf8-4142-92e1-257e95ebb09f">
+<Record fieldDelimiter="," name="object" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="0" __sourcePath="{}/object/endDate" containerType="SINGLE" label="endDate" name="endDate" type="string"/>
+<Field __index="1" __sourcePath="{}/object/id" containerType="SINGLE" label="id" name="id" type="string"/>
+<Field __index="2" __sourcePath="{}/object/name" containerType="SINGLE" label="name" name="name" type="string"/>
+<Field __index="3" __sourcePath="{}/object/startDate" containerType="SINGLE" label="startDate" name="startDate" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="4" __referenceCounter="1" __sourcePath="{}/object/productList" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="c2b8efca-ebf8-4142-92e1-257e95ebb09f" _parent_id="__parent_id" _type="Input" id="938bf688-2908-4b21-b1c4-4ec8778884a4">
+<Record fieldDelimiter="," name="productList" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="4" __sourcePath="{}/object/productList/category" containerType="SINGLE" label="category" name="category" type="string"/>
+<Field __index="5" __sourcePath="{}/object/productList/id" containerType="SINGLE" label="id" name="id" type="string"/>
+<Field __index="6" __sourcePath="{}/object/productList/name" containerType="SINGLE" label="name" name="name" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="3" __referenceCounter="1" __sourcePath="{}/object/productList" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="d6b047fd-3353-4cf6-aeb4-1d28b7634994" _parent_id="__parent_id" _type="Output" id="d472699c-d791-438a-903b-fe3d3d0df2fe">
+<Record fieldDelimiter="," name="productList" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="3" __sourcePath="{}/object/productList/category" containerType="SINGLE" label="category" name="category" type="string"/>
+<Field __index="4" __sourcePath="{}/object/productList/id" containerType="SINGLE" label="id" name="id" type="string"/>
+<Field __index="5" __sourcePath="{}/object/productList/name" containerType="SINGLE" label="name" name="name" type="string"/>
+</Record>
+</Metadata>
+<Dictionary>
+<Entry id="DictionaryEntry0" input="true" name="inputPayload" output="false" type="object"/>
+<Entry id="DictionaryEntry1" input="false" name="outputPayload" output="true" type="object"/>
+</Dictionary>
+</Global>
+<Phase number="0">
+<Node cacheInMemory="true" enabled="enabled" fileURL="dict:outputPayload" guiName="Pojo WRITER" guiX="900" guiY="20" id="BEAN_WRITER0" type="BEAN_WRITER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<object xmlns:clover="http://www.cloveretl.com/ns/xmlmapping" clover:inPort="0">
+  <endDate>$0.endDate</endDate>
+  <id>$0.id</id>
+  <name>$0.name</name>
+  <clover:collection clover:name="productList">
+    <item clover:inPort="1" clover:key="__parent_id" clover:parentKey="__id">
+      <category>$1.category</category>
+      <id>$1.id</id>
+      <name>$1.name</name>
+    </item>
+  </clover:collection>
+  <startDate>$0.startDate</startDate>
+</object>]]></attr>
+<attr name="_data_format"><![CDATA[JAVA]]></attr>
+<attr name="schema"><![CDATA[<?xml version="1.0" encoding="UTF-8"?><schema-object>
+  <typed-object-ref type-ref="fr.unice.polytech.groupe.integration.business.catalogue.Catalogue"/>
+  <typed-object type="fr.unice.polytech.groupe.integration.business.catalogue.Catalogue">
+    <typed-object-ref name="endDate" type-ref="java.lang.String"/>
+    <typed-object-ref name="id" type-ref="java.lang.String"/>
+    <typed-object-ref name="name" type-ref="java.lang.String"/>
+    <schema-collection name="productList" type="java.util.Set">
+      <typed-object-ref type-ref="fr.unice.polytech.groupe.integration.business.catalogue.Product"/>
+    </schema-collection>
+    <typed-object-ref name="startDate" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="fr.unice.polytech.groupe.integration.business.catalogue.Product">
+    <typed-object-ref name="category" type-ref="java.lang.String"/>
+    <typed-object-ref name="id" type-ref="java.lang.String"/>
+    <typed-object-ref name="name" type-ref="java.lang.String"/>
+  </typed-object>
+  <typed-object type="java.lang.String"/>
+</schema-object>
+]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'object' -&gt; 'object'" guiX="460" guiY="20" id="FOREACH_OBJECT_OBJECT" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+//END -> DO NOT REMOVE
+output.endDate = input.endDate;
+output.id = input.id;
+output.name = input.name;
+output.startDate = input.startDate;
+]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'productList' -&gt; 'productList'" guiX="460" guiY="120" id="FOREACH_PRODUCT_LIST_PRODUCT_LIST" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__parent_id;
+//END -> DO NOT REMOVE
+output.category = input.category;
+output.id = input.id;
+output.name = input.name;
+]]></attr>
+</Node>
+<Node charset="UTF-8" enabled="enabled" fileURL="dict:inputPayload" guiName="JSON READER" guiX="20" guiY="20" id="JSON_READER0" type="JSON_READER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Context xpath="/root">
+  <Context outPort="0" sequenceField="__id" xpath="object">
+    <Mapping cloverField="endDate" trim="true" xpath="endDate"/>
+    <Mapping cloverField="id" trim="true" xpath="id"/>
+    <Mapping cloverField="name" trim="true" xpath="name"/>
+    <Mapping cloverField="startDate" trim="true" xpath="startDate"/>
+    <Context generatedKey="__parent_id" outPort="1" parentKey="__id" sequenceField="__id" xpath="productList">
+      <Mapping cloverField="category" trim="true" xpath="category"/>
+      <Mapping cloverField="id" trim="true" xpath="id"/>
+      <Mapping cloverField="name" trim="true" xpath="name"/>
+    </Context>
+  </Context>
+</Context>
+]]></attr>
+<attr name="_data_format"><![CDATA[JSON]]></attr>
+</Node>
+<Edge debugMode="true" fromNode="FOREACH_OBJECT_OBJECT:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="d6b047fd-3353-4cf6-aeb4-1d28b7634994" outPort="Port 0 (out)" toNode="BEAN_WRITER0:0"/>
+<Edge debugMode="true" fromNode="FOREACH_PRODUCT_LIST_PRODUCT_LIST:0" guiBendpoints="" id="Edge3" inPort="Port 1 (in)" metadata="d472699c-d791-438a-903b-fe3d3d0df2fe" outPort="Port 0 (out)" toNode="BEAN_WRITER0:1"/>
+<Edge debugMode="true" fromNode="JSON_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="c2b8efca-ebf8-4142-92e1-257e95ebb09f" outPort="Port 0 (out)" toNode="FOREACH_OBJECT_OBJECT:0"/>
+<Edge debugMode="true" fromNode="JSON_READER0:1" guiBendpoints="" id="Edge2" inPort="Port 0 (in)" metadata="938bf688-2908-4b21-b1c4-4ec8778884a4" outPort="Port 1 (out)" toNode="FOREACH_PRODUCT_LIST_PRODUCT_LIST:0"/>
+</Phase>
+</Graph>

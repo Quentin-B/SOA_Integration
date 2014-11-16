@@ -29,6 +29,7 @@ http://www.mulesoft.org/schema/mule/jersey http://www.mulesoft.org/schema/mule/j
     <data-mapper:config name="XML_To_Pojo_1" transformationGraphPath="xml_to_pojo_1.grf" doc:name="XML_To_Pojo_1"/>
     <data-mapper:config name="Pojo_To_Xml_process__1" transformationGraphPath="pojo_to_xml_process__1.grf" doc:name="Pojo_To_Xml_process__1"/>
     <data-mapper:config name="Xml_processResponse__To_Pojo_1" transformationGraphPath="xml_processresponse__to_pojo_1.grf" doc:name="Xml_processResponse__To_Pojo_1"/>
+    <data-mapper:config name="Order_To_PaymentInput" transformationGraphPath="order_to_paymentinput.grf" doc:name="Order_To_PaymentInput"/>
 
     <flow name="MisterDiscount" doc:name="MisterDiscount">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" doc:name="HTTP"/>
@@ -167,6 +168,7 @@ return order;
     </flow>
     <sub-flow name="sf_order_fedps" doc:name="sf_order_fedps">
         <logger message="COMMANDE FedPS - DEBUT #[flowVars.order] #[payload]" level="INFO" doc:name="Logger"/>
+        <logger message="#[payload.deliveryInfo.width]" level="INFO" doc:name="Logger"/>
         <scripting:component doc:name="put order in list">
             <scripting:script engine="Groovy"><![CDATA[def order = message.payload;
 
@@ -208,17 +210,21 @@ return order;
     </flow>
     <flow name="order_post_processing" doc:name="order_post_processing">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/postProcessing" doc:name="VM"/>
-        <logger message="CALL PAYMENT #[payload]" level="INFO" doc:name="CALL PAYMENT"/>
-        <logger level="INFO" doc:name="send mail w/ payment info"/>
-        <logger level="INFO" doc:name="send mail w/ tracking number"/>
-        <logger message="SAVE ORDER DB" level="INFO" doc:name="SAVE ORDER DB"/>
+        <set-variable variableName="order" value="#[payload]" doc:name="Variable"/>
+        <logger message="POSTPROCESSING #[payload]" level="INFO" doc:name="CALL PAYMENT"/>
+        <vm:outbound-endpoint exchange-pattern="request-response"  doc:name="call payment" path="/vm/MD/process_payment_rest"/>
+        <logger message="PAYMENT DONE : #[payload]" level="INFO" doc:name="PAYMENT DONE"/>
+        <scripting:component doc:name="update order">
+            <scripting:script engine="Groovy"><![CDATA[def order = message.getInvocationProperty('order');
+order.setPaymentStatus(payload);
+return order;]]></scripting:script>
+        </scripting:component>
+
         <vm:outbound-endpoint exchange-pattern="one-way" path="/vm/admin/save/order" doc:name="save_db"/>
         <data-mapper:transform config-ref="create_receipt" doc:name="create receipt"/>
+        <logger level="INFO" doc:name="send mail" message="MAIL w/ paymentStatus #[payload.paymentStatus], trackingNumber #[payload.trackingNumber]"/>
     </flow>
-    <flow name="get_catalogue" doc:name="get_catalogue">
-        <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/getCatalogue" doc:name="VM"/>
-        <logger message="GET CATALOGUE FROM TEAMFORCE" level="INFO" doc:name="GET CATALOGUE FROM TEAMFORCE"/>
-    </flow>
+
     <flow name="get_order_info" doc:name="get_order_info">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/getOrderInfo" doc:name="VM"/>
         <set-variable variableName="orderId" value="#[payload]" doc:name="save id"/>
@@ -257,4 +263,30 @@ return order;
         <data-mapper:transform config-ref="create_receipt" doc:name="create receipt"/>
 
     </flow>
+    
+    <flow name="payment_process_rest" doc:name="payment_process_rest">
+        <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/process_payment_rest" doc:name="VM - Process Payment"/>
+        <logger message="Begin - Process Payment #[message.payload]" level="INFO" doc:name="Process Payment - Begin"/>
+        <data-mapper:transform config-ref="Order_To_PaymentInput" doc:name="Order To PaymentInput"/>
+        <scripting:component doc:name="Convert PaymentInput to rest params">
+            <scripting:script engine="Groovy"><![CDATA[def input = message.payload;
+return "card=" + input.getCardNumber() + "&name=" + input.getName() + "&amount=" + input.getAmount();]]></scripting:script>
+        </scripting:component>
+        <http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="8080" path="rest/payment/public/s-001/process?#[payload]" method="POST" doc:name="Process Payment - REST"/>
+        <object-to-string-transformer doc:name="Object to String"/>
+        <logger message="Return payment - #[payload]" level="INFO" doc:name="Process Payment - End request"/>
+        <scripting:component doc:name="return PaymentStatus">
+            <scripting:script engine="Groovy"><![CDATA[import fr.unice.polytech.groupe.integration.business.PaymentStatus;
+
+def st = message.payload;
+
+if(st=="PROCESSING")
+ return PaymentStatus.PROCESSING;
+else if(st=="APPROVED")
+ return PaymentStatus.APPROVED;
+else
+ return PaymentStatus.DECLINED;]]></scripting:script>
+        </scripting:component>
+    </flow>
+    
 </mule>

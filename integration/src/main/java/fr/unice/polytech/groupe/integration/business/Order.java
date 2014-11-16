@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class Order {
 
+	private String customerId;
 	private String name;
 	private String cardNumber;
 	private Address invoiceAddress;
@@ -129,5 +130,13 @@ public class Order {
 
 	public void setParcelStatus(ParcelStatus parcelStatus) {
 		this.parcelStatus = parcelStatus;
+	}
+
+	public String getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
 	}
 }

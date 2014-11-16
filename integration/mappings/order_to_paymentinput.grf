@@ -1,26 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="Moka" created="Wed Nov 12 16:03:20 CET 2014" description="create receipt" guiVersion="3.4.4.P" id="1415807170425" licenseCode="Unlicensed" licenseType="Unknown" modified="Wed Nov 12 16:03:20 CET 2014" modifiedBy="Moka" name="create_receipt" revision="1.0" showComponentDetails="false">
+<?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="Moka" created="Sun Nov 16 13:58:01 CET 2014" description="Order To PaymentInput" guiVersion="3.4.4.P" id="1416145991676" licenseCode="Unlicensed" licenseType="Unknown" modified="Sun Nov 16 13:58:01 CET 2014" modifiedBy="Moka" name="Order_To_PaymentInput" revision="1.0" showComponentDetails="false">
 <Global>
-<Metadata __index="2" __referenceCounter="1" __sourcePath="{}/object/itemList" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="e5afa389-7e9e-45f1-b2e4-701c4db29302" _parent_id="__parent_id" _type="Output" id="f4dc957e-7e09-4de4-8b54-62396d4d3e27">
+<Metadata __index="22" __referenceCounter="0" __sourcePath="{}/object/itemList" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="5eaee916-59c9-42cd-842a-dd74fa262e67" _parent_id="__parent_id" _type="Input" id="33ce73d3-dd6c-4d39-adb2-5e8811288cd5">
 <Record fieldDelimiter="," name="itemList" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
-<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
 <Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
-<Field __index="2" __sourcePath="{}/object/itemList/key" containerType="SINGLE" label="key" name="key" type="string"/>
-<Field __index="3" __sourcePath="{}/object/itemList/name" containerType="SINGLE" label="name" name="name" type="string"/>
-<Field __index="4" __sourcePath="{}/object/itemList/quantity" containerType="SINGLE" label="quantity" name="quantity" type="integer"/>
-<Field __index="5" __sourcePath="{}/object/itemList/unitaryPrice" containerType="SINGLE" label="unitaryPrice" name="unitaryPrice" type="number"/>
-</Record>
-</Metadata>
-<Metadata __index="22" __referenceCounter="1" __sourcePath="{}/object/itemList" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="1eae39a0-2a0a-466b-945e-4252b22dc38e" _parent_id="__parent_id" _type="Input" id="5bf9d6cb-dc74-424b-a976-9cada8dcca11">
-<Record fieldDelimiter="," name="itemList" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
-<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
 <Field __index="22" __sourcePath="{}/object/itemList/key" containerType="SINGLE" label="key" name="key" type="string"/>
 <Field __index="23" __sourcePath="{}/object/itemList/name" containerType="SINGLE" label="name" name="name" type="string"/>
 <Field __index="24" __sourcePath="{}/object/itemList/quantity" containerType="SINGLE" label="quantity" name="quantity" type="integer"/>
 <Field __index="25" __sourcePath="{}/object/itemList/unitaryPrice" containerType="SINGLE" label="unitaryPrice" name="unitaryPrice" type="number"/>
 </Record>
 </Metadata>
-<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/object" _dataStructure="OBJECT" _id="__id" _type="Input" id="1eae39a0-2a0a-466b-945e-4252b22dc38e">
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/object" _dataStructure="OBJECT" _id="__id" _type="Input" id="5eaee916-59c9-42cd-842a-dd74fa262e67">
 <Record fieldDelimiter="," name="Order" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
 <Field __index="0" __sourcePath="{}/object/cardNumber" containerType="SINGLE" label="cardNumber" name="cardNumber" type="string"/>
@@ -59,32 +49,20 @@
 <Field __index="39" __sourcePath="{}/object/wareHouseId" containerType="SINGLE" label="wareHouseId" name="wareHouseId" type="string"/>
 </Record>
 </Metadata>
-<Metadata __index="30" __referenceCounter="0" __sourcePath="{}/object/products" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="1eae39a0-2a0a-466b-945e-4252b22dc38e" _parent_id="__parent_id" _type="Input" id="2b79f2b4-8e18-4259-8c0d-f18a5b96e8d4">
-<Record fieldDelimiter="," name="products" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/object" _dataStructure="OBJECT" _id="__id" _type="Output" id="12a40681-a4b9-40e9-835c-0523988a1c2e">
+<Record fieldDelimiter="," name="PaymentInput" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
-<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
-<Field __index="30" __sourcePath="{}/object/products/key" containerType="SINGLE" label="key" name="key" type="string"/>
-<Field __index="31" __sourcePath="{}/object/products/value" containerType="SINGLE" label="value" name="value" type="integer"/>
+<Field __index="0" __sourcePath="{}/object/amount" containerType="SINGLE" label="amount" name="amount" type="number"/>
+<Field __index="1" __sourcePath="{}/object/cardNumber" containerType="SINGLE" label="cardNumber" name="cardNumber" type="string"/>
+<Field __index="2" __sourcePath="{}/object/name" containerType="SINGLE" label="name" name="name" type="string"/>
 </Record>
 </Metadata>
-<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/object" _dataStructure="OBJECT" _id="__id" _type="Output" id="e5afa389-7e9e-45f1-b2e4-701c4db29302">
-<Record fieldDelimiter="," name="Receipt" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Metadata __index="30" __referenceCounter="0" __sourcePath="{}/object/products" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="5eaee916-59c9-42cd-842a-dd74fa262e67" _parent_id="__parent_id" _type="Input" id="61d07847-bf11-4863-bcda-3d80390d3636">
+<Record fieldDelimiter="," name="products" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
-<Field __index="0" __sourcePath="{}/object/deliveryPrice" containerType="SINGLE" label="deliveryPrice" name="deliveryPrice" type="number"/>
-<Field __index="1" __sourcePath="{}/object/estimationDate" containerType="SINGLE" label="estimationDate" name="estimationDate" type="date"/>
-<Field __index="6" __sourcePath="{}/object/name" containerType="SINGLE" label="name" name="name" type="string"/>
-<Field __index="7" __sourcePath="{}/object/orderId" containerType="SINGLE" label="orderId" name="orderId" type="string"/>
-<Field __index="8" __sourcePath="{}/object/parcelStatus" containerType="SINGLE" label="parcelStatus" name="parcelStatus" type="string"/>
-<Field __index="9" __sourcePath="{}/object/paymentStatus" containerType="SINGLE" label="paymentStatus" name="paymentStatus" type="string"/>
-<Field __index="10" __sourcePath="{}/object/price" containerType="SINGLE" label="price" name="price" type="number"/>
-<Field __index="11" __sourcePath="{}/object/shippingAddress/addressLine1" containerType="SINGLE" label="addressLine1" name="addressLine1" type="string"/>
-<Field __index="12" __sourcePath="{}/object/shippingAddress/addressLine2" containerType="SINGLE" label="addressLine2" name="addressLine2" type="string"/>
-<Field __index="13" __sourcePath="{}/object/shippingAddress/cityName" containerType="SINGLE" label="cityName" name="cityName" type="string"/>
-<Field __index="14" __sourcePath="{}/object/shippingAddress/country" containerType="SINGLE" label="country" name="country" type="string"/>
-<Field __index="15" __sourcePath="{}/object/shippingAddress/kind" containerType="SINGLE" label="kind" name="kind" type="string"/>
-<Field __index="16" __sourcePath="{}/object/shippingAddress/zipCode" containerType="SINGLE" label="zipCode" name="zipCode" type="string"/>
-<Field __index="17" __sourcePath="{}/object/totalPrice" containerType="SINGLE" label="totalPrice" name="totalPrice" type="number"/>
-<Field __index="18" __sourcePath="{}/object/trackingNumber" containerType="SINGLE" label="trackingNumber" name="trackingNumber" type="string"/>
+<Field __index="30" __sourcePath="{}/object/products/key" containerType="SINGLE" label="key" name="key" type="string"/>
+<Field __index="31" __sourcePath="{}/object/products/value" containerType="SINGLE" label="value" name="value" type="integer"/>
 </Record>
 </Metadata>
 <Dictionary>
@@ -130,12 +108,6 @@
   <Mapping cloverField="zipCode_2" trim="true" xpath="shippingAddress/zipCode"/>
   <Mapping cloverField="teamForceId" trim="true" xpath="teamForceId"/>
   <Mapping cloverField="wareHouseId" trim="true" xpath="wareHouseId"/>
-  <Context generatedKey="__parent_id" outPort="1" parentKey="__id" sequenceField="__id" xpath="itemList">
-    <Mapping cloverField="key" trim="true" xpath="key"/>
-    <Mapping cloverField="name" trim="true" xpath="name"/>
-    <Mapping cloverField="quantity" trim="true" xpath="quantity"/>
-    <Mapping cloverField="unitaryPrice" trim="true" xpath="unitaryPrice"/>
-  </Context>
 </Context>
 ]]></attr>
 <attr name="_data_format"><![CDATA[JAVA]]></attr>
@@ -201,84 +173,21 @@
 <Node cacheInMemory="true" enabled="enabled" fileURL="dict:outputPayload" guiName="Pojo WRITER" guiX="900" guiY="20" id="BEAN_WRITER0" type="BEAN_WRITER">
 <attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <object xmlns:clover="http://www.cloveretl.com/ns/xmlmapping" clover:inPort="0">
-  <deliveryPrice>$0.deliveryPrice</deliveryPrice>
-  <estimationDate>$0.estimationDate</estimationDate>
-  <clover:collection clover:name="itemList">
-    <item clover:inPort="1" clover:key="__parent_id" clover:parentKey="__id">
-      <key>$1.key</key>
-      <name>$1.name</name>
-      <quantity>$1.quantity</quantity>
-      <unitaryPrice>$1.unitaryPrice</unitaryPrice>
-    </item>
-  </clover:collection>
+  <amount>$0.amount</amount>
+  <cardNumber>$0.cardNumber</cardNumber>
   <name>$0.name</name>
-  <orderId>$0.orderId</orderId>
-  <parcelStatus>$0.parcelStatus</parcelStatus>
-  <paymentStatus>$0.paymentStatus</paymentStatus>
-  <price>$0.price</price>
-  <shippingAddress>
-    <addressLine1>$0.addressLine1</addressLine1>
-    <addressLine2>$0.addressLine2</addressLine2>
-    <cityName>$0.cityName</cityName>
-    <country>$0.country</country>
-    <kind>$0.kind</kind>
-    <zipCode>$0.zipCode</zipCode>
-  </shippingAddress>
-  <totalPrice>$0.totalPrice</totalPrice>
-  <trackingNumber>$0.trackingNumber</trackingNumber>
 </object>]]></attr>
 <attr name="_data_format"><![CDATA[JAVA]]></attr>
 <attr name="schema"><![CDATA[<?xml version="1.0" encoding="UTF-8"?><schema-object>
-  <typed-object-ref type-ref="fr.unice.polytech.groupe.integration.business.Receipt"/>
-  <typed-object type="fr.unice.polytech.groupe.integration.business.Receipt">
-    <typed-object-ref name="deliveryPrice" type-ref="double"/>
-    <typed-object-ref name="estimationDate" type-ref="java.util.Date"/>
-    <schema-collection name="itemList" type="java.util.List">
-      <typed-object-ref type-ref="fr.unice.polytech.groupe.integration.business.Item"/>
-    </schema-collection>
-    <typed-object-ref name="name" type-ref="java.lang.String"/>
-    <typed-object-ref name="orderId" type-ref="java.lang.String"/>
-    <typed-object-ref name="parcelStatus" type-ref="fr.unice.polytech.groupe.integration.business.ParcelStatus"/>
-    <typed-object-ref name="paymentStatus" type-ref="fr.unice.polytech.groupe.integration.business.PaymentStatus"/>
-    <typed-object-ref name="price" type-ref="double"/>
-    <typed-object-ref name="shippingAddress" type-ref="fr.unice.polytech.groupe.integration.business.Address"/>
-    <typed-object-ref name="totalPrice" type-ref="double"/>
-    <typed-object-ref name="trackingNumber" type-ref="java.lang.String"/>
-  </typed-object>
-  <typed-object type="fr.unice.polytech.groupe.integration.business.ParcelStatus"/>
-  <typed-object type="fr.unice.polytech.groupe.integration.business.Address">
-    <typed-object-ref name="addressLine1" type-ref="java.lang.String"/>
-    <typed-object-ref name="addressLine2" type-ref="java.lang.String"/>
-    <typed-object-ref name="cityName" type-ref="java.lang.String"/>
-    <typed-object-ref name="country" type-ref="java.lang.String"/>
-    <typed-object-ref name="kind" type-ref="fr.unice.polytech.groupe.integration.business.Kind"/>
-    <typed-object-ref name="zipCode" type-ref="java.lang.String"/>
-  </typed-object>
+  <typed-object-ref type-ref="fr.unice.polytech.groupe.integration.business.payment.PaymentInput"/>
   <typed-object type="double"/>
-  <typed-object type="java.util.Date"/>
-  <typed-object type="fr.unice.polytech.groupe.integration.business.Kind"/>
-  <typed-object type="fr.unice.polytech.groupe.integration.business.Item">
-    <typed-object-ref name="key" type-ref="java.lang.String"/>
-    <typed-object-ref name="name" type-ref="java.lang.String"/>
-    <typed-object-ref name="quantity" type-ref="int"/>
-    <typed-object-ref name="unitaryPrice" type-ref="double"/>
-  </typed-object>
   <typed-object type="java.lang.String"/>
-  <typed-object type="fr.unice.polytech.groupe.integration.business.PaymentStatus"/>
-  <typed-object type="int"/>
+  <typed-object type="fr.unice.polytech.groupe.integration.business.payment.PaymentInput">
+    <typed-object-ref name="amount" type-ref="double"/>
+    <typed-object-ref name="cardNumber" type-ref="java.lang.String"/>
+    <typed-object-ref name="name" type-ref="java.lang.String"/>
+  </typed-object>
 </schema-object>
-]]></attr>
-</Node>
-<Node enabled="enabled" guiName="Foreach 'itemList' -&gt; 'itemList'" guiX="460" guiY="120" id="FOREACH_ITEM_LIST_ITEM_LIST" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
-<attr name="melScript"><![CDATA[//MEL
-//START -> DO NOT REMOVE
-output.__id = input.__id;
-output.__parent_id = input.__parent_id;
-//END -> DO NOT REMOVE
-output.key = input.key;
-output.name = input.name;
-output.quantity = input.quantity;
-output.unitaryPrice = input.unitaryPrice;
 ]]></attr>
 </Node>
 <Node enabled="enabled" guiName="Foreach 'object' -&gt; 'object'" guiX="460" guiY="20" id="FOREACH_OBJECT_OBJECT" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
@@ -286,25 +195,11 @@ output.unitaryPrice = input.unitaryPrice;
 //START -> DO NOT REMOVE
 output.__id = input.__id;
 //END -> DO NOT REMOVE
-output.deliveryPrice = input.deliveryPrice;
-output.trackingNumber = input.trackingNumber;
-output.price = input.price;
-output.estimationDate = input.eta;
-output.orderId = input.teamForceId;
+output.cardNumber = input.cardNumber;
 output.name = input.name;
-output.addressLine1 = input.addressLine1_2;
-output.addressLine2 = input.addressLine2_2;
-output.cityName = input.cityName_2;
-output.country = input.country_2;
-output.zipCode = input.zipCode_2;
-output.kind = input.kind_2;
-output.totalPrice = input.price + input.deliveryPrice;
-output.parcelStatus = input.parcelStatus;
-output.paymentStatus = input.paymentStatus;]]></attr>
+output.amount = input.price + input.deliveryPrice;]]></attr>
 </Node>
-<Edge debugMode="true" fromNode="BEAN_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="1eae39a0-2a0a-466b-945e-4252b22dc38e" outPort="Port 0 (out)" toNode="FOREACH_OBJECT_OBJECT:0"/>
-<Edge debugMode="true" fromNode="BEAN_READER0:1" guiBendpoints="" id="Edge2" inPort="Port 0 (in)" metadata="5bf9d6cb-dc74-424b-a976-9cada8dcca11" outPort="Port 1 (out)" toNode="FOREACH_ITEM_LIST_ITEM_LIST:0"/>
-<Edge debugMode="true" fromNode="FOREACH_ITEM_LIST_ITEM_LIST:0" guiBendpoints="" id="Edge3" inPort="Port 1 (in)" metadata="f4dc957e-7e09-4de4-8b54-62396d4d3e27" outPort="Port 0 (out)" toNode="BEAN_WRITER0:1"/>
-<Edge debugMode="true" fromNode="FOREACH_OBJECT_OBJECT:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="e5afa389-7e9e-45f1-b2e4-701c4db29302" outPort="Port 0 (out)" toNode="BEAN_WRITER0:0"/>
+<Edge debugMode="true" fromNode="BEAN_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="5eaee916-59c9-42cd-842a-dd74fa262e67" outPort="Port 0 (out)" toNode="FOREACH_OBJECT_OBJECT:0"/>
+<Edge debugMode="true" fromNode="FOREACH_OBJECT_OBJECT:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="12a40681-a4b9-40e9-835c-0523988a1c2e" outPort="Port 0 (out)" toNode="BEAN_WRITER0:0"/>
 </Phase>
 </Graph>

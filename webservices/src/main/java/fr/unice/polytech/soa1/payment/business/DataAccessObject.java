@@ -41,6 +41,7 @@ public class DataAccessObject {
 		Retailer r1 = new Retailer("s-001", "Auchan", "40, avenue de Flandre - 59170 Croix");
 		Retailer r2 = new Retailer("s-002", "Leclerc", "26, quai Marcel-Boyer - 94200 Ivry-sur-Seine");
 		Retailer r3 = new Retailer("s-003", "Carrefour", "150 rue Galliéni - 92100 Boulogne-Billancourt");
+		
 		// Transactions
 		List<Transaction> transactions = new ArrayList<>(Arrays.asList(
 				new Transaction("4959189002122739","Bethany Blake",54.0,r3),
@@ -175,6 +176,7 @@ public class DataAccessObject {
 		transactions.stream().filter( t -> t.getRetailer().equals(r3)).forEach(l3::add);
 		r3.setTransactions(l3);
 		contents.add(r3);
+
 	}
 
 }
