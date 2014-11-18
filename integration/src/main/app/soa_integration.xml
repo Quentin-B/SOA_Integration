@@ -33,6 +33,7 @@ http://www.mulesoft.org/schema/mule/jersey http://www.mulesoft.org/schema/mule/j
     <data-mapper:config name="JSON_To_Pojo_1JSON_To_Pojo_2" transformationGraphPath="json_to_pojo_2.grf" doc:name="JSON_To_Pojo_1JSON_To_Pojo_2"/>
     <data-mapper:config name="DataMapper" transformationGraphPath="json_to_pojo.grf" doc:name="DataMapper"/>
     <data-mapper:config name="JSON_To_Pojo" transformationGraphPath="json_to_pojo_3.grf" doc:name="JSON_To_Pojo"/>
+    <data-mapper:config name="JSON_To_Pojo_1JSON_To_Pojo_2JSON_To_Pojo_3" transformationGraphPath="json_to_pojo_4.grf" doc:name="JSON_To_Pojo_1JSON_To_Pojo_2JSON_To_Pojo_3"/>
 
 
     <flow name="MisterDiscount" doc:name="MisterDiscount">
@@ -330,10 +331,14 @@ else
                 <logger message="GOT ORDER #[payload] FROM DB" level="INFO" doc:name="continue"/>
             </otherwise>
         </choice>
+        <flow-ref name="get_order_sub" doc:name="Flow Reference"/>
 
+        <data-mapper:transform config-ref="create_receipt" doc:name="create receipt"/>
+
+    </flow>
+    <sub-flow name="get_order_sub" doc:name="get_order_sub">
+        <set-variable variableName="order" value="#[payload]" doc:name="order"/>
         <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/getOrderTeamForce" doc:name="get order TF"/>
-        <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/getOrderFedPS" doc:name="get order FedPS"/>
-
         <scripting:component doc:name="update order">
             <scripting:script engine="Groovy"><![CDATA[def order = message.getInvocationProperty('order');
 
@@ -348,20 +353,36 @@ order.setParcelStatus(result.status);
 return order;
 ]]></scripting:script>
         </scripting:component>
-        <data-mapper:transform config-ref="create_receipt" doc:name="create receipt"/>
+        <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/getOrderFedPS" doc:name="get order FedPS"/>
+        <scripting:component doc:name="update order">
+            <scripting:script engine="Groovy"><![CDATA[def order = message.getInvocationProperty('order');
 
-    </flow>
+def result = payload;
+
+order.setFedPsId(result.orderId);
+order.deliveryInfo.setTrackingNumber(result.trackingNumber);
+order.deliveryInfo.setEta(result.eta);
+order.deliveryInfo.setDeliveryPrice(result.deliveryPrice);
+order.setParcelStatus(result.status);
+
+return order;
+]]></scripting:script>
+        </scripting:component>
+    </sub-flow>
     <flow name="getOrderFedPS" doc:name="getOrderFedPS">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/getOrderFedPS" doc:name="VM"/>
         <data-mapper:transform config-ref="Pojo_To_Xml_process__1" doc:name="Pojo To Xml&lt;process&gt;"/>
+
         <ws:consumer config-ref="Web_Service_Consumer" operation="process" doc:name="Web Service Consumer"/>
         <data-mapper:transform config-ref="Xml_processResponse__To_Pojo_1" doc:name="Xml&lt;processResponse&gt; To Pojo"/>
     </flow>
     <flow name="get_order_TF" doc:name="get_order_TF">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/getOrderTeamForce" doc:name="VM"/>
         <logger message="GET ORDER FROM TF : #[payload]" level="INFO" doc:name="GET ORDER FROM TF"/>
-        <set-payload value="1" doc:name="Set Payload"/>
-        <http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="8080" path="rest/user/1/orders/#[payload]" method="GET" doc:name="HTTP"/>
+
+        <http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="8080" path="rest/user/#[payload.customerId]/orders/#[payload.teamForceId]" method="GET" doc:name="HTTP"/>
+        <object-to-string-transformer returnClass="java.lang.String" doc:name="Object to String"/>
+        <data-mapper:transform config-ref="JSON_To_Pojo_1JSON_To_Pojo_2JSON_To_Pojo_3" doc:name="JSON To Pojo"/>
         <logger message="ORDER GET TEAMFORCE : #[payload]" level="INFO" doc:name="ORDER GET TF"/>
     </flow>
 
