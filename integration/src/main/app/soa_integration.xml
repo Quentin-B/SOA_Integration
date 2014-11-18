@@ -331,7 +331,7 @@ else
                 <logger message="GOT ORDER #[payload] FROM DB" level="INFO" doc:name="continue"/>
             </otherwise>
         </choice>
-        <flow-ref name="get_order_sub" doc:name="Flow Reference"/>
+        <flow-ref name="get_order_sub" doc:name="get_order_subflow"/>
 
         <data-mapper:transform config-ref="create_receipt" doc:name="create receipt"/>
 
