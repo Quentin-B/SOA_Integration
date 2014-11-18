@@ -32,6 +32,7 @@ http://www.mulesoft.org/schema/mule/jersey http://www.mulesoft.org/schema/mule/j
     <data-mapper:config name="Order_To_PaymentInput" transformationGraphPath="order_to_paymentinput.grf" doc:name="Order_To_PaymentInput"/>
     <data-mapper:config name="JSON_To_Pojo_1JSON_To_Pojo_2" transformationGraphPath="json_to_pojo_2.grf" doc:name="JSON_To_Pojo_1JSON_To_Pojo_2"/>
     <data-mapper:config name="DataMapper" transformationGraphPath="json_to_pojo.grf" doc:name="DataMapper"/>
+    <data-mapper:config name="JSON_To_Pojo" transformationGraphPath="json_to_pojo_3.grf" doc:name="JSON_To_Pojo"/>
 
 
     <flow name="MisterDiscount" doc:name="MisterDiscount">
@@ -118,6 +119,12 @@ return order]]></scripting:script>
         </scripting:component>
 
         <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/addItemOrderTF" doc:name="/vm/MD/addItemOrderTF"/>
+        <scripting:component doc:name="Groovy">
+            <scripting:script engine="Groovy"><![CDATA[def order = message.getInvocationProperty('order');
+order.setPrice(message.payload.price);
+order.setItemList(message.payload.itemList);
+return order]]></scripting:script>
+        </scripting:component>
         <logger message="COMMANDE TF - FIN #[payload]" level="INFO" doc:name="COMMANDE TF - FIN"/>
 
     </sub-flow>
@@ -159,7 +166,8 @@ return json;]]></scripting:script>
         <message-properties-transformer mimeType="application/x-www-form-urlencoded" doc:name="Message Properties"/>
         <http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="8080" path="rest/user/#[flowVars.customerId]/order/#[flowVars.orderId]" method="PUT" doc:name="HTTP"/>
         <object-to-string-transformer returnClass="java.lang.String" doc:name="Object to String"/>
-        <logger level="INFO" doc:name="Logger" message="FIN add ITEM"/>
+        <data-mapper:transform config-ref="JSON_To_Pojo" doc:name="JSON To Pojo"/>
+        <logger level="INFO" doc:name="FIN ADD ITEM" message="FIN ADD ITEM"/>
     </flow>
 
 

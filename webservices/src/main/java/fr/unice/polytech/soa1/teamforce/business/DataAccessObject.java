@@ -55,6 +55,13 @@ public class DataAccessObject {
         Product p6 = new Product("6","BananaWatch","WATCH",23.4);
         Product p7 = new Product("7","Screwdriver","TOOL",7.3);
 
+        Product p8 = new Product("B8M6GJ4JX48ZL1N","Spirou","GAME",15.4);
+        Product p9 =new Product("J7W5PI2IQ29CQ6K", "La voiture a romain <3","CAR",2);
+        Product p10 =new Product("X6M7VR9BC86QI4I","iPhone6","PHONE",600);
+        Product p11 =new Product("C7Y8AL6EM58VR9N", "iPod","ELECTRONIC",120);
+        Product p12 = new Product("A1F8IW6GZ17ZF8P", "TV","ELECTRONIC",200);
+
+
         products.add(p1);
         products.add(p2);
         products.add(p3);
@@ -62,11 +69,21 @@ public class DataAccessObject {
         products.add(p5);
         products.add(p6);
         products.add(p7);
+        products.add(p8);
+        products.add(p9);
+        products.add(p10);
+        products.add(p11);
+        products.add(p12);
 
         HashSet<Product> catalogueListProduct1 = new HashSet<Product>();
         catalogueListProduct1.add(p1);
         catalogueListProduct1.add(p2);
         catalogueListProduct1.add(p3);
+        catalogueListProduct1.add(p8);
+        catalogueListProduct1.add(p9);
+        catalogueListProduct1.add(p10);
+        catalogueListProduct1.add(p11);
+        catalogueListProduct1.add(p12);
 
         HashSet<Product> catalogueListProduct2 = new HashSet<Product>();
         catalogueListProduct2.add(p4);
@@ -88,6 +105,12 @@ public class DataAccessObject {
 
         o1.addItem(p1,2);
         o1.addItem(p2,1);
+        o1.addItem(p8,1);
+        o1.addItem(p9,1);
+        o1.addItem(p10,1);
+        o1.addItem(p11,1);
+        o1.addItem(p12,1);
+
 
         Order o2 = new Order("2",a3,a3,u1.getId());
         Order o3 = new Order("3",a1,a2,u2.getId());
