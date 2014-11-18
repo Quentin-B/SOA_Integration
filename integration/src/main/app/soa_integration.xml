@@ -91,8 +91,11 @@ return order;]]></scripting:script>
         <flow-ref name="sf_order_teamforce" doc:name="order_teamforce"/>
         <flow-ref name="sf_order_redwarehouse" doc:name="order_redwarehouse"/>
         <flow-ref name="sf_order_fedps" doc:name="order_fedps"/>
+        <flow-ref name="order_call_payment" doc:name="payment"/>
+        <vm:outbound-endpoint exchange-pattern="one-way" path="/vm/admin/save/order" doc:name="save_db"/>
+        <data-mapper:transform config-ref="create_receipt" doc:name="create receipt"/>
+        <logger message="MAIL w/ paymentStatus #[payload.paymentStatus], trackingNumber #[payload.trackingNumber]" level="INFO" doc:name="send mail"/>
 
-        <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/postProcessing" doc:name="post"/>
 
 
     </flow>
@@ -119,7 +122,7 @@ return order]]></scripting:script>
         </scripting:component>
 
         <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/addItemOrderTF" doc:name="/vm/MD/addItemOrderTF"/>
-        <scripting:component doc:name="Groovy">
+        <scripting:component doc:name="update order">
             <scripting:script engine="Groovy"><![CDATA[def order = message.getInvocationProperty('order');
 order.setPrice(message.payload.price);
 order.setItemList(message.payload.itemList);
@@ -173,29 +176,7 @@ return json;]]></scripting:script>
 
     <sub-flow name="sf_order_redwarehouse" doc:name="sf_order_redwarehouse">
         <logger message="COMMANDE RWH - DEBUT" level="INFO" doc:name="Logger"/>
-        <scripting:component doc:name="TMP - MOCKUP">
-            <scripting:script engine="Groovy"><![CDATA[def json = "{";
-json = json + "'typeEvent':'pickup',"
-json = json + "'dateEvent':'24022014',"
-json = json + "'command':["
 
-def isFirst = true;
-def order = message.getInvocationProperty('order');
-order.getProducts().each { key, value -> 
-	if (!isFirst) {
-		json = json + ","
-	} else {
-		isFirst = false;
-	}
-	json = json + "{"
-	json = json + "'ref_product':'${key}',";
-	json = json + "'quantity':'${value}'"
-	json = json + "}"
-};
-
-json = json + "]}"
-return json;]]></scripting:script>
-        </scripting:component>
         <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrderRWH" doc:name="/vm/MD/createOrderRWH"/>
         <scripting:component doc:name="Update Order">
             <scripting:script engine="Groovy"><![CDATA[def order = message.getInvocationProperty('order');
@@ -225,6 +206,29 @@ return order;
     </sub-flow>
     <flow name="create_order_RWH" doc:name="create_order_RWH">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrderRWH" doc:name="VM"/>
+        <scripting:component doc:name="order to json">
+            <scripting:script engine="Groovy"><![CDATA[def json = "{";
+json = json + "'typeEvent':'pickup',"
+json = json + "'dateEvent':'24022014',"
+json = json + "'command':["
+
+def isFirst = true;
+def order = message.payload;
+order.getProducts().each { key, value -> 
+	if (!isFirst) {
+		json = json + ","
+	} else {
+		isFirst = false;
+	}
+	json = json + "{"
+	json = json + "'ref_product':'${key}',";
+	json = json + "'quantity':'${value}'"
+	json = json + "}"
+};
+
+json = json + "]}"
+return json;]]></scripting:script>
+        </scripting:component>
         <set-payload value="planning=#[payload]" doc:name="Set Payload"/>
         <message-properties-transformer mimeType="application/x-www-form-urlencoded" doc:name="Message Properties"/>
         <http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="8080" path="rest/redwarehouse/public/plannings" method="POST" contentType="application/x-www-form-urlencoded" doc:name="HTTP"/>
@@ -274,33 +278,28 @@ return order;
             </data-mapper:input-arguments>
         </data-mapper:transform>
     </flow>
-    <flow name="order_post_processing" doc:name="order_post_processing">
-        <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/postProcessing" doc:name="VM"/>
-        <set-variable variableName="order" value="#[payload]" doc:name="Variable"/>
+    <sub-flow name="order_call_payment" doc:name="order_call_payment">
         <logger message="POSTPROCESSING #[payload]" level="INFO" doc:name="CALL PAYMENT"/>
-        <vm:outbound-endpoint exchange-pattern="request-response"  doc:name="call payment" path="/vm/MD/process_payment_rest"/>
-        <logger message="PAYMENT DONE : #[payload]" level="INFO" doc:name="PAYMENT DONE"/>
+        <data-mapper:transform config-ref="Order_To_PaymentInput" doc:name="Order To PaymentInput"/>
+        <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/process_payment_rest" doc:name="call payment"/>
         <scripting:component doc:name="update order">
             <scripting:script engine="Groovy"><![CDATA[def order = message.getInvocationProperty('order');
 order.setPaymentStatus(payload);
 return order;]]></scripting:script>
         </scripting:component>
+        <logger message="PAYMENT DONE : #[payload]" level="INFO" doc:name="PAYMENT DONE"/>
+    </sub-flow>
 
-        <vm:outbound-endpoint exchange-pattern="one-way" path="/vm/admin/save/order" doc:name="save_db"/>
-        <data-mapper:transform config-ref="create_receipt" doc:name="create receipt"/>
-        <logger level="INFO" doc:name="send mail" message="MAIL w/ paymentStatus #[payload.paymentStatus], trackingNumber #[payload.trackingNumber]"/>
-    </flow>
     <flow name="payment_process_rest" doc:name="payment_process_rest">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/process_payment_rest" doc:name="VM - Process Payment"/>
-        <logger message="Begin - Process Payment #[message.payload]" level="INFO" doc:name="Process Payment - Begin"/>
-        <data-mapper:transform config-ref="Order_To_PaymentInput" doc:name="Order To PaymentInput"/>
+
         <scripting:component doc:name="Convert PaymentInput to rest params">
             <scripting:script engine="Groovy"><![CDATA[def input = message.payload;
 return "card=" + input.getCardNumber() + "&name=" + input.getName() + "&amount=" + input.getAmount();]]></scripting:script>
         </scripting:component>
         <http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="8080" path="rest/payment/public/s-001/process?#[payload]" method="POST" doc:name="Process Payment - REST"/>
         <object-to-string-transformer doc:name="Object to String"/>
-        <logger message="Return payment - #[payload]" level="INFO" doc:name="Process Payment - End request"/>
+
         <scripting:component doc:name="return PaymentStatus">
             <scripting:script engine="Groovy"><![CDATA[import fr.unice.polytech.groupe.integration.business.PaymentStatus;
 
