@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="suparjam" created="Tue Nov 18 15:38:08 CET 2014" description="JSON To Pojo" guiVersion="3.4.4.P" id="1416324942296" licenseCode="Unlicensed" licenseType="Unknown" modified="Tue Nov 18 15:38:08 CET 2014" modifiedBy="suparjam" name="JSON_To_Pojo" preview-file="C:/Users/suparjam/Desktop/json.txt" revision="1.0" showComponentDetails="false">
+<?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="suparjam" created="Tue Nov 18 15:38:08 CET 2014" description="JSON To Pojo" guiVersion="3.4.4.P" id="1416329060573" licenseCode="Unlicensed" licenseType="Unknown" modified="Tue Nov 18 15:38:08 CET 2014" modifiedBy="suparjam" name="JSON_To_Pojo_1JSON_To_Pojo_2JSON_To_Pojo_3" preview-file="C:/Users/suparjam/Desktop/json.txt" revision="1.0" showComponentDetails="false">
 <Global>
-<Metadata __index="23" __referenceCounter="1" __sourcePath="{}/object/itemList" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="7caf9e19-d224-4c7b-9ca3-6e82ae79f6f3" _parent_id="__parent_id" _type="Output" id="e16ddf5f-642f-4948-ace4-a73342c7edfd">
+<Metadata __index="23" __referenceCounter="1" __sourcePath="{}/object/itemList" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="ded85fdc-e12b-45d2-99c4-ac2a49acce3f" _parent_id="__parent_id" _type="Output" id="6981beb9-58d2-49ad-9b0c-4370cea4f0c6">
 <Record fieldDelimiter="," name="itemList" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
@@ -10,20 +10,20 @@
 <Field __index="26" __sourcePath="{}/object/itemList/unitaryPrice" containerType="SINGLE" label="unitaryPrice" name="unitaryPrice" type="number"/>
 </Record>
 </Metadata>
-<Metadata __index="15" __referenceCounter="1" __sourcePath="{}/object/items" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="8ac5d54e-9b57-42ae-9090-f23b5dbd5640" _parent_id="__parent_id" _type="Input" id="147299ab-6ef0-4295-9b2d-4b485885c5f2">
+<Metadata __index="15" __referenceCounter="1" __sourcePath="{}/object/items" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="11efe844-8e10-49dd-a609-006c78dbca22" _parent_id="__parent_id" _type="Input" id="1154583f-0acc-48b0-a446-3b387588917a">
 <Record fieldDelimiter="," name="items" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
-<Field __index="15" __sourcePath="{}/object/items/product/price" containerType="SINGLE" label="price" name="price" type="number"/>
-<Field __index="16" __sourcePath="{}/object/items/product/name" containerType="SINGLE" label="name" name="name" type="string"/>
-<Field __index="17" __sourcePath="{}/object/items/product/id" containerType="SINGLE" label="id" name="id" type="string"/>
-<Field __index="18" __sourcePath="{}/object/items/product/category" containerType="SINGLE" label="category" name="category" type="string"/>
-<Field __index="19" __sourcePath="{}/object/items/amount" containerType="SINGLE" label="amount" name="amount" type="number"/>
+<Field __index="15" __sourcePath="{}/object/items/amount" containerType="SINGLE" label="amount" name="amount" type="number"/>
+<Field __index="16" __sourcePath="{}/object/items/product/price" containerType="SINGLE" label="price" name="price" type="number"/>
+<Field __index="17" __sourcePath="{}/object/items/product/name" containerType="SINGLE" label="name" name="name" type="string"/>
+<Field __index="18" __sourcePath="{}/object/items/product/id" containerType="SINGLE" label="id" name="id" type="string"/>
+<Field __index="19" __sourcePath="{}/object/items/product/category" containerType="SINGLE" label="category" name="category" type="string"/>
 <Field __index="20" __sourcePath="{}/object/items/quantity" containerType="SINGLE" label="quantity" name="quantity" type="integer"/>
 <Field __index="21" __sourcePath="{}/object/items/available" containerType="SINGLE" label="available" name="available" type="boolean"/>
 </Record>
 </Metadata>
-<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/object" _dataStructure="OBJECT" _id="__id" _type="Input" id="8ac5d54e-9b57-42ae-9090-f23b5dbd5640">
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/object" _dataStructure="OBJECT" _id="__id" _type="Input" id="11efe844-8e10-49dd-a609-006c78dbca22">
 <Record fieldDelimiter="," name="object" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
 <Field __index="0" __sourcePath="{}/object/amount" containerType="SINGLE" label="amount" name="amount" type="number"/>
@@ -43,7 +43,7 @@
 <Field __index="14" __sourcePath="{}/object/creationDate" containerType="SINGLE" label="creationDate" name="creationDate" type="string"/>
 </Record>
 </Metadata>
-<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/object" _dataStructure="OBJECT" _id="__id" _type="Output" id="7caf9e19-d224-4c7b-9ca3-6e82ae79f6f3">
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/object" _dataStructure="OBJECT" _id="__id" _type="Output" id="ded85fdc-e12b-45d2-99c4-ac2a49acce3f">
 <Record fieldDelimiter="," name="Order" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
 <Field __index="0" __sourcePath="{}/object/cardNumber" containerType="SINGLE" label="cardNumber" name="cardNumber" type="string"/>
@@ -83,7 +83,7 @@
 <Field __index="40" __sourcePath="{}/object/wareHouseId" containerType="SINGLE" label="wareHouseId" name="wareHouseId" type="string"/>
 </Record>
 </Metadata>
-<Metadata __index="31" __referenceCounter="0" __sourcePath="{}/object/products" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="7caf9e19-d224-4c7b-9ca3-6e82ae79f6f3" _parent_id="__parent_id" _type="Output" id="4835b9de-b25d-42f1-ab98-1dde7d77919f">
+<Metadata __index="31" __referenceCounter="0" __sourcePath="{}/object/products" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="ded85fdc-e12b-45d2-99c4-ac2a49acce3f" _parent_id="__parent_id" _type="Output" id="eaf40e56-ed31-47f3-971e-4b8bcea827bb">
 <Record fieldDelimiter="," name="products" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
@@ -231,11 +231,17 @@ output.__id = input.__id;
 //END -> DO NOT REMOVE
 output.customerId = input.customerId;
 output.kind_1 = input.kind_1;
-output.price = input.amount;
+output.teamForceId = input.id;
 output.addressLine1_1 = input.line1_1;
 output.addressLine2_1 = input.line2_1;
+output.zipCode_1 = input.zip_1;
 output.cityName_1 = input.city_1;
-output.zipCode_1 = input.zip_1;]]></attr>
+output.price = input.amount;
+output.addressLine1_2 = input.line1;
+output.addressLine2_2 = input.line2;
+output.cityName_2 = input.city;
+output.zipCode_2 = input.zip;
+output.kind_2 = input.kind;]]></attr>
 </Node>
 <Node charset="UTF-8" enabled="enabled" fileURL="dict:inputPayload" guiName="JSON READER" guiX="20" guiY="20" id="JSON_READER0" type="JSON_READER">
 <attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -257,11 +263,11 @@ output.zipCode_1 = input.zip_1;]]></attr>
     <Mapping cloverField="state" trim="true" xpath="state"/>
     <Mapping cloverField="creationDate" trim="true" xpath="creationDate"/>
     <Context generatedKey="__parent_id" outPort="1" parentKey="__id" sequenceField="__id" xpath="items">
+      <Mapping cloverField="amount" trim="true" xpath="amount"/>
       <Mapping cloverField="price" trim="true" xpath="product/price"/>
       <Mapping cloverField="name" trim="true" xpath="product/name"/>
       <Mapping cloverField="id" trim="true" xpath="product/id"/>
       <Mapping cloverField="category" trim="true" xpath="product/category"/>
-      <Mapping cloverField="amount" trim="true" xpath="amount"/>
       <Mapping cloverField="quantity" trim="true" xpath="quantity"/>
       <Mapping cloverField="available" trim="true" xpath="available"/>
     </Context>
@@ -271,9 +277,11 @@ output.zipCode_1 = input.zip_1;]]></attr>
 <attr name="_data_format"><![CDATA[JSON]]></attr>
 <attr name="jsonSchemaURL"><![CDATA[C:/Users/suparjam/Desktop/json.txt]]></attr>
 </Node>
-<Edge debugMode="true" fromNode="FOREACH_ITEMS_ITEM_LIST:0" guiBendpoints="" id="Edge3" inPort="Port 1 (in)" metadata="e16ddf5f-642f-4948-ace4-a73342c7edfd" outPort="Port 0 (out)" toNode="BEAN_WRITER0:1"/>
-<Edge debugMode="true" fromNode="FOREACH_OBJECT_OBJECT:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="7caf9e19-d224-4c7b-9ca3-6e82ae79f6f3" outPort="Port 0 (out)" toNode="BEAN_WRITER0:0"/>
-<Edge debugMode="true" fromNode="JSON_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="8ac5d54e-9b57-42ae-9090-f23b5dbd5640" outPort="Port 0 (out)" toNode="FOREACH_OBJECT_OBJECT:0"/>
-<Edge debugMode="true" fromNode="JSON_READER0:1" guiBendpoints="" id="Edge2" inPort="Port 0 (in)" metadata="147299ab-6ef0-4295-9b2d-4b485885c5f2" outPort="Port 1 (out)" toNode="FOREACH_ITEMS_ITEM_LIST:0"/>
+<Node enabled="enabled" guiName="Duplicate items" guiX="240" guiY="20" id="SIMPLE_COPY0" type="SIMPLE_COPY"/>
+<Edge debugMode="true" fromNode="FOREACH_ITEMS_ITEM_LIST:0" guiBendpoints="" id="Edge3" inPort="Port 1 (in)" metadata="6981beb9-58d2-49ad-9b0c-4370cea4f0c6" outPort="Port 0 (out)" toNode="BEAN_WRITER0:1"/>
+<Edge debugMode="true" fromNode="FOREACH_OBJECT_OBJECT:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="ded85fdc-e12b-45d2-99c4-ac2a49acce3f" outPort="Port 0 (out)" toNode="BEAN_WRITER0:0"/>
+<Edge debugMode="true" fromNode="JSON_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="11efe844-8e10-49dd-a609-006c78dbca22" outPort="Port 0 (out)" toNode="FOREACH_OBJECT_OBJECT:0"/>
+<Edge debugMode="true" fromNode="JSON_READER0:1" guiBendpoints="" id="Edge4" inPort="Port 0 (in)" metadata="1154583f-0acc-48b0-a446-3b387588917a" outPort="Port 1 (out)" toNode="SIMPLE_COPY0:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:0" guiBendpoints="" id="Edge2" inPort="Port 0 (in)" metadata="1154583f-0acc-48b0-a446-3b387588917a" outPort="Port 0 (out)" toNode="FOREACH_ITEMS_ITEM_LIST:0"/>
 </Phase>
 </Graph>
