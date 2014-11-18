@@ -14,7 +14,7 @@
 <Record fieldDelimiter="," name="job" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
-<Field __cdata="false" __index="10" __schemaType="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer}customer_query" __sourcePath="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer=ns0}/ns0:process/jobs/jobs/job/id" containerType="SINGLE" label="id" name="receiverName" type="string"/>
+<Field __cdata="false" __index="10" __schemaType="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer}customer_query" __sourcePath="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer=ns0}/ns0:process/jobs/jobs/job/id" containerType="SINGLE" label="id" name="id" type="string"/>
 <Field __index="15" __schemaType="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer}customer_query" __sourcePath="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer=ns0}/ns0:process/jobs/jobs/job/@kind" containerType="SINGLE" label="kind" name="kind" type="string"/>
 </Record>
 </Metadata>
@@ -177,7 +177,7 @@
   <jobs>
     <jobs>
       <job kind="$0.kind" clover:inPort="0">
-        <id>$0.receiverName</id>
+        <id>$0.id</id>
       </job>
     </jobs>
   </jobs>
@@ -193,7 +193,8 @@ output.__parent_id = input.__id;
 //END -> DO NOT REMOVE
 
 output.kind="VIEW_ORDER";
-output.receiverName = input.fedPsId;]]></attr>
+output.id=input.fedPsId;
+]]></attr>
 </Node>
 <Edge debugMode="true" fromNode="BEAN_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="3d427cee-1d99-4fd4-8059-ed345878ee74" outPort="Port 0 (out)" toNode="FOREACH_OBJECT_JOB:0"/>
 <Edge debugMode="true" fromNode="FOREACH_OBJECT_JOB:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="26abab53-5402-4b53-9e3b-e688812fbf8b" outPort="Port 0 (out)" toNode="EXT_XML_WRITER0:0"/>
