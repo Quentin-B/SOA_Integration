@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:ws="http://www.mulesoft.org/schema/mule/ws"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.5.1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ws http://www.mulesoft.org/schema/mule/ws/current/mule-ws.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+    <sub-flow name="sf_order_fedps_new_(extension_customer_preferences)" doc:name="sf_order_fedps_new_(extension_customer_preferences)">
+        <logger message="COMMANDE FedPS - DEBUT #[flowVars.order] #[payload]" level="INFO" doc:name="Logger"/>
+        <set-variable variableName="pref" value="#[payload.preference]" doc:name="preference"/>
+        <set-variable variableName="input" value="#[payload]" doc:name="save input"/>
+        <scripting:component doc:name="put order in list">
+            <scripting:script engine="Groovy"><![CDATA[def order = message.payload;
+
+def list = new java.util.ArrayList<fr.unice.polytech.groupe.integration.business.Order>();
+list.add(order);
+
+return list;]]></scripting:script>
+        </scripting:component>
+
+        <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrderFedPS" doc:name="/vm/MD/createQuoteFedPS_1"/>
+        <set-variable variableName="order1" value="#[message.payload]" doc:name="save quote fedPS1"/>
+        <set-payload value="#[flowVars.input]" doc:name="get saved input"/>
+        <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrderFedPS" doc:name="/vm/MD/createQuoteFedPS_2"/>
+        <set-variable variableName="order2" value="#[message.payload]" doc:name="save quote fedPS2"/>
+        <flow-ref name="choose_best_fedps" doc:name="choose_best_fedps"/>
+    </sub-flow>
+    <sub-flow name="choose_best_fedps" doc:name="choose_best_fedps">
+        <choice doc:name="Choice">
+            <when expression="#[(flowVars.preference==CHEAPEST &amp;&amp; order1.price &lt;= order2.price) || (flowVars.preference==FASTEST &amp;&amp; order1.eta &lt;= order2.eta)]">
+                <logger level="INFO" doc:name="fedps1 better"/>
+                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/confirmOrderFedPS1" doc:name="/vm/MD/confirmOrderFedPS1"/>
+            </when>
+            <otherwise>
+                <logger level="INFO" doc:name="fedps2 better"/>
+                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/confirmOrderFedPS2" doc:name="/vm/MD/confirmOrderFedPS2"/>
+            </otherwise>
+        </choice>
+        <scripting:component doc:name="update order">
+            <scripting:script engine="Groovy"><![CDATA[def order = message.getInvocationProperty('order');
+
+def result = payload.get(0);
+
+order.setFedPsId(result.orderId);
+order.deliveryInfo.setTrackingNumber(result.trackingNumber);
+order.deliveryInfo.setEta(result.eta);
+order.deliveryInfo.setDeliveryPrice(result.deliveryPrice);
+order.setParcelStatus(result.status);
+
+return order;
+]]></scripting:script>
+        </scripting:component>
+        <logger message="COMMANDE FedPS - FIN" level="INFO" doc:name="Logger"/>
+    </sub-flow>
+    
+    <sub-flow name="sf_order_teamforce_new" doc:name="sf_order_teamforce_new">
+        <logger message="COMMANDE TF - DEBUT #[flowVars.order]" level="INFO" doc:name="COMMANDE TF - DEBUT"/>
+        <flow-ref name="sf_get_prices_teamforces" doc:name="sf_get_prices_teamforces"/>
+        <scripting:component doc:name="update order et suppression des objets plus chers">
+            <scripting:script engine="Groovy"/>
+        </scripting:component>
+        <flow-ref name="sf_create_orders_teamforces" doc:name="sf_create_orders_teamforces"/>
+        <flow-ref name="sf_add_items_teamforces" doc:name="sf_add_items_teamforces"/>
+        <logger message="COMMANDE TF - FIN #[payload]" level="INFO" doc:name="COMMANDE TF - FIN"/>
+
+    </sub-flow>
+    <sub-flow name="sf_get_prices_teamforces" doc:name="sf_get_prices_teamforces">
+        <set-variable variableName="order" value="#[payload]" doc:name="order"/>
+        <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/DB/readproducts" doc:name="read DB pour creer liste produits/fournisseurs"/>
+        <logger level="INFO" doc:name="payload : Order"/>
+        <collection-splitter doc:name="split sur liste de produits/fournisseurs"/>
+        <choice doc:name="check fournisseur">
+            <when expression="#[payload != null]">
+                <logger level="INFO" doc:name="Fournisseur 1"/>
+                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/getProductTF1" doc:name="/vm/MD/getProductTF1"/>
+            </when>
+            <otherwise>
+                <logger level="INFO" doc:name="Fournisseur 2"/>
+                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/getProductTF2" doc:name="/vm/MD/getProductTF2"/>
+            </otherwise>
+        </choice>
+        <logger level="INFO" doc:name="payload : Item"/>
+        <collection-aggregator failOnTimeout="true" doc:name="Collection Aggregator"/>
+    </sub-flow>
+    <sub-flow name="sf_create_orders_teamforces" doc:name="sf_create_orders_teamforces">
+        <logger level="INFO" doc:name="Copy_of_payload : Order"/>
+        <set-variable variableName="customerId" value="#[payload.customerId]" doc:name="customerId"/>
+        <choice doc:name="si objets chez TeamForce1">
+            <when expression="#[payload != null]">
+                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrderTF1" doc:name="/vm/MD/createOrderTF1"/>
+                <scripting:component doc:name="update order">
+                    <scripting:script engine="Groovy"><![CDATA[def order = message.getInvocationProperty('order');
+order.setTeamForceId(message.payload.teamForceId);
+return order]]></scripting:script>
+                </scripting:component>
+            </when>
+            <otherwise>
+                <logger level="INFO" doc:name="Logger"/>
+            </otherwise>
+        </choice>
+        <choice doc:name="si objets chez TeamForce2">
+            <when expression="#[payload != null]">
+                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/createOrderTF2" doc:name="/vm/MD/createOrderTF2"/>
+                <scripting:component doc:name="update order">
+                    <scripting:script engine="Groovy"><![CDATA[def order = message.getInvocationProperty('order');
+order.setTeamForceId(message.payload.teamForceId);
+return order]]></scripting:script>
+                </scripting:component>
+            </when>
+            <otherwise>
+                <logger level="INFO" doc:name="Logger"/>
+            </otherwise>
+        </choice>
+    </sub-flow>
+    <sub-flow name="sf_add_items_teamforces" doc:name="sf_add_items_teamforces">
+        <collection-splitter doc:name="split sur liste items"/>
+        <choice doc:name="check fournisseur">
+            <when expression="#[payload != null]">
+                <logger level="INFO" doc:name="Fournisseur 1"/>
+                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/addItemOrderTF1" doc:name="/vm/MD/addItemOrderTF1"/>
+            </when>
+            <otherwise>
+                <logger level="INFO" doc:name="Fournisseur 2"/>
+                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/addItemOrderTF2" doc:name="/vm/MD/addItemOrderTF2"/>
+            </otherwise>
+        </choice>
+        <collection-aggregator failOnTimeout="true" doc:name="Collection Aggregator"/>
+        <scripting:component doc:name="update order">
+            <scripting:script engine="Groovy"><![CDATA[def order = message.getInvocationProperty('order');
+order.setPrice(message.payload.price);
+order.setItemList(message.payload.itemList);
+return order]]></scripting:script>
+        </scripting:component>
+    </sub-flow>
+    <sub-flow name="sf_confirm_orders_teamforces" doc:name="sf_confirm_orders_teamforces">
+        <logger level="INFO" doc:name="Copy_of_payload : Order"/>
+        <choice doc:name="si order chez TeamForce1">
+            <when expression="#[payload != null]">
+                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/confirmOrderTF1" doc:name="/vm/MD/confirmOrderTF1"/>
+                <scripting:component doc:name="update order">
+                    <scripting:script engine="Groovy"><![CDATA[def order = message.getInvocationProperty('order');
+order.setTeamForceId(message.payload.teamForceId);
+return order]]></scripting:script>
+                </scripting:component>
+            </when>
+            <otherwise>
+                <logger level="INFO" doc:name="Logger"/>
+            </otherwise>
+        </choice>
+        <choice doc:name="si order chez TeamForce2">
+            <when expression="#[payload != null]">
+                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/confirmOrderTF2" doc:name="/vm/MD/confirmOrderTF2"/>
+                <scripting:component doc:name="update order">
+                    <scripting:script engine="Groovy"><![CDATA[def order = message.getInvocationProperty('order');
+order.setTeamForceId(message.payload.teamForceId);
+return order]]></scripting:script>
+                </scripting:component>
+            </when>
+            <otherwise>
+                <logger level="INFO" doc:name="Logger"/>
+            </otherwise>
+        </choice>
+    </sub-flow>
+
+</mule>
