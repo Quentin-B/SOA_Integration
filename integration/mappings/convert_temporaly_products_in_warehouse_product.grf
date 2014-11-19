@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="Nicolas" created="Wed Nov 19 19:42:57 CET 2014" description="Convert Temporaly Products in Warehouse Product" guiVersion="3.4.4.P" id="1416430611510" licenseCode="Unlicensed" licenseType="Unknown" modified="Wed Nov 19 19:42:57 CET 2014" modifiedBy="Nicolas" name="Convert_Temporaly_Products_in_Warehouse_Product" revision="1.0" showComponentDetails="false">
+<Global>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/object" _dataStructure="OBJECT" _id="__id" _type="Output" id="ec41ac8a-da9f-4d01-856a-8ffaaa7f73af">
+<Record fieldDelimiter="," name="object" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/ProductTemp/products" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="7d50cc5b-e316-47cc-ae95-33634228951e" _parent_id="__parent_id" _type="Input" id="b0cc1342-1c9e-4fa9-966e-c14a8f7566da">
+<Record fieldDelimiter="," name="products" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="0" __sourcePath="{}/ProductTemp/products/product/product_ref" containerType="SINGLE" label="product_ref" name="product_ref" type="string"/>
+<Field __index="1" __sourcePath="{}/ProductTemp/products/product/product_name" containerType="SINGLE" label="product_name" name="product_name" type="string"/>
+<Field __index="2" __sourcePath="{}/ProductTemp/products/product/quantity" containerType="SINGLE" label="quantity" name="quantity" type="integer"/>
+<Field __index="3" __sourcePath="{}/ProductTemp/products/product/warehouse_id" containerType="SINGLE" label="warehouse_id" name="warehouse_id" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/object/products_x005fto_x005fprovisioning" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="ec41ac8a-da9f-4d01-856a-8ffaaa7f73af" _parent_id="__parent_id" _type="Output" id="db0a9e34-31c8-45db-b032-6d0d0d86f30b">
+<Record fieldDelimiter="," name="products_to_provisioning" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="0" __sourcePath="{}/object/products_x005fto_x005fprovisioning/product_x005fref" containerType="SINGLE" label="product_ref" name="product_ref" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/ProductTemp" _dataStructure="OBJECT" _id="__id" _type="Input" id="7d50cc5b-e316-47cc-ae95-33634228951e">
+<Record fieldDelimiter="," name="ProductTemp" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+</Record>
+</Metadata>
+<Dictionary>
+<Entry id="DictionaryEntry0" input="true" name="inputPayload" output="false" type="object"/>
+<Entry id="DictionaryEntry1" input="false" name="outputPayload" output="true" type="object"/>
+</Dictionary>
+</Global>
+<Phase number="0">
+<Node enabled="enabled" guiName="Foreach 'products' -&gt; 'products_x005fto_x005fprovisioning'" guiX="460" guiY="120" id="FOREACH_PRODUCTS_PRODUCTS_X005FTO_X005FPROVISIONING" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__parent_id;
+//END -> DO NOT REMOVE
+output.product_ref = input.product_ref;
+]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'ProductTemp' -&gt; 'object'" guiX="460" guiY="20" id="FOREACH_PRODUCT_TEMP_OBJECT" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+//END -> DO NOT REMOVE
+]]></attr>
+</Node>
+<Node cacheInMemory="true" charset="UTF-8" enabled="enabled" fileURL="dict:outputPayload" guiName="JSON WRITER" guiX="900" guiY="20" id="JSON_WRITER0" type="JSON_WRITER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<object xmlns:clover="http://www.cloveretl.com/ns/xmlmapping" clover:inPort="0">
+  <clover:collection clover:name="products_to_provisioning">
+    <item clover:inPort="1" clover:key="__parent_id" clover:parentKey="__id">
+      <clover:element clover:name="product_ref">$1.product_ref</clover:element>
+    </item>
+  </clover:collection>
+</object>]]></attr>
+<attr name="_data_format"><![CDATA[JSON]]></attr>
+<attr name="jsonSchemaURL"><![CDATA[C:/Users/Nicolas/Desktop/product_to_provisioning.txt]]></attr>
+</Node>
+<Node charset="UTF-8" enabled="enabled" fileURL="dict:inputPayload" guiName="XML READER" guiX="20" guiY="20" id="XML_READER0" type="XML_READER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Context outPort="0" sequenceField="__id" xpath="/ProductTemp">
+  <Context generatedKey="__parent_id" outPort="1" parentKey="__id" sequenceField="__id" xpath="products">
+    <Mapping cloverField="product_ref" trim="true" xpath="product/product_ref"/>
+    <Mapping cloverField="product_name" trim="true" xpath="product/product_name"/>
+    <Mapping cloverField="quantity" trim="true" xpath="product/quantity"/>
+    <Mapping cloverField="warehouse_id" trim="true" xpath="product/warehouse_id"/>
+  </Context>
+</Context>
+]]></attr>
+<attr name="_data_format"><![CDATA[XML]]></attr>
+</Node>
+<Edge debugMode="true" fromNode="FOREACH_PRODUCTS_PRODUCTS_X005FTO_X005FPROVISIONING:0" guiBendpoints="" id="Edge3" inPort="Port 1 (in)" metadata="db0a9e34-31c8-45db-b032-6d0d0d86f30b" outPort="Port 0 (out)" toNode="JSON_WRITER0:1"/>
+<Edge debugMode="true" fromNode="FOREACH_PRODUCT_TEMP_OBJECT:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="ec41ac8a-da9f-4d01-856a-8ffaaa7f73af" outPort="Port 0 (out)" toNode="JSON_WRITER0:0"/>
+<Edge debugMode="true" fromNode="XML_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="7d50cc5b-e316-47cc-ae95-33634228951e" outPort="Port 0 (out)" toNode="FOREACH_PRODUCT_TEMP_OBJECT:0"/>
+<Edge debugMode="true" fromNode="XML_READER0:1" guiBendpoints="" id="Edge2" inPort="Port 0 (in)" metadata="b0cc1342-1c9e-4fa9-966e-c14a8f7566da" outPort="Port 1 (out)" toNode="FOREACH_PRODUCTS_PRODUCTS_X005FTO_X005FPROVISIONING:0"/>
+</Phase>
+</Graph>
