@@ -176,11 +176,11 @@ return order]]></scripting:script>
             </otherwise>
         </choice>
     </sub-flow>
-	<flow name="extension_provisionning" doc:name="extension_provisionning">
+	<flow name="provisionning" doc:name="provisionning">
         <vm:inbound-endpoint exchange-pattern="one-way" path="/VM/interne/provisioning" doc:name="VM - Provisionning"/>
         <logger level="INFO" doc:name="Service call - Retrieve all warehouses products with quantity"/>
-        <data-mapper:transform config-ref="Convert_Warehouse_Products_in_Temporally_Products" doc:name="Convert Warehouse Products in Temporally Products"/>
         <object-to-string-transformer doc:name="Convert JSON Object in String Object"/>
+        <data-mapper:transform config-ref="Convert_Warehouse_Products_in_Temporally_Products" doc:name="Convert Warehouse Products in Temporally Products"/>
 
         <expression-filter expression="#[xpath://products/product[quantity &lt;= 60]]" doc:name="Expression - Filter on product quantity"/>
         <data-mapper:transform config-ref="Convert_Temporaly_Products_in_Warehouse_Product" returnClass="java.lang.String" doc:name="Convert Temporaly Products in Warehouse Product"/>
