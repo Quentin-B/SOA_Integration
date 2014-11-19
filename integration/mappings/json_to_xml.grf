@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="suparjam" created="Wed Nov 19 19:51:32 CET 2014" description="JSON To XML" guiVersion="3.4.4.P" id="1416423674209" licenseCode="Unlicensed" licenseType="Unknown" modified="Wed Nov 19 19:51:32 CET 2014" modifiedBy="suparjam" name="JSON_To_XML" preview-file="C:/Users/suparjam/Desktop/exemple json.txt" revision="1.0" showComponentDetails="false">
+<Global>
+<Metadata __index="3" __referenceCounter="1" __sourcePath="{}/rss/channel/item" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="d31eb022-92d1-4846-8254-525422303cef" _parent_id="__parent_id" _type="Output" id="25edf8e0-54ee-47aa-af0e-739cd019ce14">
+<Record fieldDelimiter="," name="item" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="3" __sourcePath="{}/rss/channel/item/title" containerType="SINGLE" label="title" name="title" type="string"/>
+<Field __index="4" __sourcePath="{}/rss/channel/item/description" containerType="SINGLE" label="description" name="description" type="string"/>
+<Field __index="5" __sourcePath="{}/rss/channel/item/link" containerType="SINGLE" label="link" name="link" type="string"/>
+<Field __index="6" __sourcePath="{}/rss/channel/item/id" containerType="SINGLE" label="id" name="id" type="string"/>
+<Field __index="7" __sourcePath="{}/rss/channel/item/image_link" containerType="SINGLE" label="image_link" name="image_link" type="string"/>
+<Field __index="8" __sourcePath="{}/rss/channel/item/condition" containerType="SINGLE" label="condition" name="condition" type="string"/>
+<Field __index="9" __sourcePath="{}/rss/channel/item/availability" containerType="SINGLE" label="availability" name="availability" type="string"/>
+<Field __index="10" __sourcePath="{}/rss/channel/item/price" containerType="SINGLE" label="price" name="price" type="string"/>
+<Field __index="11" __sourcePath="{}/rss/channel/item/shipping/country" containerType="SINGLE" label="country" name="country" type="string"/>
+<Field __index="12" __sourcePath="{}/rss/channel/item/shipping/service" containerType="SINGLE" label="service" name="service" type="string"/>
+<Field __index="13" __sourcePath="{}/rss/channel/item/shipping/price" containerType="SINGLE" label="price" name="price_1" type="string"/>
+<Field __index="14" __sourcePath="{}/rss/channel/item/gtin" containerType="SINGLE" label="gtin" name="gtin" type="long"/>
+<Field __index="15" __sourcePath="{}/rss/channel/item/brand" containerType="SINGLE" label="brand" name="brand" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/object" _dataStructure="OBJECT" _id="__id" _type="Input" id="bc841653-45f9-4e60-9dce-be95c4fc3c79">
+<Record fieldDelimiter="," name="object" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="0" __sourcePath="{}/object/endDate" containerType="SINGLE" label="endDate" name="endDate" type="string"/>
+<Field __index="1" __sourcePath="{}/object/name" containerType="SINGLE" label="name" name="name" type="string"/>
+<Field __index="2" __sourcePath="{}/object/id" containerType="SINGLE" label="id" name="id" type="string"/>
+<Field __index="7" __sourcePath="{}/object/startDate" containerType="SINGLE" label="startDate" name="startDate" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="3" __referenceCounter="1" __sourcePath="{}/object/productList" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="bc841653-45f9-4e60-9dce-be95c4fc3c79" _parent_id="__parent_id" _type="Input" id="f0ba7219-252a-414e-96e3-25c13dd71d3e">
+<Record fieldDelimiter="," name="productList" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="3" __sourcePath="{}/object/productList/price" containerType="SINGLE" label="price" name="price" type="number"/>
+<Field __index="4" __sourcePath="{}/object/productList/name" containerType="SINGLE" label="name" name="name" type="string"/>
+<Field __index="5" __sourcePath="{}/object/productList/id" containerType="SINGLE" label="id" name="id" type="string"/>
+<Field __index="6" __sourcePath="{}/object/productList/category" containerType="SINGLE" label="category" name="category" type="string"/>
+</Record>
+</Metadata>
+<Metadata __filteredMetadata="false" __index="0" __referenceCounter="1" __sourcePath="{}/rss" _dataStructure="OBJECT" _id="__id" _type="Output" id="d31eb022-92d1-4846-8254-525422303cef">
+<Record fieldDelimiter="," name="rss" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="0" __sourcePath="{}/rss/channel/title" containerType="SINGLE" label="title" name="title" type="string"/>
+<Field __index="1" __sourcePath="{}/rss/channel/description" containerType="SINGLE" label="description" name="description" type="string"/>
+<Field __index="2" __sourcePath="{}/rss/channel/link" containerType="SINGLE" label="link" name="link" type="string"/>
+</Record>
+</Metadata>
+<Dictionary>
+<Entry id="DictionaryEntry0" input="true" name="inputPayload" output="false" type="object"/>
+<Entry id="DictionaryEntry1" input="false" name="outputPayload" output="true" type="object"/>
+</Dictionary>
+</Global>
+<Phase number="0">
+<Node cacheInMemory="true" charset="UTF-8" enabled="enabled" fileURL="dict:outputPayload" guiName="XML WRITER" guiX="900" guiY="20" id="EXT_XML_WRITER0" type="EXT_XML_WRITER" xmlSchemaURL="C:/Users/suparjam/Desktop/googleproductsfeed.xsd">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:clover="http://www.cloveretl.com/ns/xmlmapping" clover:inPort="0">
+  <channel>
+    <title>$0.title</title>
+    <description>$0.description</description>
+    <link>$0.link</link>
+    <item clover:inPort="1" clover:key="__parent_id" clover:parentKey="__id">
+      <title>$1.title</title>
+      <description>$1.description</description>
+      <link>$1.link</link>
+      <id>$1.id</id>
+      <clover:element clover:name="image_link">$1.image_link</clover:element>
+      <condition>$1.condition</condition>
+      <availability>$1.availability</availability>
+      <price>$1.price</price>
+      <shipping>
+        <country>$1.country</country>
+        <service>$1.service</service>
+        <price>$1.price_1</price>
+      </shipping>
+      <gtin>$1.gtin</gtin>
+      <brand>$1.brand</brand>
+    </item>
+  </channel>
+</rss>]]></attr>
+<attr name="_data_format"><![CDATA[XML]]></attr>
+<attr name="__rootGlobalElementName"><![CDATA[rss]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'object' -&gt; 'rss'" guiX="460" guiY="20" id="FOREACH_OBJECT_RSS" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+//END -> DO NOT REMOVE
+output.title = input.name;
+output.description = input.name;]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'productList' -&gt; 'item'" guiX="460" guiY="120" id="FOREACH_PRODUCT_LIST_ITEM" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__parent_id;
+//END -> DO NOT REMOVE
+output.price = num2str(input.price);
+output.id = input.id;
+output.title = input.name;
+output.description = input.name;
+output.brand = input.category;]]></attr>
+</Node>
+<Node charset="UTF-8" enabled="enabled" fileURL="dict:inputPayload" guiName="JSON READER" guiX="20" guiY="20" id="JSON_READER0" type="JSON_READER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Context xpath="/root">
+  <Context outPort="0" sequenceField="__id" xpath="object">
+    <Mapping cloverField="endDate" trim="true" xpath="endDate"/>
+    <Mapping cloverField="name" trim="true" xpath="name"/>
+    <Mapping cloverField="id" trim="true" xpath="id"/>
+    <Mapping cloverField="startDate" trim="true" xpath="startDate"/>
+    <Context generatedKey="__parent_id" outPort="1" parentKey="__id" sequenceField="__id" xpath="productList">
+      <Mapping cloverField="price" trim="true" xpath="price"/>
+      <Mapping cloverField="name" trim="true" xpath="name"/>
+      <Mapping cloverField="id" trim="true" xpath="id"/>
+      <Mapping cloverField="category" trim="true" xpath="category"/>
+    </Context>
+  </Context>
+</Context>
+]]></attr>
+<attr name="_data_format"><![CDATA[JSON]]></attr>
+<attr name="jsonSchemaURL"><![CDATA[C:/Users/suparjam/Desktop/exemple json.txt]]></attr>
+</Node>
+<Edge debugMode="true" fromNode="FOREACH_OBJECT_RSS:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="d31eb022-92d1-4846-8254-525422303cef" outPort="Port 0 (out)" toNode="EXT_XML_WRITER0:0"/>
+<Edge debugMode="true" fromNode="FOREACH_PRODUCT_LIST_ITEM:0" guiBendpoints="" id="Edge3" inPort="Port 1 (in)" metadata="25edf8e0-54ee-47aa-af0e-739cd019ce14" outPort="Port 0 (out)" toNode="EXT_XML_WRITER0:1"/>
+<Edge debugMode="true" fromNode="JSON_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="bc841653-45f9-4e60-9dce-be95c4fc3c79" outPort="Port 0 (out)" toNode="FOREACH_OBJECT_RSS:0"/>
+<Edge debugMode="true" fromNode="JSON_READER0:1" guiBendpoints="" id="Edge2" inPort="Port 0 (in)" metadata="f0ba7219-252a-414e-96e3-25c13dd71d3e" outPort="Port 1 (out)" toNode="FOREACH_PRODUCT_LIST_ITEM:0"/>
+</Phase>
+</Graph>

@@ -12,6 +12,8 @@ http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/cu
 http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
 http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd">
     <data-mapper:config name="CatalogueRegs_To_Orders" transformationGraphPath="catalogueregs_to_orders.grf" doc:name="CatalogueRegs_To_Orders"/>
+    <data-mapper:config name="Catalogue_To_XML" transformationGraphPath="catalogue_to_xml.grf" doc:name="Catalogue_To_XML"/>
+    <data-mapper:config name="JSON_To_XML" transformationGraphPath="json_to_xml.grf" doc:name="JSON_To_XML"/>
     <flow name="MisterDiscount-catalogue_registry" doc:name="MisterDiscount-catalogue_registry">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8081" path="internal" doc:name="HTTP"/>
         <cxf:jaxws-service serviceClass="fr.unice.polytech.groupe.integration.services.InternalService" doc:name="CXF"/>
@@ -95,8 +97,10 @@ return orders;
     <flow name="get_catalogue" doc:name="get_catalogue">
         <vm:inbound-endpoint exchange-pattern="request-response" path="/vm/MD/getCatalogue" doc:name="VM"/>
         <logger message="GET CATALOGUE FROM TEAMFORCE :  #[payload]" level="INFO" doc:name="GET CATALOGUE"/>
-        <set-payload value="1" doc:name="Set Payload"/>
+        <set-payload value="MisterDiscountId" doc:name="Set Payload"/>
         <http:outbound-endpoint exchange-pattern="request-response" host="localhost" port="8080" path="rest/manager/catalogue/#[payload]" method="GET" doc:name="HTTP"/>
-        <object-to-string-transformer doc:name="Object to String"/>
+        <object-to-string-transformer doc:name="Object to String" returnClass="java.lang.String"/>
+        <data-mapper:transform config-ref="JSON_To_XML" doc:name="JSON To GPF"/>
+
     </flow>
 </mule>

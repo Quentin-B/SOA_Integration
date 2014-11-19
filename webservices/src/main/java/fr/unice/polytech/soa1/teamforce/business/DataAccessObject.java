@@ -93,7 +93,7 @@ public class DataAccessObject {
         HashSet<Product> catalogueListProduct3 = new HashSet<Product>();
         catalogueListProduct3.add(p7);
 
-        Catalogue catalogue1 = new Catalogue("1","SUMMER15",catalogueListProduct1,"01/06/2015","31/08/2015");
+        Catalogue catalogue1 = new Catalogue("MisterDiscountId","SUMMER15",catalogueListProduct1,"01/06/2015","31/08/2015");
         Catalogue catalogue2 = new Catalogue("2","WINTER14",catalogueListProduct2,"01/01/2014","31/03/2014");
         Catalogue catalogue3 = new Catalogue("3","SPRING15",catalogueListProduct3,"01/04/2015","31/05/2015");
 

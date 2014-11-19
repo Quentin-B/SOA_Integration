@@ -1,7 +1,7 @@
 package fr.unice.polytech.groupe.integration.business.catalogue;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -11,11 +11,16 @@ import java.util.UUID;
 public class Catalogue {
     private String id;
     private String name;
-    private Set<Product> productList;
+    private List<Product> productList;
     private String startDate;
     private String endDate;
+    
+    public Catalogue()
+    {
+    	this.productList = new ArrayList<Product>();
+    }
 
-    public Catalogue(String id, String name, Set<Product> productList, String startDate, String endDate) {
+    public Catalogue(String id, String name, ArrayList<Product> productList, String startDate, String endDate) {
         this.id = id;
         this.name = name;
         this.productList = productList;
@@ -26,7 +31,7 @@ public class Catalogue {
     public Catalogue(String name, String startDate, String endDate) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
-        this.productList = new HashSet<Product>();
+        this.productList = new ArrayList<Product>();
         this.startDate = startDate;
         this.endDate = endDate;
     }
@@ -47,11 +52,11 @@ public class Catalogue {
         this.name = name;
     }
 
-    public Set<Product> getProductList() {
+    public List<Product> getProductList() {
         return productList;
     }
 
-    public void setProductList(Set<Product> productList) {
+    public void setProductList(ArrayList<Product> productList) {
         this.productList = productList;
     }
 
