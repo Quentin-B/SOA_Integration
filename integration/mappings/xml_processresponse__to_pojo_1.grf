@@ -6,8 +6,9 @@
 <Field __index="0" __sourcePath="{}/object/deliveryPrice" containerType="SINGLE" label="deliveryPrice" name="deliveryPrice" type="number"/>
 <Field __index="1" __sourcePath="{}/object/estimationDate" containerType="SINGLE" label="estimationDate" name="estimationDate" type="date"/>
 <Field __index="2" __sourcePath="{}/object/orderId" containerType="SINGLE" label="orderId" name="orderId" type="string"/>
-<Field __index="3" __sourcePath="{}/object/status" containerType="SINGLE" label="status" name="status" type="string"/>
-<Field __index="4" __sourcePath="{}/object/trackingNumber" containerType="SINGLE" label="trackingNumber" name="trackingNumber" type="string"/>
+<Field __index="3" __sourcePath="{}/object/receiverName" containerType="SINGLE" label="receiverName" name="receiverName" type="string"/>
+<Field __index="4" __sourcePath="{}/object/status" containerType="SINGLE" label="status" name="status" type="string"/>
+<Field __index="5" __sourcePath="{}/object/trackingNumber" containerType="SINGLE" label="trackingNumber" name="trackingNumber" type="string"/>
 </Record>
 </Metadata>
 <Metadata __filteredMetadata="false" __index="0" __referenceCounter="0" __schemaType="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer}processResponse" __sourcePath="{http://informatique.polytech.unice.fr/soa1/fedps/camillie/private/customer=ns0}/ns0:processResponse" _dataStructure="OBJECT" _id="__id" _type="Input" id="8660ca3a-5dc4-4dd1-aa32-06c04df340d8">
@@ -53,6 +54,7 @@
   <deliveryPrice>$0.deliveryPrice</deliveryPrice>
   <estimationDate>$0.estimationDate</estimationDate>
   <orderId>$0.orderId</orderId>
+  <receiverName>$0.receiverName</receiverName>
   <status>$0.status</status>
   <trackingNumber>$0.trackingNumber</trackingNumber>
 </object>]]></attr>
@@ -66,6 +68,7 @@
     <typed-object-ref name="deliveryPrice" type-ref="double"/>
     <typed-object-ref name="estimationDate" type-ref="java.util.Date"/>
     <typed-object-ref name="orderId" type-ref="java.lang.String"/>
+    <typed-object-ref name="receiverName" type-ref="java.lang.String"/>
     <typed-object-ref name="status" type-ref="fr.unice.polytech.groupe.integration.business.ParcelStatus"/>
     <typed-object-ref name="trackingNumber" type-ref="java.lang.String"/>
   </typed-object>
@@ -82,7 +85,8 @@ output.trackingNumber = input.parcelId;
 output.deliveryPrice = input.price;
 output.estimationDate = long2date(input.ETA);
 output.orderId = input.id;
-output.status = input.customerId;]]></attr>
+output.status = input.customerId;
+output.receiverName = input.receiverName;]]></attr>
 </Node>
 <Node charset="UTF-8" enabled="enabled" fileURL="dict:inputPayload" guiName="XML READER" guiX="20" guiY="20" id="XML_READER0" type="XML_READER">
 <attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>

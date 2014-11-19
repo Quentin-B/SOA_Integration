@@ -86,8 +86,8 @@ return orders;
         </scripting:component>
         <collection-splitter doc:name="Collection Splitter"/>
         <vm:outbound-endpoint exchange-pattern="one-way" path="/vm/admin/save/catorder" doc:name="save db"/>
-        <logger message="Send mail w/ ETA and trackingNumber #[payload.trackingNumber], etc" level="INFO" doc:name="SEND MAIL"/>
         <data-mapper:transform config-ref="create_receipt" doc:name="order to receipt"/>
+        <logger message="Send mail w/ ETA and trackingNumber #[payload.trackingNumber], etc" level="INFO" doc:name="SEND MAIL"/>
         <collection-aggregator failOnTimeout="true" doc:name="Collection Aggregator"/>
         <logger message="#[payload.size()] catalogues sent" level="INFO" doc:name="Logger"/>
         <set-payload value="#[payload.size()]" doc:name="Set Payload"/>

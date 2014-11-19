@@ -12,26 +12,27 @@
 <Record fieldDelimiter="," name="list" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
 <Field __index="0" __sourcePath="{}/list/cardNumber" containerType="SINGLE" label="cardNumber" name="cardNumber" type="string"/>
-<Field __index="1" __sourcePath="{}/list/invoiceAddress/addressLine1" containerType="SINGLE" label="addressLine1" name="addressLine1" type="string"/>
-<Field __index="2" __sourcePath="{}/list/invoiceAddress/addressLine2" containerType="SINGLE" label="addressLine2" name="addressLine2" type="string"/>
-<Field __index="3" __sourcePath="{}/list/invoiceAddress/cityName" containerType="SINGLE" label="cityName" name="cityName" type="string"/>
-<Field __index="4" __sourcePath="{}/list/invoiceAddress/country" containerType="SINGLE" label="country" name="country" type="string"/>
-<Field __index="5" __sourcePath="{}/list/invoiceAddress/kind" containerType="SINGLE" label="kind" name="kind" type="string"/>
-<Field __index="6" __sourcePath="{}/list/invoiceAddress/zipCode" containerType="SINGLE" label="zipCode" name="zipCode" type="string"/>
-<Field __index="7" __sourcePath="{}/list/name" containerType="SINGLE" label="name" name="name" type="string"/>
-<Field __index="10" __sourcePath="{}/list/shippingAddress/addressLine1" containerType="SINGLE" label="addressLine1" name="addressLine1_1" type="string"/>
-<Field __index="11" __sourcePath="{}/list/shippingAddress/addressLine2" containerType="SINGLE" label="addressLine2" name="addressLine2_1" type="string"/>
-<Field __index="12" __sourcePath="{}/list/shippingAddress/cityName" containerType="SINGLE" label="cityName" name="cityName_1" type="string"/>
-<Field __index="13" __sourcePath="{}/list/shippingAddress/country" containerType="SINGLE" label="country" name="country_1" type="string"/>
-<Field __index="14" __sourcePath="{}/list/shippingAddress/kind" containerType="SINGLE" label="kind" name="kind_1" type="string"/>
-<Field __index="15" __sourcePath="{}/list/shippingAddress/zipCode" containerType="SINGLE" label="zipCode" name="zipCode_1" type="string"/>
+<Field __index="1" __sourcePath="{}/list/customerId" containerType="SINGLE" label="customerId" name="customerId" type="string"/>
+<Field __index="2" __sourcePath="{}/list/invoiceAddress/addressLine1" containerType="SINGLE" label="addressLine1" name="addressLine1" type="string"/>
+<Field __index="3" __sourcePath="{}/list/invoiceAddress/addressLine2" containerType="SINGLE" label="addressLine2" name="addressLine2" type="string"/>
+<Field __index="4" __sourcePath="{}/list/invoiceAddress/cityName" containerType="SINGLE" label="cityName" name="cityName" type="string"/>
+<Field __index="5" __sourcePath="{}/list/invoiceAddress/country" containerType="SINGLE" label="country" name="country" type="string"/>
+<Field __index="6" __sourcePath="{}/list/invoiceAddress/kind" containerType="SINGLE" label="kind" name="kind" type="string"/>
+<Field __index="7" __sourcePath="{}/list/invoiceAddress/zipCode" containerType="SINGLE" label="zipCode" name="zipCode" type="string"/>
+<Field __index="8" __sourcePath="{}/list/name" containerType="SINGLE" label="name" name="name" type="string"/>
+<Field __index="11" __sourcePath="{}/list/shippingAddress/addressLine1" containerType="SINGLE" label="addressLine1" name="addressLine1_1" type="string"/>
+<Field __index="12" __sourcePath="{}/list/shippingAddress/addressLine2" containerType="SINGLE" label="addressLine2" name="addressLine2_1" type="string"/>
+<Field __index="13" __sourcePath="{}/list/shippingAddress/cityName" containerType="SINGLE" label="cityName" name="cityName_1" type="string"/>
+<Field __index="14" __sourcePath="{}/list/shippingAddress/country" containerType="SINGLE" label="country" name="country_1" type="string"/>
+<Field __index="15" __sourcePath="{}/list/shippingAddress/kind" containerType="SINGLE" label="kind" name="kind_1" type="string"/>
+<Field __index="16" __sourcePath="{}/list/shippingAddress/zipCode" containerType="SINGLE" label="zipCode" name="zipCode_1" type="string"/>
 </Record>
 </Metadata>
 <Metadata __index="0" __referenceCounter="1" __schemaType="orderType" __sourcePath="{}/orders/order" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="4588dedd-85a9-4284-ae24-ed97103dcd21" _parent_id="__parent_id" _type="Input" id="57b8927f-4113-4b8f-bd04-8a9bcd5f6296">
 <Record fieldDelimiter="," name="order" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
-<Field __index="0" __schemaType="orderType" __sourcePath="{}/orders/order/cardNumber" containerType="SINGLE" label="cardNumber" name="cardNumber" type="long"/>
+<Field __cdata="false" __index="0" __schemaType="orderType" __sourcePath="{}/orders/order/cardNumber" containerType="SINGLE" label="cardNumber" name="cardNumber" type="string"/>
 <Field __index="1" __schemaType="invoiceAddressType" __sourcePath="{}/orders/order/invoiceAddress/addressLine1" containerType="SINGLE" label="addressLine1" name="addressLine1" type="string"/>
 <Field __index="2" __schemaType="invoiceAddressType" __sourcePath="{}/orders/order/invoiceAddress/addressLine2" containerType="SINGLE" label="addressLine2" name="addressLine2" type="string"/>
 <Field __index="3" __schemaType="invoiceAddressType" __sourcePath="{}/orders/order/invoiceAddress/city" containerType="SINGLE" label="city" name="city" type="string"/>
@@ -45,6 +46,7 @@
 <Field __index="13" __schemaType="shippingAddressType" __sourcePath="{}/orders/order/shippingAddress/country" containerType="SINGLE" label="country" name="country_1" type="string"/>
 <Field __index="14" __schemaType="shippingAddressType" __sourcePath="{}/orders/order/shippingAddress/kind" containerType="SINGLE" label="kind" name="kind_1" type="string"/>
 <Field __index="15" __schemaType="shippingAddressType" __sourcePath="{}/orders/order/shippingAddress/zipCode" containerType="SINGLE" label="zipCode" name="zipCode_1" type="string"/>
+<Field __sourcePath="{}/orders/order/customerId" containerType="SINGLE" label="customerId" name="customerId" type="string"/>
 </Record>
 </Metadata>
 <Metadata __filteredMetadata="false" __index="0" __referenceCounter="0" __schemaType="ordersType" __sourcePath="{}/orders" _dataStructure="OBJECT" _id="__id" _type="Input" id="4588dedd-85a9-4284-ae24-ed97103dcd21">
@@ -52,12 +54,12 @@
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
 </Record>
 </Metadata>
-<Metadata __index="8" __referenceCounter="1" __sourcePath="{}/list/products" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="84d7296b-a33d-4b50-89df-d396dd33fa26" _parent_id="__parent_id" _type="Output" id="80ee2634-a87a-44fd-96d0-fe494372373b">
+<Metadata __index="9" __referenceCounter="1" __sourcePath="{}/list/products" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="84d7296b-a33d-4b50-89df-d396dd33fa26" _parent_id="__parent_id" _type="Output" id="80ee2634-a87a-44fd-96d0-fe494372373b">
 <Record fieldDelimiter="," name="products" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
-<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
-<Field __index="8" __sourcePath="{}/list/products/key" containerType="SINGLE" label="key" name="key" type="string"/>
-<Field __index="9" __sourcePath="{}/list/products/value" containerType="SINGLE" label="value" name="value" type="integer"/>
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __index="9" __sourcePath="{}/list/products/key" containerType="SINGLE" label="key" name="key" type="string"/>
+<Field __index="10" __sourcePath="{}/list/products/value" containerType="SINGLE" label="value" name="value" type="integer"/>
 </Record>
 </Metadata>
 <Dictionary>
@@ -71,6 +73,7 @@
 <clover:collection clover:name="list" xmlns:clover="http://www.cloveretl.com/ns/xmlmapping">
   <item clover:inPort="0">
     <cardNumber>$0.cardNumber</cardNumber>
+    <customerId>$0.customerId</customerId>
     <invoiceAddress>
       <addressLine1>$0.addressLine1</addressLine1>
       <addressLine2>$0.addressLine2</addressLine2>
@@ -113,6 +116,7 @@
   <typed-object type="java.lang.String"/>
   <typed-object type="fr.unice.polytech.groupe.integration.business.OrderInput">
     <typed-object-ref name="cardNumber" type-ref="java.lang.String"/>
+    <typed-object-ref name="customerId" type-ref="java.lang.String"/>
     <typed-object-ref name="invoiceAddress" type-ref="fr.unice.polytech.groupe.integration.business.Address"/>
     <typed-object-ref name="name" type-ref="java.lang.String"/>
     <schema-map name="products" type="java.util.Map">
@@ -140,7 +144,7 @@ output.value = input.value;
 //START -> DO NOT REMOVE
 output.__id = input.__id;
 //END -> DO NOT REMOVE
-output.cardNumber = num2str(input.cardNumber);
+output.cardNumber = input.cardNumber;
 output.addressLine1 = input.addressLine1;
 output.addressLine2 = input.addressLine2;
 output.country = input.country;
@@ -153,7 +157,8 @@ output.country_1 = input.country_1;
 output.kind_1 = input.kind_1;
 output.zipCode_1 = input.zipCode_1;
 output.cityName = input.city;
-output.cityName_1 = input.city_1;]]></attr>
+output.cityName_1 = input.city_1;
+output.customerId = input.customerId;]]></attr>
 </Node>
 <Node charset="UTF-8" enabled="enabled" fileURL="dict:inputPayload" guiName="XML READER" guiX="20" guiY="20" id="XML_READER0" type="XML_READER">
 <attr name="xmlSchemaURL"><![CDATA[./src/test/resources/orders.xsd]]></attr>
@@ -173,6 +178,7 @@ output.cityName_1 = input.city_1;]]></attr>
   <Mapping cloverField="country_1" trim="true" xpath="shippingAddress/country"/>
   <Mapping cloverField="kind_1" trim="true" xpath="shippingAddress/kind"/>
   <Mapping cloverField="zipCode_1" trim="true" xpath="shippingAddress/zipCode"/>
+  <Mapping cloverField="customerId" trim="true" xpath="customerId"/>
   <Context generatedKey="__parent_id" outPort="1" parentKey="__id" sequenceField="__id" xpath="products/entry">
     <Mapping cloverField="key" trim="true" xpath="key"/>
     <Mapping cloverField="value" trim="true" xpath="value"/>

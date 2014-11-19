@@ -2,16 +2,16 @@
 <orders>
 	<order>
             <cardNumber>123456890098765</cardNumber>
+			<customerId>1</customerId>
             <invoiceAddress>
-               <addressLine1>AA</addressLine1>
-               <addressLine2>BB</addressLine2>
-               <city>FF</city>
-               <country>RT</country>
+               <addressLine1>4 rue de l'Europe</addressLine1>
+               <city>Paris</city>
+               <country>France</country>
                <!--Optional:-->
                <kind>PERSONAL</kind>
-               <zipCode>2235</zipCode>
+               <zipCode>75000</zipCode>
             </invoiceAddress>
-            <name>Ad;zp</name>
+            <name>Agnès Dupont</name>
             <products>
                <!--Zero or more repetitions:-->
                <entry>
@@ -24,26 +24,26 @@
                </entry>
             </products>
             <shippingAddress>
-               <addressLine1>AA</addressLine1>
-               <addressLine2>BB</addressLine2>
-               <city>FF</city>
-               <country>RT</country>
+               <addressLine1>4 rue de l'Europe</addressLine1>
+               <city>Paris</city>
+               <country>France</country>
                <!--Optional:-->
                <kind>PERSONAL</kind>
-               <zipCode>2235</zipCode>
+               <zipCode>75000</zipCode>
             </shippingAddress>
         </order>
 	<order>
             <cardNumber>846370843465817</cardNumber>
+			<customerId>2</customerId>
             <invoiceAddress>
-               <addressLine1>CC</addressLine1>
-               <addressLine2></addressLine2>
-               <city>Faaa</city>
-               <country>FR</country>
+               <addressLine1>Résidence Thésa</addressLine1>
+               <addressLine2>210 Avenue Roumanille</addressLine2>
+               <city>Biot</city>
+               <country>France</country>
                <kind>PROFESSIONAL</kind>
-               <zipCode>22D 35</zipCode>
+               <zipCode>06410</zipCode>
             </invoiceAddress>
-            <name>Ad;zp</name>
+            <name>Cécile Camillieri</name>
             <products>
                <!--Zero or more repetitions:-->
                <entry>
@@ -52,12 +52,12 @@
                </entry>
             </products>
             <shippingAddress>
-               <addressLine1>CC</addressLine1>
-			   <addressLine2></addressLine2>
-               <city>Faaa</city>
-               <country>FR</country>
+               <addressLine1>Résidence Thésa</addressLine1>
+               <addressLine2>210 Avenue Roumanille</addressLine2>
+               <city>Biot</city>
+               <country>France</country>
                <kind>PROFESSIONAL</kind>
-               <zipCode>22D 35</zipCode>
+               <zipCode>06410</zipCode>
             </shippingAddress>
         </order>
 </orders>

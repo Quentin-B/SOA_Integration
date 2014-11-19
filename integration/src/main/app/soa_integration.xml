@@ -332,7 +332,6 @@ else
             </otherwise>
         </choice>
         <flow-ref name="get_order_sub" doc:name="get_order_subflow"/>
-
         <data-mapper:transform config-ref="create_receipt" doc:name="create receipt"/>
 
     </flow>
@@ -344,11 +343,11 @@ else
 
 def result = payload;
 
-order.setFedPsId(result.orderId);
-order.deliveryInfo.setTrackingNumber(result.trackingNumber);
-order.deliveryInfo.setEta(result.eta);
-order.deliveryInfo.setDeliveryPrice(result.deliveryPrice);
-order.setParcelStatus(result.status);
+
+order.setInvoiceAddress(result.getInvoiceAddress());
+order.setShippingAddress(result.getShippingAddress());
+order.setItemList(result.getItemList());
+order.setPrice(result.getPrice());
 
 return order;
 ]]></scripting:script>
@@ -364,6 +363,7 @@ order.deliveryInfo.setTrackingNumber(result.trackingNumber);
 order.deliveryInfo.setEta(result.eta);
 order.deliveryInfo.setDeliveryPrice(result.deliveryPrice);
 order.setParcelStatus(result.status);
+order.setName(result.receiverName);
 
 return order;
 ]]></scripting:script>

@@ -7,6 +7,7 @@ import fr.unice.polytech.groupe.integration.business.ParcelStatus;
 public class OrderResult {
 	
 	private String orderId;
+	private String receiverName;
 	private Date eta;
 	private double deliveryPrice;
 	private String trackingNumber;
@@ -41,6 +42,12 @@ public class OrderResult {
 	}
 	public void setStatus(ParcelStatus status) {
 		this.status = status;
+	}
+	public String getReceiverName() {
+		return receiverName;
+	}
+	public void setReceiverName(String receiverName) {
+		this.receiverName = receiverName;
 	}
 
 }
