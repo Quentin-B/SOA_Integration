@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:ws="http://www.mulesoft.org/schema/mule/ws"
+<mule xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:ws="http://www.mulesoft.org/schema/mule/ws"
 	xmlns:http="http://www.mulesoft.org/schema/mule/http"
 	xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
 	xmlns:file="http://www.mulesoft.org/schema/mule/file"
@@ -15,7 +15,9 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd">
+
     <sub-flow name="sf_order_fedps_new_(extension_customer_preferences)" doc:name="sf_order_fedps_new_(extension_customer_preferences)">
         <logger message="COMMANDE FedPS - DEBUT #[flowVars.order] #[payload]" level="INFO" doc:name="Logger"/>
         <set-variable variableName="pref" value="#[payload.preference]" doc:name="preference"/>
@@ -171,6 +173,18 @@ return order]]></scripting:script>
                 <logger level="INFO" doc:name="Logger"/>
             </otherwise>
         </choice>
+    </sub-flow>
+    <sub-flow name="extension_catalogue_update" doc:name="extension_catalogue_update">
+        <vm:outbound-endpoint exchange-pattern="one-way" path="/VM/TeamForce1/getCatalogue" doc:name="GetCatalogue TeamForce1"/>
+        <logger level="INFO" doc:name="Appel Service - r&#233;cup&#233;ration du catalogue actuel du fournisseur 1"/>
+        <scripting:component doc:name="Update Catalogue TeamForce1 in DB MisterDiscount ">
+            <scripting:script engine="Groovy"><![CDATA[return payload;]]></scripting:script>
+        </scripting:component>
+        <vm:outbound-endpoint exchange-pattern="one-way" path="/VM/TeamForce2/getCatalogue" doc:name="getCatalogueTeamForce1"/>
+        <logger level="INFO" doc:name="Appel Service - r&#233;cup&#233;ration du catalogue actuel du fournisseur 2"/>
+        <scripting:component doc:name="Update Catalogue TeamForce2 in DB MisterDiscount ">
+            <scripting:script engine="Groovy"><![CDATA[return payload;]]></scripting:script>
+        </scripting:component>
     </sub-flow>
 
 </mule>
