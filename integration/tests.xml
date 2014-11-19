@@ -453,7 +453,55 @@
 </soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response"/><con:assertion type="SOAP Fault Assertion"/><con:assertion type="Schema Compliance" name="Schema Compliance"><con:configuration><definition/></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="transfer" name="get nb envois"><con:settings/><con:config xsi:type="con:PropertyTransfersStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" useXQuery="false" entitize="false" transferChildNodes="false"><con:name>nbEnvois</con:name><con:sourceType>Response</con:sourceType><con:sourceStep>envoi aux inscrits</con:sourceStep><con:sourcePath>//number</con:sourcePath><con:targetType>nbEnvois</con:targetType><con:targetStep>#TestCase#</con:targetStep></con:transfers></con:config></con:testStep><con:testStep type="groovy" name="check inscrits = envoi"><con:settings/><con:config><script>def cmd = testRunner.testCase.getPropertyValue("nbCommandes");
 def envois = testRunner.testCase.getPropertyValue("nbEnvois");
 return cmd == envois;</script></con:config></con:testStep><con:properties><con:property><con:name>nbCommandes</con:name><con:value>2</con:value></con:property><con:property><con:name>nbEnvois</con:name><con:value>2</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite>
-<con:testSuite name="Taking order TestSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="passer commande" searchProperties="true" id="5ad60d01-bca4-4915-8d0d-ccaa83406cd6"><con:settings/><con:testStep type="httprequest" name="create db"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" name="create db" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:8081/admin/init</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:config></con:testStep><con:testStep type="request" name="create Order"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>MisterDiscountServiceServiceSoapBinding</con:interface><con:operation>createOrder</con:operation><con:request name="create Order"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8081/MD/MisterDiscountService</con:endpoint><con:request><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<con:testSuite name="Taking order TestSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="errors" searchProperties="true" id="a721cf14-9209-481e-bc5b-ac06dc4feb7c"><con:settings/><con:testStep type="httprequest" name="create DB"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" name="create DB" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:8081/admin/init</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:config></con:testStep><con:testStep type="request" name="bad customer id"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>MisterDiscountServiceServiceSoapBinding</con:interface><con:operation>createOrder</con:operation><con:request name="bad customer id"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8081/MD/MisterDiscountService</con:endpoint><con:request><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.integration.groupe.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:createOrder>
+         <order>
+            <cardNumber>123456890098765</cardNumber>
+            <id>53</id>
+            <invoiceAddress>
+               <line1>AA</line1>
+               <line2>BB</line2>
+               <city>FF</city>
+               <country>RT</country>
+               <kind>PERSONAL</kind>
+               <zip>2235</zip>
+            </invoiceAddress>
+            <name>Ad;zp</name>
+            <products>
+               <entry>
+                  <key>J7W5PI2IQ29CQ6K</key>
+                  <value>5</value>
+               </entry>
+               <entry>
+                  <key>B8M6GJ4JX48ZL1N</key>
+                  <value>1</value>
+               </entry>
+            </products>
+            <shippingAddress>
+               <line1>AA</line1>
+               <line2>BB</line2>
+               <city>FF</city>
+               <country>RT</country>
+               <kind>PERSONAL</kind>
+               <zip>2235</zip>
+            </shippingAddress>
+         </order>
+      </ser:createOrder>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response"/><con:assertion type="Not SOAP Fault Assertion" name="SOAP Fault"/><con:assertion type="Schema Compliance" name="Schema Compliance"><con:configuration><definition/></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="bad order request"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>MisterDiscountServiceServiceSoapBinding</con:interface><con:operation>getOrderInfo</con:operation><con:request name="bad order request"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8081/MD/MisterDiscountService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.integration.groupe.polytech.unice.fr/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:getOrderInfo>
+         <order>
+            <customerId>1</customerId>
+            <orderId>bonjour</orderId>
+         </order>
+      </ser:getOrderInfo>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response"/><con:assertion type="Not SOAP Fault Assertion" name="SOAP Fault"/><con:assertion type="Schema Compliance" name="Schema Compliance"><con:configuration><definition/></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="passer commande" searchProperties="true" id="5ad60d01-bca4-4915-8d0d-ccaa83406cd6"><con:settings/><con:testStep type="httprequest" name="create db"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" name="create db" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:8081/admin/init</con:endpoint><con:request/><con:assertion type="Valid HTTP Status Codes" name="Valid HTTP Status Codes"><con:configuration><codes>200</codes></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:config></con:testStep><con:testStep type="request" name="create Order"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>MisterDiscountServiceServiceSoapBinding</con:interface><con:operation>createOrder</con:operation><con:request name="create Order"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8081/MD/MisterDiscountService</con:endpoint><con:request><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.integration.groupe.polytech.unice.fr/">
    <soapenv:Header/>
    <soapenv:Body>
@@ -497,7 +545,7 @@ return cmd == envois;</script></con:config></con:testStep><con:properties><con:p
       <ser:getOrderInfo>
          <order>
             <customerId>1</customerId>
-            <orderId>c5c7bfe0-7f05-4aa8-9f58-35a9e015ee0a</orderId>
+            <orderId>f921176d-f4a8-4aff-85f9-c14d1970366c</orderId>
          </order>
       </ser:getOrderInfo>
    </soapenv:Body>
