@@ -64,9 +64,9 @@ return order;
         <logger message="COMMANDE FedPS - FIN" level="INFO" doc:name="Logger"/>
     </sub-flow>
     
-    <sub-flow name="sf_order_teamforce_new" doc:name="sf_order_teamforce_new">
+    <sub-flow name="sf_order_teamforce_new_(extension_best_seller_policy)" doc:name="sf_order_teamforce_new_(extension_best_seller_policy)">
         <logger message="COMMANDE TF - DEBUT #[flowVars.order]" level="INFO" doc:name="COMMANDE TF - DEBUT"/>
-        <flow-ref name="sf_get_prices_teamforces" doc:name="sf_get_prices_teamforces"/>
+        <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/DB/readproducts" doc:name="read DB pour creer liste produits/fournisseurs/prix"/>
         <scripting:component doc:name="update order et suppression des objets plus chers">
             <scripting:script engine="Groovy"/>
         </scripting:component>
@@ -74,24 +74,6 @@ return order;
         <flow-ref name="sf_add_items_teamforces" doc:name="sf_add_items_teamforces"/>
         <logger message="COMMANDE TF - FIN #[payload]" level="INFO" doc:name="COMMANDE TF - FIN"/>
 
-    </sub-flow>
-    <sub-flow name="sf_get_prices_teamforces" doc:name="sf_get_prices_teamforces">
-        <set-variable variableName="order" value="#[payload]" doc:name="order"/>
-        <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/DB/readproducts" doc:name="read DB pour creer liste produits/fournisseurs"/>
-        <logger level="INFO" doc:name="payload : Order"/>
-        <collection-splitter doc:name="split sur liste de produits/fournisseurs"/>
-        <choice doc:name="check fournisseur">
-            <when expression="#[payload != null]">
-                <logger level="INFO" doc:name="Fournisseur 1"/>
-                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/getProductTF1" doc:name="/vm/MD/getProductTF1"/>
-            </when>
-            <otherwise>
-                <logger level="INFO" doc:name="Fournisseur 2"/>
-                <vm:outbound-endpoint exchange-pattern="request-response" path="/vm/MD/getProductTF2" doc:name="/vm/MD/getProductTF2"/>
-            </otherwise>
-        </choice>
-        <logger level="INFO" doc:name="payload : Item"/>
-        <collection-aggregator failOnTimeout="true" doc:name="Collection Aggregator"/>
     </sub-flow>
     <sub-flow name="sf_create_orders_teamforces" doc:name="sf_create_orders_teamforces">
         <logger level="INFO" doc:name="Copy_of_payload : Order"/>
