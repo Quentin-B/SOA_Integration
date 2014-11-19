@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="Nicolas" created="Wed Nov 19 19:42:57 CET 2014" description="Convert Warehouse Products in Temporally Products" guiVersion="3.4.4.P" id="1416429713271" licenseCode="Unlicensed" licenseType="Unknown" modified="Wed Nov 19 19:42:57 CET 2014" modifiedBy="Nicolas" name="Convert_Warehouse_Products_in_Temporally_Products" preview-file="C:/Users/Nicolas/Desktop/json_product_quantity.txt" revision="1.0" showComponentDetails="false">
+<Global>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/Products" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _type="Input" id="62e80712-61d3-48a2-a90c-ce26554945af">
+<Record fieldDelimiter="," name="Products" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="1" __sourcePath="{}/Products/product_x005fname" containerType="SINGLE" label="product_name" name="product_name" type="string"/>
+<Field __index="0" __sourcePath="{}/Products/product_x005fref" containerType="SINGLE" label="product_ref" name="product_ref" type="string"/>
+<Field __index="2" __sourcePath="{}/Products/quantity" containerType="SINGLE" label="quantity" name="quantity" type="integer"/>
+<Field __index="3" __sourcePath="{}/Products/warehouse_x005fid" containerType="SINGLE" label="warehouse_id" name="warehouse_id" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/Products" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _type="Output" id="c6b16fe8-6ec5-4619-b194-d5beb92884eb">
+<Record fieldDelimiter="," name="Products" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __index="0" __sourcePath="{}/Products/product_name" containerType="SINGLE" label="product_name" name="product_name" type="string"/>
+<Field __index="1" __sourcePath="{}/Products/product_ref" containerType="SINGLE" label="product_ref" name="product_ref" type="string"/>
+<Field __index="2" __sourcePath="{}/Products/quantity" containerType="SINGLE" label="quantity" name="quantity" type="integer"/>
+<Field __index="3" __sourcePath="{}/Products/warehouse_id" containerType="SINGLE" label="warehouse_id" name="warehouse_id" type="string"/>
+</Record>
+</Metadata>
+<Dictionary>
+<Entry id="DictionaryEntry0" input="true" name="inputPayload" output="false" type="object"/>
+<Entry id="DictionaryEntry1" input="false" name="outputPayload" output="true" type="object"/>
+</Dictionary>
+</Global>
+<Phase number="0">
+<Node cacheInMemory="true" charset="UTF-8" enabled="enabled" fileURL="dict:outputPayload" guiName="XML WRITER" guiX="900" guiY="20" id="EXT_XML_WRITER0" type="EXT_XML_WRITER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<Products xmlns:clover="http://www.cloveretl.com/ns/xmlmapping" clover:inPort="0">
+  <clover:element clover:name="product_name">$0.product_name</clover:element>
+  <clover:element clover:name="product_ref">$0.product_ref</clover:element>
+  <quantity>$0.quantity</quantity>
+  <clover:element clover:name="warehouse_id">$0.warehouse_id</clover:element>
+</Products>]]></attr>
+<attr name="_data_format"><![CDATA[XML]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'Products' -&gt; 'Products'" guiX="460" guiY="20" id="FOREACH_PRODUCTS_PRODUCTS" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+//END -> DO NOT REMOVE
+output.product_name = input.product_name;
+output.product_ref = input.product_ref;
+output.quantity = input.quantity;
+output.warehouse_id = input.warehouse_id;
+]]></attr>
+</Node>
+<Node charset="UTF-8" enabled="enabled" fileURL="dict:inputPayload" guiName="JSON READER" guiX="20" guiY="20" id="JSON_READER0" type="JSON_READER">
+<attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Context xpath="/root">
+  <Context outPort="0" sequenceField="__id" xpath="array">
+    <Mapping cloverField="product_name" trim="true" xpath="product_x005fname"/>
+    <Mapping cloverField="product_ref" trim="true" xpath="product_x005fref"/>
+    <Mapping cloverField="quantity" trim="true" xpath="quantity"/>
+    <Mapping cloverField="warehouse_id" trim="true" xpath="warehouse_x005fid"/>
+  </Context>
+</Context>
+]]></attr>
+<attr name="_data_format"><![CDATA[JSON]]></attr>
+<attr name="jsonSchemaURL"><![CDATA[C:/Users/Nicolas/Desktop/json_product_quantity.txt]]></attr>
+</Node>
+<Edge debugMode="true" fromNode="FOREACH_PRODUCTS_PRODUCTS:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="c6b16fe8-6ec5-4619-b194-d5beb92884eb" outPort="Port 0 (out)" toNode="EXT_XML_WRITER0:0"/>
+<Edge debugMode="true" fromNode="JSON_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="62e80712-61d3-48a2-a90c-ce26554945af" outPort="Port 0 (out)" toNode="FOREACH_PRODUCTS_PRODUCTS:0"/>
+</Phase>
+</Graph>
