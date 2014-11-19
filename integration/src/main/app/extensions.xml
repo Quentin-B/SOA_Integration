@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:ws="http://www.mulesoft.org/schema/mule/ws"
+<mule xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:ws="http://www.mulesoft.org/schema/mule/ws"
 	xmlns:http="http://www.mulesoft.org/schema/mule/http"
 	xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
 	xmlns:file="http://www.mulesoft.org/schema/mule/file"
@@ -15,7 +15,12 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd">
+
+
+	<data-mapper:config name="Convert_Temporaly_Products_in_Warehouse_Product" transformationGraphPath="convert_temporaly_products_in_warehouse_product.grf" doc:name="Convert_Temporaly_Products_in_Warehouse_Product"/>
+    <data-mapper:config name="Convert_Warehouse_Products_in_Temporally_Products" transformationGraphPath="convert_warehouse_products_in_temporally_products.grf" doc:name="Convert_Warehouse_Products_in_Temporally_Products"/>
     <sub-flow name="sf_order_fedps_new_(extension_customer_preferences)" doc:name="sf_order_fedps_new_(extension_customer_preferences)">
         <logger message="COMMANDE FedPS - DEBUT #[flowVars.order] #[payload]" level="INFO" doc:name="Logger"/>
         <set-variable variableName="pref" value="#[payload.preference]" doc:name="preference"/>
@@ -63,7 +68,6 @@ return order;
         </scripting:component>
         <logger message="COMMANDE FedPS - FIN" level="INFO" doc:name="Logger"/>
     </sub-flow>
-    
     <sub-flow name="sf_order_teamforce_new" doc:name="sf_order_teamforce_new">
         <logger message="COMMANDE TF - DEBUT #[flowVars.order]" level="INFO" doc:name="COMMANDE TF - DEBUT"/>
         <flow-ref name="sf_get_prices_teamforces" doc:name="sf_get_prices_teamforces"/>
@@ -172,5 +176,17 @@ return order]]></scripting:script>
             </otherwise>
         </choice>
     </sub-flow>
+	<flow name="extension_provisionning" doc:name="extension_provisionning">
+        <vm:inbound-endpoint exchange-pattern="one-way" path="/VM/interne/provisioning" doc:name="VM - Provisionning"/>
+        <logger level="INFO" doc:name="Service call - Retrieve all warehouses products with quantity"/>
+        <data-mapper:transform config-ref="Convert_Warehouse_Products_in_Temporally_Products" doc:name="Convert Warehouse Products in Temporally Products"/>
+        <object-to-string-transformer doc:name="Convert JSON Object in String Object"/>
 
+        <expression-filter expression="#[xpath://products/product[quantity &lt;= 60]]" doc:name="Expression - Filter on product quantity"/>
+        <data-mapper:transform config-ref="Convert_Temporaly_Products_in_Warehouse_Product" returnClass="java.lang.String" doc:name="Convert Temporaly Products in Warehouse Product"/>
+        <set-payload value="product_provisioning=#[payload]" doc:name="Format Payload with POST Param"/>
+        <message-properties-transformer mimeType="application/x-www-form-urlencoded" doc:name="Message Properties - Enrichment properties POST request"/>
+
+        <logger level="INFO" doc:name="Call Service - Proviosioning of warehouse products"/>
+    </flow>
 </mule>
